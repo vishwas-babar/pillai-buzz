@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/css', express.static(path.join(__dirname, 'public/css')));
 app.use('/js', express.static(path.join(__dirname, 'public/js')));
-app.use('/imgs', express.static(path.join(__dirname, 'public/imgs')));
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 app.use('/', staticRouter);
 
