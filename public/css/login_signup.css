@@ -66,9 +66,9 @@ main .side-img-container img {
     left: 50%;
     transform: translate(-50%, -50%); */
     perspective: 1000px;
-    background-color: white;
+    /* background-color: white; */
     border-radius: 5px;
-    padding: 10px;
+    /* padding: 10px; */
 }
 
 .form-container .page-title {
@@ -82,9 +82,13 @@ main .side-img-container img {
     width: 100%;
     transform-style: preserve-3d;
     transition: transform 1s;
+    background-color: white;
     /* transform: rotatey(180deg); */
     /* Rotate the back */
     transform: rotateY(180deg); 
+    border-radius: 5px;
+    box-shadow: 0px 0px 1px 1px;
+    
 }
 
 /* .form-container:hover .inner-form-container {
@@ -98,6 +102,8 @@ main .side-img-container img {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     perspective: 1000px;
+
+    padding: 10px;
 }
 
 
@@ -111,6 +117,8 @@ main .side-img-container img {
     backface-visibility: hidden;
     transform: rotateY(180deg);
     perspective: 1000px;
+
+    padding: 10px;
 }
 
 .login-heading-container {
@@ -520,3 +528,37 @@ body {
 }
 
 
+/* add the responsiveness */
+@media only screen and (max-width: 1100px){
+    main{
+        width: 90%;
+    }
+}
+
+@media only screen and (max-width: 1000px) and (min-width: 800px){
+    main{
+        width: 95%;
+    }
+
+    main .side-img-container img{
+        height: 300px;
+        width: auto;
+    }
+}
+
+@media only screen and (max-width: 800px){
+    main{
+        width: 100%;
+        height: 100vh;
+    }
+
+    main .side-img-container{
+        display: none;
+    }
+}
+
+@media only screen and (max-width:400px){
+    .form-container{
+        width: 90%;
+    }
+}
