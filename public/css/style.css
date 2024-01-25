@@ -274,6 +274,33 @@ main {
     justify-content: center;
     justify-items: center;
     align-items: center;
+    position: relative;
+}
+
+.show-more-btn{
+    /* position: absolute; Remove this line */
+    /* left: 50%; Remove this line */
+    /* transform: translateX(-50%); Remove this line */
+    padding: 10px 20px;
+    border-radius: 20px;
+    background-color: #2563EB;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border:none;
+    cursor: pointer;
+    margin: 10px auto; /* Change this line to center the button */
+    transition: all 0.3s ease;
+}
+
+.show-more-btn:hover{
+    box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.75);
+}
+
+.gap-div{
+    width: 100%;
+    height: 60px;
 }
 
 .news-card{
@@ -465,7 +492,6 @@ main {
     position: fixed;
     bottom: 0px;
     z-index: 100;
-
     display: none;
 }
 
@@ -523,7 +549,7 @@ main {
 
     main{
         width: 100%;
-        padding-bottom: 60px;
+        /* padding-bottom: 60px; */
     }
 
     .side-nav{
@@ -550,14 +576,22 @@ main {
         width: 50px;
         height: 50px;
         border-radius: 50%;
-        background-color: #2563EB;
-        color: white;
+        color: black;
+        background-color: transparent;
         display: flex;
         justify-content: center;
         align-items: center;
         column-gap: 6px;
         cursor: pointer;
         transition: all 0.3s ease;
+    }
+
+    header .third-nav-part .write-btn:hover{
+        box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.75);
+    }
+
+    header .third-nav-part .write-btn i{
+        font-size: 25px;
     }
 
     header .third-nav-part .write-btn p{
