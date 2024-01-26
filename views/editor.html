@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create post</title>
+
+    <!-- <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"> -->
+    <!-- <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet"> -->
+    <!-- <link rel="stylesheet" href="/css/editor.css"> -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="../public/css/editor.css">
+</head>
+
+<body>
+
+    <!-- this is side nav bar mobile device -->
+    <div class="side-nav">
+        <div class="side-nav-header">
+            <div class="logo-container">
+                <img src="../public/images/Pillaipo.png" alt="">
+                <!-- <img src="/images/Pillaipo.png" alt=""> -->
+                <p>Pillai Buzz</p>
+                
+                <a class="side-nav-close-btn">
+                    <i class='bx bx-x'></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="side-nav-btns">
+            <a class="my-feed">My Feed</a>
+            <a class="more">More</a>
+        </div>
+    </div>
+
+    <header>
+        <nav class="topnav">
+            <div class="nav-first-part">
+                <a id="show-side-nav-btn">
+                    <i class='bx bx-menu'></i>
+                </a>
+                <img src="../public/images/Pillaipo.png" alt="">
+                <p>Pillai Buzz</p>
+            </div>
+            <div class="nav-second-part">
+                <a>My Feed</a>
+                <a>Bookmarks</a>
+            </div>
+            <div class="nav-third-part">
+                <button class="publish-btn">Publish</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="heading-container">
+        <textarea name="heading" placeholder="Heading..." class="heading-input"></textarea>
+    </div>
+
+    <div class="editor-container">
+        <div id="editor"></div>
+    </div>
+
+    <!-- <script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script> -->
+    <!-- <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script> -->
+    <!-- <script src="/js/editor.js"></script> -->
+    <!-- <script src="../public/ckeditor/ckeditor.js"></script> -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
+    <script src="../public/js/editor.js"></script>
+</body>
+
+</html>

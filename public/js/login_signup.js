@@ -62,4 +62,4 @@ signup_form.addEventListener('submit', (event) => {
             signup_btn.disabled = false;
             signup_btn.textContent = 'Create';
         });
-})
+});
