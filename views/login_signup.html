@@ -7,6 +7,7 @@
     <title>Login now!</title>
 
     <link rel="stylesheet" href="../public/css/login_signup.css">
+    <link rel="stylesheet" href="/css/login_signup.css">
 </head>
 
 <body>
@@ -36,7 +37,7 @@
                         <div class="right-line"></div>
                     </div>
 
-                    <form class="page">
+                    <form class="page login-form">
 
                         <div class="field field_v1">
                             <label for="email" class="ha-screen-reader">Email</label>
@@ -85,31 +86,31 @@
                     </div>
 
                     
-                    <form class="page">
+                    <form class="page signup-form">
                         <div class="field field_v1">
                             <label for="userid" class="ha-screen-reader">userid</label>
-                            <input id="userid" class="field__input" placeholder="e.g. xyz_345">
+                            <input id="userid" name="userid" class="field__input" placeholder="e.g. xyz_345">
                             <span class="field__label-wrap" aria-hidden="true">
                                 <span class="field__label">user id</span>
                             </span>
                         </div>
                         <div class="field field_v2">
                             <label for="password" class="ha-screen-reader">Password</label>
-                            <input id="s-password" type="password" class="field__input" placeholder="e.g. 123456">
+                            <input id="s-password" name="password" type="password" class="field__input" placeholder="e.g. 123456">
                             <span class="field__label-wrap" aria-hidden="true">
                                 <span class="field__label">Password</span>
                             </span>
                         </div>
                         <div class="field field_v3">
                             <label for="email" class="ha-screen-reader">E-mail</label>
-                            <input id="s-email" class="field__input" placeholder="e.g. melnik909@ya.ru">
+                            <input id="s-email" name="email" class="field__input" placeholder="e.g. melnik909@ya.ru">
                             <span class="field__label-wrap" aria-hidden="true">
                                 <span class="field__label">E-mail</span>
                             </span>
                         </div>
 
                         <div class="submit-btn-container">
-                            <button class="login-btn" type="submit">Create</button>
+                            <button class="login-btn signup-btn" type="submit">Create</button>
                             <p class="register-statement">Already have account? <a class="register-btn switch-login-btn">Login</a></p>
                         </div>
 
@@ -120,7 +121,9 @@
     </main>
 
 
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
     <script src="../public/js/login_signup.js"></script>
+    <script src="/js/login_signup.js"></script>
 </body>
 
 </html>

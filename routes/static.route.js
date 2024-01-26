@@ -11,7 +11,7 @@ router.get('/profile', (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, '../views/login.html'));
+    res.sendFile(path.join(__dirname, '../views/login_signup.html'));
 });
 
 module.exports = router;
