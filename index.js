@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 
+const isUserAuthenticated = require('./middlewares/auth.js');
+
 const staticRouter = require('./routes/static.route.js');
 const userRouter = require('./routes/user.route.js');
 

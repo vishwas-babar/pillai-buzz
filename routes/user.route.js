@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const { handleCreateNewUser } = require('../controllers/user.controller.js');
+const { handleCreateNewUser, handleGetUser } = require('../controllers/user.controller.js');
 
 router.route('/')
-    // .get(handleCreateNewUser)
+    .get(handleGetUser)
     .post(handleCreateNewUser)
 
 module.exports = router;

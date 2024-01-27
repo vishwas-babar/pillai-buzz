@@ -1,4 +1,42 @@
 const User = require('../models/user.model.js');
+const {setUserJwtToken} = require('../utils/auth.js');
+
+async function handleGetUser(req, res) {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({
+            message: 'Invalid request',
+        });
+    }
+
+    // check if user exists in database
+    let user;
+    try {
+        user = await User.findOne({ email: email, password: password });
+        if (!user) {
+            return res.status(400).json({
+                message: 'Invalid email or password',
+            });
+        }
+    } catch (error) {
+        return res.status(500).json({
+            message: 'Internal server error',
+        });
+    }
+
+    const uid = setUserJwtToken({ name: user.name, email: user.email, userId: user.userId });
+    if (!uid) {
+        return res.status(500).json({
+            message: 'Internal server error',
+        });
+    }
+
+    return res.status(200).json({
+        message: 'User logged in successfully',
+        uid: uid,
+    });
+}
 
 async function handleCreateNewUser(req, res) {
     const { userId, email, password } = req.body;
@@ -27,7 +65,7 @@ async function handleCreateNewUser(req, res) {
             email: email,
             password: password,
         });
-        
+
         return res.status(200).json({
             message: 'User created successfully',
         });
@@ -38,10 +76,7 @@ async function handleCreateNewUser(req, res) {
     }
 }
 
-async function handleGetUser(req, res) {
-    const { userId } = req.body;
-}
-
 module.exports = {
     handleCreateNewUser,
+    handleGetUser,
 }

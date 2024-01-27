@@ -2,11 +2,13 @@ const express = require('express');
 const path = require('path');
 const router = express.Router();
 
-router.get('/', (req, res) => {
+const isUserAuthenticated = require('../middlewares/auth.js');
+
+router.get('/',isUserAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, '../views/index.html'));
 });
 
-router.get('/profile', (req, res) => {
+router.get('/profile', isUserAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, '../views/profile.html'));
 });
 
