@@ -7,6 +7,7 @@ const isUserAuthenticated = require('./middlewares/auth.js');
 
 const staticRouter = require('./routes/static.route.js');
 const userRouter = require('./routes/user.route.js');
+const postRounter = require('./routes/post.route.js');
 
 const connectDB = require('./database/connection.js');
 connectDB();
@@ -26,6 +27,7 @@ app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 app.use('/', staticRouter);
 app.use('/api/user', userRouter);
+app.use('/api/post', isUserAuthenticated, postRounter);
 
 app.listen(process.env.PORT || 7000, () => {
     console.log(`Server is running on port ${process.env.PORT || 7000}`);

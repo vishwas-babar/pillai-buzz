@@ -25,7 +25,7 @@ async function handleGetUser(req, res) {
         });
     }
 
-    const uid = setUserJwtToken({ name: user.name, email: user.email, userId: user.userId });
+    const uid = setUserJwtToken({ name: user.name, email: user.email, userId: user.userId, _id: user._id });
     if (!uid) {
         return res.status(500).json({
             message: 'Internal server error',

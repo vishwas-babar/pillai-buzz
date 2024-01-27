@@ -1,5 +1,6 @@
 
 const container = document.querySelector('#editor');
+let editor;
 
 ClassicEditor.create(container, {
     ckfinder: {
@@ -7,9 +8,13 @@ ClassicEditor.create(container, {
     },
     removePlugins: ['CKFinder', 'Logo'],
     placeholder: 'Add discription here...'
-}).catch(error => {
-    console.error(error);
-});
+})
+    .then(newEditor => {
+        editor = newEditor;
+    })
+    .catch(error => {
+        console.error(error);
+    });
 
 
 // on nav btn onclick display the side nav bar
@@ -27,5 +32,36 @@ sideNavCloseBtn.addEventListener('click', () => {
 });
 
 
+const publishBtn = document.querySelector('.publish-btn');
 
+publishBtn.addEventListener('click', () => {
+    const title = document.querySelector('.heading-input').value;
+    const discription = editor.getData();
+    console.log(title, discription);
 
+    if (!title || !discription) {
+        alert('all fields required');
+        return;
+    }
+
+    // add the loading on btn
+    publishBtn.disabled = true;
+    publishBtn.textContent = 'Sending...';
+
+    axios.post('/api/post', {
+        title: title,
+        discription: discription,
+    })
+        .then((res) => {
+            alert('post created successfully');
+            window.location.href = '/';
+        })
+        .catch((err) => {
+            console.log(err.response.data)
+            alert('An error occurred. Please try again.');
+        })
+        .finally(() => {
+            publishBtn.disabled = false;
+            publishBtn.textContent = 'Publish';
+        })
+});

@@ -16,7 +16,7 @@ router.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../views/login_signup.html'));
 });
 
-router.get('/editor', (req, res) => {
+router.get('/editor', isUserAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, '../views/editor.html'));
 })
 

@@ -5,8 +5,9 @@ const postSchema = new mongoose.Schema(
         author: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
+            required: true
         },
-        heading: {
+        title: {
             type: String,
             required: true,
             trim: true,
