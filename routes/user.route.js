@@ -3,8 +3,8 @@ const router = express.Router();
 
 const { handleCreateNewUser, handleGetUser } = require('../controllers/user.controller.js');
 
-router.route('/')
-    .get(handleGetUser)
-    .post(handleCreateNewUser)
+router.post('/login', handleGetUser);
+
+router.post('/signup', handleCreateNewUser);
 
 module.exports = router;

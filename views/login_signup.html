@@ -41,7 +41,7 @@
 
                         <div class="field field_v1">
                             <label for="email" class="ha-screen-reader">Email</label>
-                            <input id="email" class="field__input" placeholder="e.g. xyz34@gmail.com">
+                            <input id="email" name="email" class="field__input" placeholder="e.g. xyz34@gmail.com">
                             <span class="field__label-wrap" aria-hidden="true">
                                 <span class="field__label">Email</span>
                             </span>
@@ -49,7 +49,7 @@
 
                         <div class="field field_v2">
                             <label for="password" class="ha-screen-reader">Password</label>
-                            <input id="password" type="password" class="field__input" placeholder="e.g. 123456">
+                            <input id="password" name="password" type="password" class="field__input" placeholder="e.g. 123456">
                             <span class="field__label-wrap" aria-hidden="true">
                                 <span class="field__label">Password</span>
                             </span>
@@ -121,6 +121,7 @@
     </main>
 
 
+    <script src="https://unpkg.com/validator@latest/validator.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
     <script src="../public/js/login_signup.js"></script>
     <script src="/js/login_signup.js"></script>

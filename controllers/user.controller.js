@@ -15,7 +15,7 @@ async function handleGetUser(req, res) {
     try {
         user = await User.findOne({ email: email, password: password });
         if (!user) {
-            return res.status(400).json({
+            return res.status(401).json({
                 message: 'Invalid email or password',
             });
         }
@@ -32,6 +32,9 @@ async function handleGetUser(req, res) {
         });
     }
 
+    res.cookie('uid', uid,  {
+        
+    });
     return res.status(200).json({
         message: 'User logged in successfully',
         uid: uid,
