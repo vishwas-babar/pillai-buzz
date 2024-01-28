@@ -148,6 +148,7 @@ header #show-side-nav-btn:hover{
     column-gap: 6px;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-decoration: none;
 }
 
 .write-btn i{
