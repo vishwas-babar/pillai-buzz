@@ -6,22 +6,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>profile</title>
 
-    <!-- <link rel="stylesheet" href="/css/tailwind.output.css"> -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/output.css">
     <link rel="stylesheet" href="../public/css/output.css">
     <link rel="stylesheet" href="../public//css/profile.css">
-    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="/css/profile.css">
+
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
 </head>
 
 <body>
 
-    <nav id="top-nav" class="flex items-center justify-between w-full h-20 overflow-hidden bg-custom-gray">
-        <div class="w-fit h-full ml-5 flex items-center">
-            <img class="h-[60px] w-[60px] rounded-full bg-contain" src="../public/images/Pillaipo.png" alt="">
-            <h2 id="pillaibuzz-logo" class="  ">Pillai Buzz</h2>
+    <!-- side nav for small screens -->
+    <nav id="side-nav" class="flex ml-[-100%] flex-col justify-start w-3/4 h-full fixed z-30 bg-custom-gray shadow-md transition-all duration-450 ease-linear">
+        <div class="flex justify-between w-full h-17 p-3">
+            <div class="flex w-full h-full items-center p-2 relative">
+                <img class="size-14 overflow-hidden rounded-full" src="../public/images/Pillaipo.png" alt="">
+                <!-- <img src="/images/Pillaipo.png" alt=""> -->
+                <p id="pillaibuzz-logo" class="text-[30px] ">Pillai Buzz</p>
+                
+                <a id="side-nav-close-btn" class="side-nav-close-btn absolute right-1 size-10 cursor-pointer flex items-center justify-center rounded-full transition-all duration-300 ease-in-out hover:shadow-custom-shadow-1 active:scale-105
+                        active:shadow-custom-shadow-1">
+                    <i class='bx bx-x text-[28px]'></i>
+                </a>
+            </div>
         </div>
 
-        <div class="flex gap-[10px] items-center w-fit h-full">
+
+        
+        <div class="side-nav-btns flex flex-col *:w-full *:h-11 *:flex *:items-center *:px-[10px] *:py-[20px] *:transition-all *:cursor-pointer duration-300 ease-in-out">
+            <a class="bg-custom-primary hover:shadow-custom-shadow-1 text-white">My Feed</a>
+            <a class="hover:shadow-custom-shadow-1 active:scale-[1.01]">More</a>
+        </div>
+    </nav>
+
+    
+    <!-- overlay for focusing on sidenav -->
+    <div id="side-nav-overlay" class="w-full h-full fixed left-0 top-0 bg-black opacity-50 z-20 hidden"></div>
+
+
+
+    <!-- top nav -->
+    <nav id="top-nav" class="flex items-center justify-between w-full h-20 overflow-hidden bg-custom-gray transition-all duration-500 ease-linear">
+        <a id="show-side-nav-btn" class="h-10 w-10  ml-3 p-2 border rounded-full flex md:hidden items-center justify-center cursor-pointer">
+            <i class='bx bx-menu h-10 w-10 text-[28px] flex items-center justify-center'></i>
+        </a>
+        <div class="w-fit h-full ml-5 items-center md:flex hidden">
+            <!-- <img class="h-[60px] w-[60px] rounded-full bg-contain" src="../public/images/Pillaipo.png" alt=""> -->
+            <img class="h-[60px] w-[60px] rounded-full bg-contain" src="/images/Pillaipo.png" alt="">
+            <h2 id="pillaibuzz-logo" class="">Pillai Buzz</h2>
+        </div>
+
+        <div class="gap-[10px] items-center w-fit h-full hidden md:flex">
             <a
                 class="rounded-[20px] hover:bg-custom-primary hover:text-white hover:shadow-md px-[20px] py-[10px] transition-all duration-[0.3s] ease-in-out">
                 My Feed
@@ -35,7 +71,7 @@
         <div class="flex items-center justify-center ml-[10px] gap-[10px]">
 
             <div id="search-ic"
-                class="flex items-center justify-center size-10 rounded-full transition-all duration-300 ease-in-out hover:shadow-custom-shadow-1">
+                class="sm:flex hidden cursor-pointer items-center justify-center size-10 rounded-full transition-all duration-300 ease-in-out hover:shadow-custom-shadow-1">
                 <i class='bx bx-search text-[25px]'></i>
             </div>
 
@@ -45,20 +81,13 @@
             </a>
 
             <div id="dark-mode-ic"
-                class="flex items-center justify-center size-10 rounded-full transition-all duration-300 ease-in-out hover:shadow-custom-shadow-1">
+                class="flex items-center cursor-pointer justify-center size-10 rounded-full transition-all duration-300 ease-in-out hover:shadow-custom-shadow-1">
                 <i class='bx bx-moon text-[25px]'></i>
             </div>
 
             <div id="bell-ic"
-                class="flex items-center justify-center size-10 rounded-full transition-all duration-300 ease-in-out hover:shadow-custom-shadow-1">
+                class="sm:flex hidden cursor-pointer items-center justify-center size-10 rounded-full transition-all duration-300 ease-in-out hover:shadow-custom-shadow-1">
                 <i class='bx bx-bell text-[25px]'></i>
-            </div>
-
-            <div id="profile-img-container" class="">
-                <a href="profile">
-                    <!-- <img src="../public/images/user.png" alt=""> -->
-                    <img src="/images/user.png" alt="">
-                </a>
             </div>
 
         </div>
@@ -66,24 +95,26 @@
 
 
     <!-- main -->
-    <main class="flex flex-col items-center mt-8 w-[60%] h-fit shadow-md shadow-black mx-auto rounded-lg">
+    <main class="flex flex-col items-center w-full mt-2 md:w-[70%] h-fit shadow-md shadow-black mx-auto rounded-lg
+    sm:w-[70%] lg:w-[50%]">
 
 
         <!-- profile container -->
-        <div class="flex h-52 w-[700px] my-9 items-center ">
+        <div class="flex sm:flex-row flex-col min-h-52 w-full my-2 sm:my-9 items-center border-b ">
 
-            <div class="size-[200px] rounded-full ml-7">
-                <img src="../public/images/user.png" alt="">
+            <div class="md:size-[200px] size-[150px] flex items-center rounded-full ml-7">
+                <!-- <img src="../public/images/user.png" alt=""> -->
+                <img src="/images/user.png" alt="">
             </div>
 
 
             <div class=" w-full h-full p-7 flex justify-between">
                 <div class=" w-fit">
-                    <h2 class="text-[27px] font-serif leading-4 mb-0">Vishwas Babar</h2>
-                    <span class="text-[14px] mt-0">@vishwas_babar9</span>
-                    <p class="text-[20px] leading-7">fullstack developer</p>
+                    <h2 class="text-[22px] sm:mt-0 font-serif leading-4 mb-0 text-nowrap">Vishwas Babar</h2>
+                    <span class="text-[14px] mt-0 text-nowrap">@vishwas_babar9</span>
+                    <p class="text-[18px] leading-7">fullstack developer</p>
 
-                    <div class="flex gap-5 mt-11">
+                    <div class="flex gap-5 mt-2 sm:mt-11">
                         <p class="">79 Followers</p>
                         <p>56 Following</p>
                     </div>
@@ -91,9 +122,9 @@
 
                 <div>
                     <div>
-                        <button class="btn-primary">
+                        <button class="btn-primary flex flex-nowrap">
                             <i class='bx bx-edit-alt text-[17px]'></i>
-                            Edit
+                            <span class="sm:inline-block hidden">Edit</span>
                         </button>
                     </div>
                 </div>
@@ -104,27 +135,34 @@
         <hr class="h-px my-1 bg-black border-0 dark:bg-gray-700">
 
         <!-- users post -->
-        <div class="w-70% h-fit rounded-sm mx-auto flex flex-col items-center">
-            <div id="post" class="h-fit flex flex-col w-[90%] items-center rounded-md p-4 mb-2 shadow-custom-shadow-1">
+        <div class="sm:w-70% h-fit rounded-sm mx-auto flex flex-col items-center gap-4 
+        w-full">
+            <div id="post" class="h-fit flex flex-col w-[90%] items-center rounded-md pt-4 px-4 shadow-custom-shadow-1">
                 <div id="author-info" class="flex justify-start bg-white self-start">
                     <div class="size-14 ring-blue-600">
-                        <img src="../public/images/user.png" alt="">
+                        <!-- <img src="../public/images/user.png" alt=""> -->
+                        <img src="/images/user.png" alt="">
                     </div>
                     <div class="ml-2 mt-2">
-                        <h2 class="text-[27px] font-serif leading-4 ">Vishwas Babar</h2>
+                        <h2 class="md:text-[20px] text-[18px] font-serif leading-4 ">Vishwas Babar</h2>
                         <span class="text-[14px] mt-0">@vishwas_babar9</span>
                     </div>
                 </div>
+
+                <hr >
+
                 <div class="ml-3 w-full">
-                    <h1 class="text-2xl my-2 font-[500] leading-tight text-neutral-800">
+                    <h1 role="heading" class="md:text-[22px] text-[20px] my-2 font-[500] leading-tight text-neutral-800">
                         Get Ready For The Biggest Developer Conference at Pillai College!
                     </h1>
                 </div>
+
                 <div
-                    class="rounded-md w-full h-72 overflow-hidden flex items-center justify-center shadow-custom-shadow-1">
-                    <img class="w-auto h-full" src="../public/images/news.jpeg" alt="">
+                    class="rounded-md w-full h-48 sm:h-52 md:h-68 lg:h-80 overflow-hidden flex items-center justify-center shadow-custom-shadow-1">
+                    <!-- <img class="w-auto h-full" src="../public/images/news.jpeg" alt=""> -->
+                    <img class="w-auto h-full" src="/images/news.jpeg" alt="">
                 </div>
-                <div class="mt-6 flex justify-between w-full relative">
+                <div class="mt-1 flex justify-between w-full relative">
                     <div class=" flex justify-start w-full">
                         <a class="comments-btn ml-0">
                             <i class='bx bx-message-rounded'></i>
@@ -141,27 +179,32 @@
                     </div>
                 </div>
             </div>
-
-            <div id="post" class="h-fit flex flex-col w-[90%] items-center rounded-md p-4 shadow-custom-shadow-1">
+    
+            <div id="post" class="h-fit flex flex-col w-[90%] items-center rounded-md pt-4 px-4 shadow-custom-shadow-1">
                 <div id="author-info" class="flex justify-start bg-white self-start">
                     <div class="size-14 ring-blue-600">
-                        <img src="../public/images/user.png" alt="">
+                        <!-- <img src="../public/images/user.png" alt=""> -->
+                        <img src="/images/user.png" alt="">
                     </div>
                     <div class="ml-2 mt-2">
-                        <h2 class="text-[27px] font-serif leading-4 ">Vishwas Babar</h2>
+                        <h2 class="md:text-[20px] text-[18px] font-serif leading-4 ">Vishwas Babar</h2>
                         <span class="text-[14px] mt-0">@vishwas_babar9</span>
                     </div>
                 </div>
+
+                <hr >
+
                 <div class="ml-3 w-full">
-                    <h1 class="text-2xl my-2 font-[500] leading-tight text-neutral-800">
+                    <h1 role="heading" class="md:text-[22px] text-[20px] my-2 font-[500] leading-tight text-neutral-800">
                         Get Ready For The Biggest Developer Conference at Pillai College!
                     </h1>
                 </div>
                 <div
-                    class="rounded-md w-full h-72 overflow-hidden flex items-center justify-center shadow-custom-shadow-1">
-                    <img class="w-auto h-full" src="../public/images/news.jpeg" alt="">
+                    class="rounded-md w-full h-48 sm:h-52 md:h-68 lg:h-80 overflow-hidden flex items-center justify-center shadow-custom-shadow-1">
+                    <!-- <img class="w-auto h-full" src="../public/images/news.jpeg" alt=""> -->
+                    <img class="w-auto h-full" src="/images/news.jpeg" alt="">
                 </div>
-                <div class="my-6 flex justify-between w-full relative">
+                <div class="mt-1 flex justify-between w-full relative">
                     <div class=" flex justify-start w-full">
                         <a class="comments-btn ml-0">
                             <i class='bx bx-message-rounded'></i>
@@ -178,27 +221,32 @@
                     </div>
                 </div>
             </div>
-
-            <div id="post" class="h-fit flex flex-col w-[90%] items-center rounded-md p-4 shadow-custom-shadow-1">
+    
+            <div id="post" class="h-fit flex flex-col w-[90%] items-center rounded-md pt-4 px-4 shadow-custom-shadow-1">
                 <div id="author-info" class="flex justify-start bg-white self-start">
                     <div class="size-14 ring-blue-600">
-                        <img src="../public/images/user.png" alt="">
+                        <!-- <img src="../public/images/user.png" alt=""> -->
+                        <img src="/images/user.png" alt="">
                     </div>
                     <div class="ml-2 mt-2">
-                        <h2 class="text-[27px] font-serif leading-4 ">Vishwas Babar</h2>
+                        <h2 class="md:text-[20px] text-[18px] font-serif leading-4 ">Vishwas Babar</h2>
                         <span class="text-[14px] mt-0">@vishwas_babar9</span>
                     </div>
                 </div>
+
+                <hr >
+
                 <div class="ml-3 w-full">
-                    <h1 class="text-2xl my-2 font-[500] leading-tight text-neutral-800">
+                    <h1 role="heading" class="md:text-[22px] text-[20px] my-2 font-[500] leading-tight text-neutral-800">
                         Get Ready For The Biggest Developer Conference at Pillai College!
                     </h1>
                 </div>
                 <div
-                    class="rounded-md w-full h-72 overflow-hidden flex items-center justify-center shadow-custom-shadow-1">
-                    <img class="w-auto h-full" src="../public/images/news.jpeg" alt="">
+                    class="rounded-md w-full h-48 sm:h-52 md:h-68 lg:h-80 overflow-hidden flex items-center justify-center shadow-custom-shadow-1">
+                    <!-- <img class="w-auto h-full" src="../public/images/news.jpeg" alt=""> -->
+                    <img class="w-auto h-full" src="/images/news.jpeg" alt="">
                 </div>
-                <div class="my-6 flex justify-between w-full relative">
+                <div class="mt-1 flex justify-between w-full relative">
                     <div class=" flex justify-start w-full">
                         <a class="comments-btn ml-0">
                             <i class='bx bx-message-rounded'></i>
@@ -220,7 +268,22 @@
     </main>
 
 
-
+<!-- bottom tab bar -->
+    <div id="bottom-nav" class="fixed h-16 w-full bg-custom-gray bottom-0 flex items-center justify-around sm:hidden
+                 *:size-10 *:rounded-md *:flex *:items-center *:justify-center *:transition-all *:duration-300 ease-in-out">
+        <a id="home-feed" class="active:bg-custom-primary active:text-white">
+            <i class='bx bx-home text-[23px]'></i>
+        </a>
+        <a id="bookmark" class="active:bg-custom-primary active:text-white">
+            <i class='bx bx-bookmark text-[23px]'></i>
+        </a>
+        <a id="search" class="active:bg-custom-primary active:text-white">
+            <i class='bx bx-search text-[23px]'></i>
+        </a>
+        <a id="notification" class="active:bg-custom-primary-hover active:text-white">
+            <i class='bx bx-bell text-[23px]'></i>
+        </a>
+    </div>
 
     <script src="../public//js/profile.js"></script>
     <script src="js/profile.js"></script>

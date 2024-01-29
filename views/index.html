@@ -7,7 +7,7 @@
     <title>home</title>
 
     <link rel="stylesheet" href="../public/css/output.css">
-    <link rel="stylesheet" href="/css/tailwind.output.css">
+    <link rel="stylesheet" href="/css/output.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="../public/css/style.css">
@@ -37,6 +37,8 @@
         </div>
     </div>
 
+    <!-- overlay for focusing on sidenav -->
+    <div id="side-nav-overlay" class="w-full h-full absolute bg-black opacity-50 z-20 hidden"></div>
 
     <header>
         <div class="first-nav-part">
@@ -86,7 +88,8 @@
             <div id="post" class="h-fit flex flex-col w-[90%] items-center rounded-md pt-4 px-4 shadow-custom-shadow-1">
                 <div id="author-info" class="flex justify-start bg-white self-start">
                     <div class="size-14 ring-blue-600">
-                        <img src="../public/images/user.png" alt="">
+                        <!-- <img src="../public/images/user.png" alt=""> -->
+                        <img src="/images/user.png" alt="">
                     </div>
                     <div class="ml-2 mt-2">
                         <h2 class="md:text-[20px] text-[18px] font-serif leading-4 ">Vishwas Babar</h2>
@@ -103,7 +106,8 @@
                 </div>
                 <div
                     class="rounded-md w-full h-48 sm:h-52 md:h-68 lg:h-80 overflow-hidden flex items-center justify-center shadow-custom-shadow-1">
-                    <img class="w-auto h-full" src="../public/images/news.jpeg" alt="">
+                    <!-- <img class="w-auto h-full" src="../public/images/news.jpeg" alt=""> -->
+                    <img class="w-auto h-full" src="/images/news.jpeg" alt="">
                 </div>
                 <div class="mt-1 flex justify-between w-full relative">
                     <div class=" flex justify-start w-full">
@@ -126,7 +130,8 @@
             <div id="post" class="h-fit flex flex-col w-[90%] items-center rounded-md pt-4 px-4 shadow-custom-shadow-1">
                 <div id="author-info" class="flex justify-start bg-white self-start">
                     <div class="size-14 ring-blue-600">
-                        <img src="../public/images/user.png" alt="">
+                        <!-- <img src="../public/images/user.png" alt=""> -->
+                        <img src="/images/user.png" alt="">
                     </div>
                     <div class="ml-2 mt-2">
                         <h2 class="md:text-[20px] text-[18px] font-serif leading-4 ">Vishwas Babar</h2>
@@ -143,7 +148,8 @@
                 </div>
                 <div
                     class="rounded-md w-full h-48 sm:h-52 md:h-68 lg:h-80 overflow-hidden flex items-center justify-center shadow-custom-shadow-1">
-                    <img class="w-auto h-full" src="../public/images/news.jpeg" alt="">
+                    <!-- <img class="w-auto h-full" src="../public/images/news.jpeg" alt=""> -->
+                    <img class="w-auto h-full" src="/images/news.jpeg" alt="">
                 </div>
                 <div class="mt-1 flex justify-between w-full relative">
                     <div class=" flex justify-start w-full">
@@ -166,7 +172,8 @@
             <div id="post" class="h-fit flex flex-col w-[90%] items-center rounded-md pt-4 px-4 shadow-custom-shadow-1">
                 <div id="author-info" class="flex justify-start bg-white self-start">
                     <div class="size-14 ring-blue-600">
-                        <img src="../public/images/user.png" alt="">
+                        <!-- <img src="../public/images/user.png" alt=""> -->
+                        <img src="/images/user.png" alt="">
                     </div>
                     <div class="ml-2 mt-2">
                         <h2 class="md:text-[20px] text-[18px] font-serif leading-4 ">Vishwas Babar</h2>
@@ -183,7 +190,8 @@
                 </div>
                 <div
                     class="rounded-md w-full h-48 sm:h-52 md:h-68 lg:h-80 overflow-hidden flex items-center justify-center shadow-custom-shadow-1">
-                    <img class="w-auto h-full" src="../public/images/news.jpeg" alt="">
+                    <!-- <img class="w-auto h-full" src="../public/images/news.jpeg" alt=""> -->
+                    <img class="w-auto h-full" src="/images/news.jpeg" alt="">
                 </div>
                 <div class="mt-1 flex justify-between w-full relative">
                     <div class=" flex justify-start w-full">
@@ -205,11 +213,10 @@
         </div>
     </main>
 
-    <main>
+    <!-- <main>
         <div class="news-card">
             <div class="user-info-container">
                 <div class="news-profile-img">
-                    <!-- <img src="../public/images/user.png" alt=""> -->
                     <img src="/images/user.png" alt="">
                 </div>
                 <div class="author-info">
@@ -239,7 +246,6 @@
             </div>
 
             <div class="news-img">
-                <!-- <img src="../public/images/news.jpeg" alt=""> -->
                 <img src="/images/news.jpeg" alt="">
             </div>
 
@@ -259,273 +265,7 @@
             </div>
         </div>
 
-        <div class="news-card">
-            <div class="user-info-container">
-                <div class="news-profile-img">
-                    <!-- <img src="../public/images/user.png" alt=""> -->
-                    <img src="/images/user.png" alt="">
-                </div>
-                <div class="author-info">
-                    <p class="user-name">vishwas babar2</p>
-                    <div>
-                        <span class="role">Web Developer</span>
-                        <span> - </span>
-                        <span class="date">1h ago</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="news-info">
-                <h2 class="news-heading">
-                    Get Ready For The Biggest Developer Conference at Pillai College!
-                </h2>
-
-                <div class="discription-container">
-                    <p class="news-discription">
-                        Pillai College of Engineering is organizing a 2-day Developer Conference on 27th and 28th of
-                        February 2021. The conference will be held online and will be streamed live on YouTube. The
-                        conference will be conducted by the Pillai HOC College of Engineering and Technology, Rasayani,
-                        Maharashtra. The conference will be conducted by the Pillai HOC College of Engineering and
-                        Technology, Rasayani, Maharashtra.
-                    </p>
-                </div>
-            </div>
-
-            <div class="news-img">
-                <!-- <img src="../public/images/news.jpeg" alt=""> -->
-                <img src="/images/news.jpeg" alt="">
-            </div>
-
-            <div class="reach-container">
-                <a class="comments-btn" >
-                    <i class='bx bx-message-rounded'></i>
-                    <span>1.4k</span>
-                </a>
-                <a class="likes-btn" >
-                    <i class='bx bx-heart'></i>
-                    <span>1.4k</span>
-                </a>
-                <a class="reads-counts">34k reads</a>
-                <a class="bookmark-btn">
-                    <i class='bx bx-bookmark'></i>
-                </a>
-            </div>
-        </div>
-
-        <div class="news-card">
-            <div class="user-info-container">
-                <div class="news-profile-img">
-                    <!-- <img src="../public/images/user.png" alt=""> -->
-                    <img src="/images/user.png" alt="">
-                </div>
-                <div class="author-info">
-                    <p class="user-name">vishwas babar3</p>
-                    <div>
-                        <span class="role">Web Developer</span>
-                        <span> - </span>
-                        <span class="date">1h ago</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="news-info">
-                <h2 class="news-heading">
-                    Get Ready For The Biggest Developer Conference at Pillai College!
-                </h2>
-
-                <div class="discription-container">
-                    <p class="news-discription">
-                        Pillai College of Engineering is organizing a 2-day Developer Conference on 27th and 28th of
-                        February 2021. The conference will be held online and will be streamed live on YouTube. The
-                        conference will be conducted by the Pillai HOC College of Engineering and Technology, Rasayani,
-                        Maharashtra. The conference will be conducted by the Pillai HOC College of Engineering and
-                        Technology, Rasayani, Maharashtra.
-                    </p>
-                </div>
-            </div>
-
-            <div class="news-img">
-                <!-- <img src="../public/images/news.jpeg" alt=""> -->
-                <img src="/images/news.jpeg" alt="">
-            </div>
-
-            <div class="reach-container">
-                <a class="comments-btn" >
-                    <i class='bx bx-message-rounded'></i>
-                    <span>1.4k</span>
-                </a>
-                <a class="likes-btn" >
-                    <i class='bx bx-heart'></i>
-                    <span>1.4k</span>
-                </a>
-                <a class="reads-counts">34k reads</a>
-                <a class="bookmark-btn">
-                    <i class='bx bx-bookmark'></i>
-                </a>
-            </div>
-        </div>
-
-        <div class="news-card">
-            <div class="user-info-container">
-                <div class="news-profile-img">
-                    <!-- <img src="../public/images/user.png" alt=""> -->
-                    <img src="/images/user.png" alt="">
-                </div>
-                <div class="author-info">
-                    <p class="user-name">vishwas babar4</p>
-                    <div>
-                        <span class="role">Web Developer</span>
-                        <span> - </span>
-                        <span class="date">1h ago</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="news-info">
-                <h2 class="news-heading">
-                    Get Ready For The Biggest Developer Conference at Pillai College!
-                </h2>
-
-                <div class="discription-container">
-                    <p class="news-discription">
-                        Pillai College of Engineering is organizing a 2-day Developer Conference on 27th and 28th of
-                        February 2021. The conference will be held online and will be streamed live on YouTube. The
-                        conference will be conducted by the Pillai HOC College of Engineering and Technology, Rasayani,
-                        Maharashtra. The conference will be conducted by the Pillai HOC College of Engineering and
-                        Technology, Rasayani, Maharashtra.
-                    </p>
-                </div>
-            </div>
-
-            <div class="news-img">
-                <!-- <img src="../public/images/news.jpeg" alt=""> -->
-                <img src="/images/news.jpeg" alt="">
-            </div>
-
-            <div class="reach-container">
-                <a class="comments-btn" >
-                    <i class='bx bx-message-rounded'></i>
-                    <span>1.4k</span>
-                </a>
-                <a class="likes-btn" >
-                    <i class='bx bx-heart'></i>
-                    <span>1.4k</span>
-                </a>
-                <a class="reads-counts">34k reads</a>
-                <a class="bookmark-btn">
-                    <i class='bx bx-bookmark'></i>
-                </a>
-            </div>
-        </div>
-
-        <div class="news-card">
-            <div class="user-info-container">
-                <div class="news-profile-img">
-                    <!-- <img src="../public/images/user.png" alt=""> -->
-                    <img src="/images/user.png" alt="">
-                </div>
-                <div class="author-info">
-                    <p class="user-name">vishwas babar5</p>
-                    <div>
-                        <span class="role">Web Developer</span>
-                        <span> - </span>
-                        <span class="date">1h ago</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="news-info">
-                <h2 class="news-heading">
-                    Get Ready For The Biggest Developer Conference at Pillai College!
-                </h2>
-
-                <div class="discription-container">
-                    <p class="news-discription">
-                        Pillai College of Engineering is organizing a 2-day Developer Conference on 27th and 28th of
-                        February 2021. The conference will be held online and will be streamed live on YouTube. The
-                        conference will be conducted by the Pillai HOC College of Engineering and Technology, Rasayani,
-                        Maharashtra. The conference will be conducted by the Pillai HOC College of Engineering and
-                        Technology, Rasayani, Maharashtra.
-                    </p>
-                </div>
-            </div>
-
-            <div class="news-img">
-                <!-- <img src="../public/images/news.jpeg" alt=""> -->
-                <img src="/images/news.jpeg" alt="">
-            </div>
-
-            <div class="reach-container">
-                <a class="comments-btn" >
-                    <i class='bx bx-message-rounded'></i>
-                    <span>1.4k</span>
-                </a>
-                <a class="likes-btn" >
-                    <i class='bx bx-heart'></i>
-                    <span>1.4k</span>
-                </a>
-                <a class="reads-counts">34k reads</a>
-                <a class="bookmark-btn">
-                    <i class='bx bx-bookmark'></i>
-                </a>
-            </div>
-        </div>
-
-
-        <div class="news-card">
-            <div class="user-info-container">
-                <div class="news-profile-img">
-                    <!-- <img src="../public/images/user.png" alt=""> -->
-                    <img src="/images/user.png" alt="">
-                </div>
-                <div class="author-info">
-                    <p class="user-name">vishwas babar6</p>
-                    <div>
-                        <span class="role">Web Developer</span>
-                        <span> - </span>
-                        <span class="date">1h ago</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="news-info">
-                <h2 class="news-heading">
-                    Get Ready For The Biggest Developer Conference at Pillai College!
-                </h2>
-
-                <div class="discription-container">
-                    <p class="news-discription">
-                        Pillai College of Engineering is organizing a 2-day Developer Conference on 27th and 28th of
-                        February 2021. The conference will be held online and will be streamed live on YouTube. The
-                        conference will be conducted by the Pillai HOC College of Engineering and Technology, Rasayani,
-                        Maharashtra. The conference will be conducted by the Pillai HOC College of Engineering and
-                        Technology, Rasayani, Maharashtra.
-                    </p>
-                </div>
-            </div>
-
-            <div class="news-img">
-                <!-- <img src="../public/images/news.jpeg" alt=""> -->
-                <img src="/images/news.jpeg" alt="">
-            </div>
-
-            <div class="reach-container">
-                <a class="comments-btn" >
-                    <i class='bx bx-message-rounded'></i>
-                    <span>1.4k</span>
-                </a>
-                <a class="likes-btn" >
-                    <i class='bx bx-heart'></i>
-                    <span>1.4k</span>
-                </a>
-                <a class="reads-counts">34k reads</a>
-                <a class="bookmark-btn">
-                    <i class='bx bx-bookmark'></i>
-                </a>
-            </div>
-        </div>
-
-    </main>
+    </main> -->
     <button class="show-more-btn">More</button>
     <div class="gap-div"></div>
 

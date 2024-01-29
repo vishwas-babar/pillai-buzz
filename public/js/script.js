@@ -7,19 +7,31 @@ const sideNavCloseBtn = document.querySelector('.side-nav-close-btn');
 showSideNavBtn.addEventListener('click', () => {
     const sideNav = document.querySelector('.side-nav');
     sideNav.style.marginLeft = '0%';
+
+    // add overlay to background
+    const overlay = document.querySelector('#side-nav-overlay');
+    overlay.style.display = 'block';
 });
 
 sideNavCloseBtn.addEventListener('click', () => {
     const sideNav = document.querySelector('.side-nav');
     sideNav.style.marginLeft = '-100%';
+
+    // remove overlay to background
+    const overlay = document.querySelector('#side-nav-overlay');
+    overlay.style.display = 'none';
 });
 
-// when the user click outside the side nav bar it will close
-// const sideNav = document.querySelector('.side-nav');
-// window.addEventListener('click', (e) => {
-//     if (sideNav.style.marginLeft === '0%') {
-//         // sideNav.style.marginLeft = '-100%';
-//         console.log('side nav is closing')
-//     }
-// });
+
+// on overlay click close the side nav bar
+const overlay = document.querySelector('#side-nav-overlay');
+overlay.addEventListener('click', () =>{
+    const sideNav = document.querySelector('.side-nav');
+    sideNav.style.marginLeft = '-100%';
+
+    // remove overlay to background
+    overlay.style.display = 'none';
+});
+
+
 
