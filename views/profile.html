@@ -1,21 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>profile</title>
 
     <!-- <link rel="stylesheet" href="/css/tailwind.output.css"> -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../public/css/output.css">
+    <link rel="stylesheet" href="../public//css/profile.css">
     <link rel="stylesheet" href="css/profile.css">
 </head>
+
 <body>
-    <h1 class="text-4xl font-bold text-white bg-blue-500 p-5 rounded shadow-lg ml-10">This is the profile page</h1>
 
-    <div class="flex w-9/12 items-center align-middle justify-center first-letter:bg-red-800">
-        <h2 class="text-2xl w-max font-bold text-white bg-blue-500 p-5 rounded shadow-lg ml-10">This is the profile page</h2>
-    </div>
+    <nav id="top-nav" class="flex items-center justify-between w-full h-20 overflow-hidden bg-custom-gray">
+        <div class="w-fit h-full ml-5 flex items-center">
+            <img class="h-[60px] w-[60px] rounded-full bg-contain" src="../public/images/Pillaipo.png" alt="">
+            <h2 id="pillaibuzz-logo" class="  ">Pillai Buzz</h2>
+        </div>
 
+        <div class="flex gap-[10px] items-center w-fit h-full">
+            <a
+                class="rounded-[20px] hover:bg-custom-primary hover:text-white hover:shadow-md px-[20px] py-[10px] transition-all duration-[0.3s] ease-in-out">
+                My Feed
+            </a>
+            <a
+                class="rounded-[20px] hover:bg-custom-primary hover:text-white hover:shadow-md px-[20px] py-[10px] transition-all duration-[0.3s] ease-in-out">
+                Bookmarks
+            </a>
+        </div>
+
+        <div class="flex items-center justify-center ml-[10px] gap-[10px]">
+
+            <div id="search-ic"
+                class="flex items-center justify-center size-10 rounded-full transition-all duration-300 ease-in-out hover:shadow-custom-shadow-1">
+                <i class='bx bx-search text-[25px]'></i>
+            </div>
+
+            <a class="btn-primary flex items-center justify-center gap-1" id="write-btn" href="/editor" class="">
+                <i class='bx bx-edit-alt text-[20px]'></i>
+                <p>Write</p>
+            </a>
+
+            <div id="dark-mode-ic"
+                class="flex items-center justify-center size-10 rounded-full transition-all duration-300 ease-in-out hover:shadow-custom-shadow-1">
+                <i class='bx bx-moon text-[25px]'></i>
+            </div>
+
+            <div id="bell-ic"
+                class="flex items-center justify-center size-10 rounded-full transition-all duration-300 ease-in-out hover:shadow-custom-shadow-1">
+                <i class='bx bx-bell text-[25px]'></i>
+            </div>
+
+            <div id="profile-img-container" class="">
+                <a href="profile">
+                    <!-- <img src="../public/images/user.png" alt=""> -->
+                    <img src="/images/user.png" alt="">
+                </a>
+            </div>
+
+        </div>
+    </nav>
+
+
+    <!-- main -->
+    <main class="flex flex-col items-center mt-8 w-[60%] h-fit shadow-md shadow-black mx-auto rounded-lg">
+
+
+        <!-- profile container -->
+        <div class="flex h-52 w-[700px] my-9 items-center ">
+
+            <div class="size-[200px] rounded-full ml-7">
+                <img src="../public/images/user.png" alt="">
+            </div>
+
+
+            <div class=" w-full h-full p-7 flex justify-between">
+                <div class=" w-fit">
+                    <h2 class="text-[27px] font-serif leading-4 mb-0">Vishwas Babar</h2>
+                    <span class="text-[14px] mt-0">@vishwas_babar9</span>
+                    <p class="text-[20px] leading-7">fullstack developer</p>
+
+                    <div class="flex gap-5 mt-11">
+                        <p class="">79 Followers</p>
+                        <p>56 Following</p>
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        <button class="btn-primary">
+                            <i class='bx bx-edit-alt text-[17px]'></i>
+                            Edit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <hr class="h-px my-1 bg-black border-0 dark:bg-gray-700">
+
+        <!-- users post -->
+        <div class="w-70% h-fit rounded-sm mx-auto flex flex-col items-center">
+            <div id="post" class="h-fit flex flex-col w-[90%] items-center rounded-md p-4 mb-2 shadow-custom-shadow-1">
+                <div id="author-info" class="flex justify-start bg-white self-start">
+                    <div class="size-14 ring-blue-600">
+                        <img src="../public/images/user.png" alt="">
+                    </div>
+                    <div class="ml-2 mt-2">
+                        <h2 class="text-[27px] font-serif leading-4 ">Vishwas Babar</h2>
+                        <span class="text-[14px] mt-0">@vishwas_babar9</span>
+                    </div>
+                </div>
+                <div class="ml-3 w-full">
+                    <h1 class="text-2xl my-2 font-[500] leading-tight text-neutral-800">
+                        Get Ready For The Biggest Developer Conference at Pillai College!
+                    </h1>
+                </div>
+                <div
+                    class="rounded-md w-full h-72 overflow-hidden flex items-center justify-center shadow-custom-shadow-1">
+                    <img class="w-auto h-full" src="../public/images/news.jpeg" alt="">
+                </div>
+                <div class="mt-6 flex justify-between w-full relative">
+                    <div class=" flex justify-start w-full">
+                        <a class="comments-btn ml-0">
+                            <i class='bx bx-message-rounded'></i>
+                            <span>1.4k</span>
+                        </a>
+                        <a class="likes-btn ml-3">
+                            <i class='bx bx-heart'></i>
+                            <span>1.4k</span>
+                        </a>
+                        <a class="bookmark-btn">
+                            <i class='bx bx-bookmark'></i>
+                        </a>
+                        <a class="reads-counts">34k reads</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="post" class="h-fit flex flex-col w-[90%] items-center rounded-md p-4 shadow-custom-shadow-1">
+                <div id="author-info" class="flex justify-start bg-white self-start">
+                    <div class="size-14 ring-blue-600">
+                        <img src="../public/images/user.png" alt="">
+                    </div>
+                    <div class="ml-2 mt-2">
+                        <h2 class="text-[27px] font-serif leading-4 ">Vishwas Babar</h2>
+                        <span class="text-[14px] mt-0">@vishwas_babar9</span>
+                    </div>
+                </div>
+                <div class="ml-3 w-full">
+                    <h1 class="text-2xl my-2 font-[500] leading-tight text-neutral-800">
+                        Get Ready For The Biggest Developer Conference at Pillai College!
+                    </h1>
+                </div>
+                <div
+                    class="rounded-md w-full h-72 overflow-hidden flex items-center justify-center shadow-custom-shadow-1">
+                    <img class="w-auto h-full" src="../public/images/news.jpeg" alt="">
+                </div>
+                <div class="my-6 flex justify-between w-full relative">
+                    <div class=" flex justify-start w-full">
+                        <a class="comments-btn ml-0">
+                            <i class='bx bx-message-rounded'></i>
+                            <span>1.4k</span>
+                        </a>
+                        <a class="likes-btn ml-3">
+                            <i class='bx bx-heart'></i>
+                            <span>1.4k</span>
+                        </a>
+                        <a class="bookmark-btn">
+                            <i class='bx bx-bookmark'></i>
+                        </a>
+                        <a class="reads-counts">34k reads</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="post" class="h-fit flex flex-col w-[90%] items-center rounded-md p-4 shadow-custom-shadow-1">
+                <div id="author-info" class="flex justify-start bg-white self-start">
+                    <div class="size-14 ring-blue-600">
+                        <img src="../public/images/user.png" alt="">
+                    </div>
+                    <div class="ml-2 mt-2">
+                        <h2 class="text-[27px] font-serif leading-4 ">Vishwas Babar</h2>
+                        <span class="text-[14px] mt-0">@vishwas_babar9</span>
+                    </div>
+                </div>
+                <div class="ml-3 w-full">
+                    <h1 class="text-2xl my-2 font-[500] leading-tight text-neutral-800">
+                        Get Ready For The Biggest Developer Conference at Pillai College!
+                    </h1>
+                </div>
+                <div
+                    class="rounded-md w-full h-72 overflow-hidden flex items-center justify-center shadow-custom-shadow-1">
+                    <img class="w-auto h-full" src="../public/images/news.jpeg" alt="">
+                </div>
+                <div class="my-6 flex justify-between w-full relative">
+                    <div class=" flex justify-start w-full">
+                        <a class="comments-btn ml-0">
+                            <i class='bx bx-message-rounded'></i>
+                            <span>1.4k</span>
+                        </a>
+                        <a class="likes-btn ml-3">
+                            <i class='bx bx-heart'></i>
+                            <span>1.4k</span>
+                        </a>
+                        <a class="bookmark-btn">
+                            <i class='bx bx-bookmark'></i>
+                        </a>
+                        <a class="reads-counts">34k reads</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+
+
+
+    <script src="../public//js/profile.js"></script>
     <script src="js/profile.js"></script>
 </body>
+
 </html>

@@ -1,3 +1,76 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer components{
+    .btn-primary{
+        @apply bg-custom-primary text-white px-[20px] py-[10px] rounded-[20px];
+        @apply transition-all duration-300 ease-in-out transform;
+        @apply  hover:shadow-lg;
+    }
+
+    .aspect-ratio-16-9{
+        @apply relative;
+        @apply w-full;
+        @apply h-0;
+        @apply pb-[56.25%];
+    }
+
+    .aspect-ratio-16-9 > *{
+        @apply absolute;
+        @apply w-full;
+        @apply h-full;
+    }
+
+    .comments-btn, .likes-btn{
+        padding: 5px 10px;
+        border-radius: 20px;
+        background-color: #2563EB;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        column-gap: 6px;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin: 10px 0px;
+    }
+
+
+    .comments-btn span, .likes-btn span{
+        font-size: 15px;
+        font-weight: 500;
+    }
+    
+    .comments-btn:hover, .likes-btn:hover{
+        box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.75);
+    }
+    
+   .bookmark-btn{
+        padding: 5px 10px;
+        border-radius: 20px;
+        background-color: white;
+        color: #2563EB;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        column-gap: 6px;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin: 10px 0px;
+    }
+    
+ .bookmark-btn i{
+        font-size: 20px;
+    }
+    
+    .reads-counts{
+        font-size: 15px;
+        font-weight: 500;
+        color: gray;
+        position: absolute;
+        right: 0px;
+    }
+}
+

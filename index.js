@@ -9,6 +9,7 @@ const staticRouter = require('./routes/static.route.js');
 const userRouter = require('./routes/user.route.js');
 const postRounter = require('./routes/post.route.js');
 
+
 const connectDB = require('./database/connection.js');
 connectDB();
 

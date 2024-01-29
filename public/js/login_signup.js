@@ -86,6 +86,7 @@ login_form.addEventListener('submit', (event) => {
         return;
     }
 
+
     // add the loading on btn
     const login_btn = document.querySelector('.login-btn');
     login_btn.disabled = true;
