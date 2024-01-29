@@ -12,7 +12,7 @@ const postRounter = require('./routes/post.route.js');
 
 const connectDB = require('./database/connection.js');
 connectDB();
-
+ 
 const app = express();
 
 // this is middlewares for adding given data to req.body
