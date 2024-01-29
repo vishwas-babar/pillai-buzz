@@ -25,7 +25,7 @@ sideNavCloseBtn.addEventListener('click', () => {
 
 // on overlay click close the side nav bar
 const overlay = document.querySelector('#side-nav-overlay');
-overlay.addEventListener('click', () =>{
+overlay.addEventListener('click', () => {
     const sideNav = document.querySelector('.side-nav');
     sideNav.style.marginLeft = '-100%';
 
@@ -47,7 +47,7 @@ profile_btn.addEventListener('click', () => {
             profile_modal.style.display = 'none';
             overlay.style.display = 'none';
         })
-    }else{
+    } else {
 
         // set timeout to close the modal, if cursor is not hovered on modal then close it
         modalTimeOut = setTimeout(() => {
@@ -76,6 +76,14 @@ const signout_btn = document.querySelector('#sign-out');
 signout_btn.addEventListener('click', () => {
     // remove the user from local storage and send request to server to remove the user from session
 
-    
+    axios.post('/api/user/signout')
+        .then((res) => {
+            document.cookie = 'uid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'; // remove the cookie
+            window.location.href = '/login';
+        })
+        .catch((err) => {
+            console.log(err);
+            alert('An error occurred. Please try again.');
+        })
 });
 

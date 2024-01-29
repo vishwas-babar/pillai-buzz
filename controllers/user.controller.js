@@ -79,7 +79,19 @@ async function handleCreateNewUser(req, res) {
     }
 }
 
+function handlesignoutUser(req, res) {
+    res.cookie('uid', '', {
+        expires: new Date(Date.now() + 1000),
+    });
+
+    return res.status(200).json({
+        success: true,
+        msg: "user signed out succesfully"
+    });
+}
+
 module.exports = {
     handleCreateNewUser,
     handleGetUser,
+    handlesignoutUser,
 }
