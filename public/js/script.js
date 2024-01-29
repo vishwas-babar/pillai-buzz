@@ -34,4 +34,48 @@ overlay.addEventListener('click', () =>{
 });
 
 
+// show the profile modal
+const profile_btn = document.querySelector('#profile-btn');
+profile_btn.addEventListener('click', () => {
+    const profile_modal = document.querySelector('#profile-modal');
+    profile_modal.style.display = 'flex';
+
+    if (window.innerWidth <= 600) {
+        overlay.style.display = 'block';
+
+        overlay.addEventListener('click', () => {
+            profile_modal.style.display = 'none';
+            overlay.style.display = 'none';
+        })
+    }else{
+
+        // set timeout to close the modal, if cursor is not hovered on modal then close it
+        modalTimeOut = setTimeout(() => {
+            profile_modal.style.display = 'none';
+        }, 3000);
+
+        // if cursor is hovered on modal then clear the timeout
+        profile_modal.addEventListener('mouseenter', () => {
+            clearTimeout(modalTimeOut);
+        });
+
+        // if cursor is leaved from modal then set the timeout again for 1s and close it
+        profile_modal.addEventListener('mouseleave', () => {
+            modalTimeOut = setTimeout(() => {
+                profile_modal.style.display = 'none';
+                overlay.style.display = 'none';
+            }, 1000);
+        });
+    }
+});
+
+
+
+// sign out the user
+const signout_btn = document.querySelector('#sign-out');
+signout_btn.addEventListener('click', () => {
+    // remove the user from local storage and send request to server to remove the user from session
+
+    
+});
 
