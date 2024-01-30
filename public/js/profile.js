@@ -1,5 +1,24 @@
 console.log('profile.js is connected');
 
+// add content to the profile card on page load
+window.onload = function (){
+    axios.get('/api/user/info')
+    .then((res) => {
+        const userInfo = res.data;
+
+        const user_name =  document.querySelector('#user-name');
+        const user_id = document.querySelector('#user-id');
+
+        document.querySelector('#role'); // add the role here
+        user_name.textContent = userInfo.name;
+        user_id.textContent = userInfo.userId;
+    })
+    .catch((error) => {
+        alert('itnernal server error! please try again later');
+    })
+}
+
+
 // show side nav bar
 const showSideNavBtn = document.querySelector('#show-side-nav-btn');
 const sideNavCloseBtn = document.querySelector('#side-nav-close-btn');

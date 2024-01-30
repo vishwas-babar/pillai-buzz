@@ -19,13 +19,14 @@ signup_form.addEventListener('submit', (event) => {
     event.preventDefault();
 
 
-    let { userId, password, email } = {
+    let { name, userId, password, email } = {
+        name: event.target.name.value.trim(),
         userId: event.target.userid.value.trim(),
         password: event.target.password.value.trim(),
         email: event.target.email.value.trim()
     }
 
-    if (!userId || !password || !email) {
+    if (!name || !userId || !password || !email) {
         alert('all fields required');
         return;
     }
@@ -36,6 +37,7 @@ signup_form.addEventListener('submit', (event) => {
     signup_btn.textContent = 'Loading...';
 
     axios.post('/api/user/signup', {
+        name: name,
         userId: userId,
         password: password,
         email: email,

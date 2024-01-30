@@ -40,6 +40,23 @@ profile_btn.addEventListener('click', () => {
     const profile_modal = document.querySelector('#profile-modal');
     profile_modal.style.display = 'flex';
 
+
+    // // add user data to user modal
+    // axios.get('/api/user/info')
+    // .then((res) => {
+    //     const user = res.data;
+    //     console.log(user);
+
+    //     // change the content modal
+    //     const user_name = document.querySelector('#user-name');
+    //     const user_id = document.querySelector('#user-id');
+
+    //     user_name.textContent = user.name;
+    //     user_id.textContent = user.userId;
+    // })
+
+
+
     if (window.innerWidth <= 600) {
         overlay.style.display = 'block';
 
@@ -67,8 +84,30 @@ profile_btn.addEventListener('click', () => {
             }, 1000);
         });
     }
+
 });
 
+
+// onload event
+window.onload = function () {
+    // add user data to user modal
+    axios.get('/api/user/info')
+        .then((res) => {
+            const user = res.data;
+            console.log(user);
+
+            // change the content modal
+            const user_name = document.querySelector('#user-name');
+            const user_id = document.querySelector('#user-id');
+
+            user_name.textContent = user.name;
+            user_id.textContent = '@' + user.userId;
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+
+}
 
 
 // sign out the user
@@ -86,4 +125,13 @@ signout_btn.addEventListener('click', () => {
             alert('An error occurred. Please try again.');
         })
 });
+
+
+// set the user name and userid in profile modal
+const user_name = document.querySelector('#user-name');
+const user_id = document.querySelector('#user-id');
+
+user_name.textContent = cookie
+
+
 

@@ -485,13 +485,13 @@ body {
     max-width: 480px;
     margin: auto;
     padding: 1rem;
-
+    padding-top: 5px;
     display: grid;
     grid-gap: 30px;
 }
 
 .signup-form-container .page{
-    grid-gap: 20px;
+    grid-gap: 10px;
 }
 
 .linktr {
