@@ -5,10 +5,10 @@ async function handleCreatePost(req, res) {
 
     const user = req.body.user;
     console.log(user);
-    if(!user) {
+    if (!user) {
         return res.status(401).json({
             message: 'Unauthorized',
-        }); 
+        });
     }
 
     const { title, discription } = req.body;
@@ -39,4 +39,26 @@ async function handleCreatePost(req, res) {
     }
 }
 
-module.exports = handleCreatePost;
+const handleGetSpecificPost = async (req, res) => {
+    const { id } = req.params;
+
+    if (!id) {
+        return res.status(400).json({
+            message: 'Invalid request',
+        });
+    }
+
+    const post = await Post.findById(id)
+        .then((post) => {
+            res.status(200).json({
+                postContent: post
+            })
+        })
+        .catch((err) => {
+            res.status(404).json({
+                msg: "not found"
+            })
+        })
+}
+
+module.exports = { handleCreatePost, handleGetSpecificPost };
