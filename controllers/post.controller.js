@@ -54,13 +54,13 @@ const handleGetSpecificPost = async (req, res) => {
         });
     }
 
-    console.log(id);
-
     try {
         const post = await Post.findById(id);
         const author = await User.findById(post.author).select('createdAt name userId _id');
+        console.log(post.likes.length)
 
         res.status(200).json({
+            likesCount: post.likes.length,
             author: author,
             postContent: post
         })
@@ -73,4 +73,34 @@ const handleGetSpecificPost = async (req, res) => {
 
 }
 
-module.exports = { handleCreatePost, handleGetSpecificPost };
+const handleLikePost = async (req, res) => {
+    const postId = req.params.id;
+    const user = req.body.user;
+
+    try {
+
+        const post = await Post.findById(postId);
+        if (!post) {
+            return res.status(404).json({
+                msg: "Post not found"
+            })
+        }
+
+
+        const updatedPost = await Post.findByIdAndUpdate(postId, {
+            $push: { likes: user._id }
+        }, { new: true }).select('likes');
+
+
+        return res.status(200).json({
+            likesCount: updatedPost.likes.length,
+            msg: "like added",
+        });
+    } catch (error) {
+        return res.status(500).json({
+            msg: "internal server error"
+        })
+    }
+}
+
+module.exports = { handleCreatePost, handleGetSpecificPost, handleLikePost };

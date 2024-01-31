@@ -2,9 +2,7 @@
 
 // add data to page
 const path = window.location.pathname;
-console.log( path );
 const parts = path.split('/');
-console.log(parts);
 const postId = parts[2];
 
 axios.get(`/api/post/${postId}`)
@@ -14,9 +12,14 @@ axios.get(`/api/post/${postId}`)
     
     // add data to page
     addPostDataToPage(data);
+
+    // add number of likes to page
+    const like_count = document.querySelector('#like-btn span');
+    like_count.textContent  = data.likesCount;
 })
 .catch((error) => {
-    console.log( error );
+    const description = document.querySelector('#description');
+    description.textContent = 'Post not found';
 })
 
 
@@ -87,9 +90,9 @@ profile_btn.addEventListener('click', () => {
 
 
 // onload event
-window.onload = function () {
+window.onload = async function () {
     // add user data to user modal
-    axios.get('/api/user/info')
+    await axios.get('/api/user/info')
         .then((res) => {
             const user = res.data;
             console.log(user);
@@ -104,6 +107,7 @@ window.onload = function () {
         .catch((error) => {
             console.log(error);
         })
+
 
 }
 
@@ -141,5 +145,47 @@ overlay.addEventListener('click', () => {
 
 
 
-// made changes in working
-// made some changes
+//add the like to post
+const like_btn = document.querySelector('#like-btn');
+like_btn.addEventListener('click', () => {
+    
+
+    axios.post(`/api/post/${postId}/like`)
+    .then((res) => {
+        const data = res.data;
+        const count = document.querySelector('#like-btn span');
+        count.textContent = data.likesCount;
+    })
+    .catch((error) => {
+        console.log(error)
+        showToast('failed to like the post');
+    })
+})
+
+function showToast(message) {
+    // Create a div
+    const toast = document.createElement('div');
+
+    // Add text to the div
+    toast.textContent = message;
+
+    // Style the div
+    toast.style.position = 'fixed';
+    toast.style.bottom = '20px';
+    toast.style.left = '50%';
+    toast.style.transform = 'translateX(-50%)';
+    toast.style.background = 'black';
+    toast.style.color = 'white';
+    toast.style.padding = '10px';
+    toast.style.borderRadius = '5px';
+    toast.style.margin = '0 auto';
+    toast.style.zIndex = '1000';
+
+    // Add the div to the body
+    document.body.appendChild(toast);
+
+    // Remove the div after 3 seconds
+    setTimeout(() => {
+        document.body.removeChild(toast);
+    }, 3000);
+}

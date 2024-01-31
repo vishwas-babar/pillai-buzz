@@ -99,11 +99,10 @@ function handlesignoutUser(req, res) {
 
 const handleGetUserInfo = async (req, res) => {
     const userinfo = req.body.user;
-    console.log(userinfo);
+
 
     try {
         const user = await User.findById(userinfo._id);
-        console.log(user);
 
         return res.status(200).json({
             name: user.name,

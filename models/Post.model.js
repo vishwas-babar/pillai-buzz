@@ -20,10 +20,10 @@ const postSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Tag',
         }],
-        likes: {
-            type: Number,
-            default: 0,
-        },
+        likes: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }],
         reads: {
             type: Number,
             default: 0,
@@ -40,7 +40,7 @@ const postSchema = new mongoose.Schema(
             },
         }, { timestamps: true }],
     },
-    { timestamps: true}
+    { timestamps: true }
 );
 
 const Post = mongoose.model('Post', postSchema);
