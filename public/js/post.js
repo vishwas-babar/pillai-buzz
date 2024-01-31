@@ -11,14 +11,43 @@ axios.get(`/api/post/${postId}`)
 .then((res) => {
     const data = res.data;
     console.log(data);
-
+    
     // add data to page
-    addPostData(data);
+    addPostDataToPage(data);
 })
 .catch((error) => {
     console.log( error );
 })
 
+
+const addPostDataToPage = (data) => {
+    const post = data.postContent;
+    const author = data.author;
+
+    let createdAt = new Date(post.createdAt);
+    let formatedDate = createdAt.toLocaleDateString("en-IN", {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    }); // return data in '31 jan 2024' format
+    console.log(formatedDate);
+    console.log(typeof formatedDate);
+
+    const author_name = document.querySelector('#author');
+    const post_date = document.querySelector('#post-date');
+    const heading = document.querySelector('#heading');
+    const description = document.querySelector('#description');
+
+    author_name.textContent = author.name;
+    post_date.textContent = formatedDate;
+    heading.textContent = post.title;
+    description.innerHTML = post.discription;
+ 
+    const elements = document.querySelectorAll('#description a');
+    elements.forEach(element => {
+        element.classList.add('text-blue-600');
+    });
+}
 
 // show the profile modal
 const profile_btn = document.querySelector('#profile-btn');
@@ -80,24 +109,6 @@ window.onload = function () {
 
 
 
-const addPostData = (data) => {
-    const post = data.postContent;
-    const author = data.author;
-
-    const author_name = document.querySelector('#author');
-    const heading = document.querySelector('#heading');
-    const description = document.querySelector('#description');
-
-    author_name.textContent = author.name;
-    heading.textContent = post.title;
-    description.innerHTML = post.discription;
- 
-    const elements = document.querySelectorAll('#description a');
-    elements.forEach(element => {
-        element.classList.add('text-blue-600');
-    });
-}
-
 
 // show side nav bar
 const showSideNavBtn = document.querySelector('#show-side-nav-btn');
@@ -127,3 +138,8 @@ overlay.addEventListener('click', () => {
     // remove overlay to background
     overlay.style.display = 'none';
 });
+
+
+
+// made changes in working
+// made some changes
