@@ -48,17 +48,42 @@ const handleGetSpecificPost = async (req, res) => {
         });
     }
 
-    const post = await Post.findById(id)
-        .then((post) => {
-            res.status(200).json({
-                postContent: post
-            })
+    console.log(id);
+
+    try {
+        const post = await Post.findById(id);
+        const author = await User.findById(post.author).select('createdAt name userId _id');
+
+        res.status(200).json({
+            author: author,
+            postContent: post
         })
-        .catch((err) => {
-            res.status(404).json({
-                msg: "not found"
-            })
+
+    } catch (error) {
+        res.status(404).json({
+            msg: "not found"
         })
+    }
+
+    // .then((post) => {
+    //     let author;
+    //     try {
+    //         author = await User.findById(post.author);
+    //     } catch (error) {
+    //         return res.status(404).json({
+    //             msg: "not found"
+    //         });
+    //     }
+    //     res.status(200).json({
+    //         author: author,
+    //         postContent: post
+    //     })
+    // })
+    // .catch((err) => {
+    //     res.status(404).json({
+    //         msg: "not found"
+    //     })
+    // })
 }
 
 module.exports = { handleCreatePost, handleGetSpecificPost };

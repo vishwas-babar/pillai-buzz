@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post</title>
+
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/output.css">
+    <link rel="stylesheet" href="../public/css/output.css">
+    <link rel="stylesheet" href="../public/css/post.css">
+    <link rel="stylesheet" href="/css/post.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+
+    <!-- side nav for small screens -->
+    <nav id="side-nav" class="flex ml-[-100%] flex-col justify-start w-3/4 h-full fixed z-30 bg-custom-gray shadow-md transition-all duration-450 ease-linear">
+        <div class="flex justify-between w-full h-17 p-3">
+            <div class="flex w-full h-full items-center p-2 relative">
+                <!-- <img class="size-14 overflow-hidden rounded-full" src="../public/images/Pillaipo.png" alt=""> -->
+                <img class="size-14 overflow-hidden rounded-full" src="/images/Pillaipo.png" alt="">
+                <p id="pillaibuzz-logo" class="text-[30px] ">Pillai Buzz</p>
+                
+                <a id="side-nav-close-btn" class="side-nav-close-btn absolute right-1 size-10 cursor-pointer flex items-center justify-center rounded-full transition-all duration-300 ease-in-out hover:shadow-custom-shadow-1 active:scale-105
+                        active:shadow-custom-shadow-1">
+                    <i class='bx bx-x text-[28px]'></i>
+                </a>
+            </div>
+        </div>
+
+
+        
+        <div class="side-nav-btns flex flex-col *:w-full *:h-11 *:flex *:items-center *:px-[10px] *:py-[20px] *:transition-all *:cursor-pointer duration-300 ease-in-out">
+            <a class="bg-custom-primary hover:shadow-custom-shadow-1 text-white">My Feed</a>
+            <a class="hover:shadow-custom-shadow-1 active:scale-[1.01]">More</a>
+        </div>
+    </nav>
+
+    
+    <!-- overlay for focusing on sidenav -->
+    <div id="side-nav-overlay" class="w-full h-full fixed left-0 top-0 bg-black opacity-50 z-20 hidden"></div>
+
+
+     <!-- top nav -->
+     <nav id="top-nav" class="flex items-center border-b justify-between w-full h-20 overflow-hidden bg-custom-gray transition-all duration-500 ease-linear" type="button" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation" >
+        <a id="show-side-nav-btn" class="h-10 w-10  ml-3 p-2 border rounded-full flex md:hidden items-center justify-center cursor-pointer">
+            <i class='bx bx-menu h-10 w-10 text-[28px] flex items-center justify-center'></i>
+        </a>
+        <div class="w-fit h-full ml-5 items-center md:flex hidden">
+            <!-- <img class="h-[60px] w-[60px] rounded-full bg-contain" src="../public/images/Pillaipo.png" alt=""> -->
+            <img class="h-[60px] w-[60px] rounded-full bg-contain" src="/images/Pillaipo.png" alt="">
+            <h2 id="pillaibuzz-logo" class="">Pillai Buzz</h2>
+        </div>
+
+        <div class="gap-[10px] items-center w-fit h-full hidden md:flex">
+            <a
+                class="rounded-[20px] hover:bg-custom-primary hover:text-white hover:shadow-md px-[20px] py-[10px] transition-all duration-[0.3s] ease-in-out">
+                My Feed
+            </a>
+            <a
+                class="rounded-[20px] hover:bg-custom-primary hover:text-white hover:shadow-md px-[20px] py-[10px] transition-all duration-[0.3s] ease-in-out">
+                Bookmarks
+            </a>
+        </div>
+
+        <div class="flex items-center justify-center ml-[10px] gap-[10px]">
+
+            <div id="dark-mode-ic"
+                class="flex items-center cursor-pointer justify-center size-10 rounded-full transition-all duration-300 ease-in-out hover:shadow-custom-shadow-1">
+                <i class='bx bx-moon text-[25px]'></i>
+            </div>
+
+            <div class="profile-logo-container mr-3">
+                <a id="profile-btn">
+                    <!-- <img src="../public/images/user.png" alt=""> -->
+                    <img src="/images/user.png" alt="">
+                </a>
+            </div>
+
+        </div>
+    </nav>
+
+
+    <!-- model for showing user profile and logout option -->
+    <div id="profile-modal" class="w-60 h-fit hidden overflow-hidden rounded-md absolute right-5 top-24 bg-white z-20 shadow-custom-shadow-2 flex flex-col">
+        <a href="/profile" class="w-full h-16 my-3 flex justify-start pl-3 border-b transition-all duration-300 ease-in-out hover:bg-slate-200">
+            <div class="size-12 self-center rounded-full shadow-sm">
+                <!-- <img src="../public/images/user.png" alt=""> -->
+                <img src="/images/user.png" alt="">
+            </div>
+
+            <div class="ml-2 mt-4">
+                <h2 id="user-name" class="text-[18px] font-500 leading-3"></h2>
+                <span id="user-id" class="text-[14px]"></span>
+            </div>
+        </a>
+        
+        <div id="user-info-modal" class="flex items-start flex-col *:pl-3 *:h-12 w-full *:w-full *:flex *:items-center *:transition-all *:duration-300 *:gap-2 ease-in-out">
+            <a class="hover:bg-slate-200 active:bg-custom-primary">
+                <i class='bx bx-bookmark text-[18px]'></i>
+                <span>Bookmarks</span>
+            </a>
+            <a class="hover:bg-slate-200 active:bg-custom-primary">
+                <i class='bx bx-cog text-[18px]'></i>
+                <span>Account settings</span>
+            </a>
+            <a class="hover:bg-slate-200 active:bg-custom-primary">
+                <i class='bx bx-help-circle text-[18px]'></i>
+                <span>Help</span>
+            </a>
+            <a id="sign-out" class="hover:bg-slate-200 active:bg-custom-primary">
+                <i class='bx bx-log-out text-[18px]'></i>
+                <span>Sign out</span>
+            </a>
+        </div>
+    </div>
+
+    <main class="w-full h-fit pt-4 pb-20 px-3 mb-16 sm:w-3/4 sm:mx-auto md:w-3/5 lg:w-1/2">
+        <div class="mt-6 break-words px-4 text-center font-heading text-3xl font-extrabold text-slate-900 md:mt-10 md:px-5 md:text-4xl lg:px-8 xl:px-20 xl:text-5xl mb-8 md:mb-14">
+            <h1 id="heading" class="text-3xl my-6 font-bold"></h1>
+        </div>
+
+        <div class="flex items-center gap-2 w-full justify-center">
+            <!-- <img class="size-9 rounded-full" src="../public/images/user.png" alt=""> -->
+            <img class="size-9 rounded-full" src="/images/user.png" alt="">
+            <span id="author" class="text-[20px]"></span>
+        </div>
+
+        <div class="w-full flex items-center justify-center">
+            <span id="post-date">27 jan 2024</span>
+        </div>
+
+        <div class="w-full h-fit rounded-md overflow-hidden my-5">
+            <!-- <img src="../public/images/news.jpeg" alt=""> -->
+            <img src="/images/news.jpeg" alt="">
+        </div>
+
+        <div id="description" class="">
+
+         </div>
+    </main>
+
+
+    <!-- like comment share bookmark -->
+    <div class="w-80 h-12 bg-slate-200 self-center fixed z-10 mx-auto bottom-5 left-1/2 translate-x-[-50%] rounded-[30px] shadow-md flex items-center justify-around">
+        <a id="like-btn" class="size-10 rounded-md cursor-pointer  flex items-center justify-center transition-all duration-300 ease-in-out active:bg-custom-primary ">
+            <i class='bx bx-like text-[25px]'></i>
+        </a>
+        <a id="comment-btn" class="size-10 rounded-md cursor-pointer  flex items-center justify-center transition-all duration-300 ease-in-out active:bg-custom-primary ">
+            <i class='bx bx-comment text-[25px]'></i>
+        </a>
+        <a id="bookmark-btn" class="size-10 rounded-md cursor-pointer  flex items-center justify-center transition-all duration-300 ease-in-out active:bg-custom-primary ">
+            <i class='bx bx-bookmark text-[25px]'></i>
+        </a>
+        <a id="share-btn" class="size-10 rounded-md cursor-pointer  flex items-center justify-center transition-all duration-300 ease-in-out active:bg-custom-primary ">
+            <i class='bx bx-share-alt text-[25px]'></i>
+        </a>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script src="../public/js/post.js"></script>
+    <script src="/js/post.js"></script>
+</body>
+
+</html>
