@@ -19,7 +19,7 @@ async function handleCreatePost(req, res) {
         });
     }
 
-    
+
     try {
         const userindb = await User.findOne({ _id: user._id });
 
@@ -103,4 +103,55 @@ const handleLikePost = async (req, res) => {
     }
 }
 
-module.exports = { handleCreatePost, handleGetSpecificPost, handleLikePost };
+const handleAddCommentOnPost = async (req, res) => {
+    const postid = req.params.id;
+    const userid = req.body.user._id;
+    const content = req.body.content;
+
+    console.log(req.body);
+
+    // check if post and this user exist 
+    let post_indb;
+    let user_indb;
+    try {
+        post_indb = await Post.findById(postid).select('author title reads createdAt');
+        user_indb = await User.findById(userid).select('userId name');
+    } catch (error) {
+        return res.status(500).json({
+            msg: "internal server error"
+        })
+    }
+
+    try {
+        // push the comment to object array of comments
+        const updatedPost = await Post.findByIdAndUpdate(postid, {
+            $push: {
+                comments: {
+                    content: content,
+                    createdBy: userid,
+                }
+            }
+        }, { new: true }). select('comments reads')
+
+        // console.log(updatedPost.comments.length)
+        // const comments = await updatedPost.comments.findById('65bb49e8b40fc8f519d0e5dc');
+        const newComment = updatedPost.comments[updatedPost.comments.length - 1];
+
+        return res.status(200).json({
+            msg: "comment added succefully",
+            author: user_indb,
+            comment: newComment,
+        })
+    } catch (error) {
+        return res.status(500).json({
+            msg: "internal server error"
+        })
+    }
+}
+
+module.exports = {
+    handleCreatePost,
+    handleGetSpecificPost,
+    handleLikePost,
+    handleAddCommentOnPost
+};

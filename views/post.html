@@ -12,20 +12,21 @@
     <link rel="stylesheet" href="../public/css/output.css">
     <link rel="stylesheet" href="../public/css/post.css">
     <link rel="stylesheet" href="/css/post.css">
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
 
     <!-- side nav for small screens -->
-    <nav id="side-nav" class="flex ml-[-100%] flex-col justify-start w-3/4 h-full fixed z-30 bg-custom-gray shadow-md transition-all duration-450 ease-linear">
+    <nav id="side-nav"
+        class="flex ml-[-100%] flex-col justify-start w-3/4 h-full fixed z-30 bg-custom-gray shadow-md transition-all duration-450 ease-linear">
         <div class="flex justify-between w-full h-17 p-3">
             <div class="flex w-full h-full items-center p-2 relative">
                 <!-- <img class="size-14 overflow-hidden rounded-full" src="../public/images/Pillaipo.png" alt=""> -->
                 <img class="size-14 overflow-hidden rounded-full" src="/images/Pillaipo.png" alt="">
                 <p id="pillaibuzz-logo" class="text-[30px] ">Pillai Buzz</p>
-                
+
                 <a id="side-nav-close-btn" class="side-nav-close-btn absolute right-1 size-10 cursor-pointer flex items-center justify-center rounded-full transition-all duration-300 ease-in-out hover:shadow-custom-shadow-1 active:scale-105
                         active:shadow-custom-shadow-1">
                     <i class='bx bx-x text-[28px]'></i>
@@ -34,21 +35,26 @@
         </div>
 
 
-        
-        <div class="side-nav-btns flex flex-col *:w-full *:h-11 *:flex *:items-center *:px-[10px] *:py-[20px] *:transition-all *:cursor-pointer duration-300 ease-in-out">
+
+        <div
+            class="side-nav-btns flex flex-col *:w-full *:h-11 *:flex *:items-center *:px-[10px] *:py-[20px] *:transition-all *:cursor-pointer duration-300 ease-in-out">
             <a class="bg-custom-primary hover:shadow-custom-shadow-1 text-white">My Feed</a>
             <a class="hover:shadow-custom-shadow-1 active:scale-[1.01]">More</a>
         </div>
     </nav>
 
-    
+
     <!-- overlay for focusing on sidenav -->
     <div id="side-nav-overlay" class="w-full h-full fixed left-0 top-0 bg-black opacity-50 z-20 hidden"></div>
 
 
-     <!-- top nav -->
-     <nav id="top-nav" class="flex items-center border-b justify-between w-full h-20 overflow-hidden bg-custom-gray transition-all duration-500 ease-linear" type="button" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation" >
-        <a id="show-side-nav-btn" class="h-10 w-10  ml-3 p-2 border rounded-full flex md:hidden items-center justify-center cursor-pointer">
+    <!-- top nav -->
+    <nav id="top-nav"
+        class="flex items-center border-b justify-between w-full h-20 overflow-hidden bg-custom-gray transition-all duration-500 ease-linear"
+        type="button" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation"
+        aria-controls="drawer-navigation">
+        <a id="show-side-nav-btn"
+            class="h-10 w-10  ml-3 p-2 border rounded-full flex md:hidden items-center justify-center cursor-pointer">
             <i class='bx bx-menu h-10 w-10 text-[28px] flex items-center justify-center'></i>
         </a>
         <div class="w-fit h-full ml-5 items-center md:flex hidden">
@@ -87,8 +93,10 @@
 
 
     <!-- model for showing user profile and logout option -->
-    <div id="profile-modal" class="w-60 h-fit hidden overflow-hidden rounded-md absolute right-5 top-24 bg-white z-20 shadow-custom-shadow-2 flex flex-col">
-        <a href="/profile" class="w-full h-16 my-3 flex justify-start pl-3 border-b transition-all duration-300 ease-in-out hover:bg-slate-200">
+    <div id="profile-modal"
+        class="w-60 h-fit hidden overflow-hidden rounded-md absolute right-5 top-24 bg-white z-20 shadow-custom-shadow-2 flex flex-col">
+        <a href="/profile"
+            class="w-full h-16 my-3 flex justify-start pl-3 border-b transition-all duration-300 ease-in-out hover:bg-slate-200">
             <div class="size-12 self-center rounded-full shadow-sm">
                 <!-- <img src="../public/images/user.png" alt=""> -->
                 <img src="/images/user.png" alt="">
@@ -99,8 +107,9 @@
                 <span id="user-id" class="text-[14px]"></span>
             </div>
         </a>
-        
-        <div id="user-info-modal" class="flex items-start flex-col *:pl-3 *:h-12 w-full *:w-full *:flex *:items-center *:transition-all *:duration-300 *:gap-2 ease-in-out">
+
+        <div id="user-info-modal"
+            class="flex items-start flex-col *:pl-3 *:h-12 w-full *:w-full *:flex *:items-center *:transition-all *:duration-300 *:gap-2 ease-in-out">
             <a class="hover:bg-slate-200 active:bg-custom-primary">
                 <i class='bx bx-bookmark text-[18px]'></i>
                 <span>Bookmarks</span>
@@ -120,8 +129,9 @@
         </div>
     </div>
 
-    <main class="w-full h-fit pt-4 pb-20 px-3 mb-16 sm:w-3/4 sm:mx-auto md:w-3/5 lg:w-1/2">
-        <div class="mt-6 break-words px-4 text-center font-heading text-3xl font-extrabold text-slate-900 md:mt-10 md:px-5 md:text-4xl lg:px-8 xl:px-20 xl:text-5xl mb-8 md:mb-14">
+    <main class="w-full h-fit pt-4 pb-20 px-3 mb-16 sm:w-3/4 sm:mx-auto md:w-3/5 lg:w-1/2 overflow-x-hidden">
+        <div
+            class="mt-6 break-words px-4 text-center font-heading text-3xl font-extrabold text-slate-900 md:mt-10 md:px-5 md:text-4xl lg:px-8 xl:px-20 xl:text-5xl mb-8 md:mb-14">
             <h1 id="heading" class="text-3xl my-6 font-bold"></h1>
         </div>
 
@@ -146,23 +156,86 @@
     </main>
 
 
+    <!-- modal for showing the comments of post -->
+    <div id="comment-modal"
+        class="w-full h-full scroll-smooth overflow-hidden rounded-lg hidden fixed top-36 sm:left-1/2 sm:translate-x-[-50%] z-40 bg-white flex-col sm:w-3/4 md:w-2/3 lg:w-1/2">
+
+        <!-- take comment input -->
+        <div class="w-full h-fit flex items-center gap-2 p-3">
+            <label for="comment"></label>
+            <input id="comment-input" role="text" type="text" class="w-full p-2 text-[16px] rounded-md border"
+                placeholder="add your thoughts here">
+
+            <a id="add-comment-btn" class="btn-primary flex items-center justify-center">
+                <i class='bx bx-send text-[20px]'></i>
+            </a>
+        </div>
+
+
+        <!-- all comments section -->
+        <div id="comment-section" class="h-full w-full border-t p-2 flex flex-col gap-2">
+
+            <div id="comment" class="flex flex-col">
+
+                <div class="flex gap-2">
+
+                    <img class="size-10 rounded-full" src="/images/user.png" alt="">
+
+                    <!-- user info of commented user -->
+                    <div class="rounded-md rounded-tl-none bg-slate-200 px-2 py-3 w-full flex flex-col gap-3">
+                        <div class="flex items-center justify-start">
+                            <div class="flex flex-col ml-2">
+                                <h2 id="commented-user-name" class="leading-3 text-[16px] font-[500]">
+                                    vishwas babar
+                                </h2>
+                                <span id="commented-user-id" class="leading-3 mt-1 text-[12px]">
+                                    @vishwas_babar9
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="text-[15px]" id="comment-content">
+                            this aticle is so helpfull i am waiting for next one
+                        </div>
+                    </div>
+                </div>
+
+
+                <a id="comment-like-btn" class="ml-[55px] w-fit flex items-center gap-3 cursor-pointer">
+                    <span class="text-[14px]">Like</span>
+                    <div class="size-1 rounded-full bg-black"></div>
+                    <span class="text-[12px]">0</span>
+                </a>
+            </div>
+
+            <div class="h-60 w-full bg-red-400">
+
+            </div>
+        </div>
+    </div>
+
     <!-- like comment share bookmark -->
-    <div class="w-80 h-12 bg-slate-200 self-center fixed z-10 mx-auto bottom-5 left-1/2 translate-x-[-50%] rounded-[30px] shadow-md flex items-center justify-around gap-2">
-        <a id="like-btn" class="size-10 rounded-md cursor-pointer  flex items-center justify-center transition-all duration-300 ease-in-out active:bg-custom-primary ">
+    <div
+        class="w-80 h-12 bg-slate-200 self-center fixed z-10 mx-auto bottom-5 left-1/2 translate-x-[-50%] rounded-[30px] shadow-md flex items-center justify-around gap-2">
+        <a id="like-btn"
+            class="size-10 rounded-md cursor-pointer  flex items-center justify-center transition-all duration-300 ease-in-out active:bg-custom-primary ">
             <i class='bx bx-like text-[25px]'></i>
             <span></span>
         </a>
-        <a id="comment-btn" class="size-10 rounded-md cursor-pointer  flex items-center justify-center transition-all duration-300 ease-in-out active:bg-custom-primary ">
+        <a id="comment-btn"
+            class="size-10 rounded-md cursor-pointer  flex items-center justify-center transition-all duration-300 ease-in-out active:bg-custom-primary ">
             <i class='bx bx-comment text-[25px]'></i>
         </a>
-        <a id="bookmark-btn" class="size-10 rounded-md cursor-pointer  flex items-center justify-center transition-all duration-300 ease-in-out active:bg-custom-primary ">
+        <a id="bookmark-btn"
+            class="size-10 rounded-md cursor-pointer  flex items-center justify-center transition-all duration-300 ease-in-out active:bg-custom-primary ">
             <i class='bx bx-bookmark text-[25px]'></i>
         </a>
-        <a id="share-btn" class="size-10 rounded-md cursor-pointer  flex items-center justify-center transition-all duration-300 ease-in-out active:bg-custom-primary ">
+        <a id="share-btn"
+            class="size-10 rounded-md cursor-pointer  flex items-center justify-center transition-all duration-300 ease-in-out active:bg-custom-primary ">
             <i class='bx bx-share-alt text-[25px]'></i>
         </a>
     </div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
     <script src="../public/js/post.js"></script>
     <script src="/js/post.js"></script>
