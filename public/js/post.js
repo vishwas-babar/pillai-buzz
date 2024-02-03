@@ -208,6 +208,15 @@ comment_btn.addEventListener('click', () => {
     comment_modal.style.display = 'flex';
     overlay.style.display = 'block';
     document.body.style.overflow = 'hidden';
+
+    axios.get(`/api/post/${postId}/comments`)
+    .then((res) => {
+        console.log('success');
+        console.log(res.data);
+    })
+    .catch((error) => {
+        console.log(error);
+    })
 })
 
 // send post request to post comment
@@ -227,6 +236,8 @@ add_comment_btn.addEventListener('click', () => {
     })
         .then((res) => {
             addRecentComment(res.data);
+
+            document.querySelector('#comment-input').value = '';
         })
         .catch((error) => {
             console.log(error)

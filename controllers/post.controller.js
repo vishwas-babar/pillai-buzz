@@ -1,5 +1,6 @@
 const Post = require('../models/Post.model.js');
 const User = require('../models/user.model.js');
+const mongoose = require('mongoose');
 
 async function handleCreatePost(req, res) {
 
@@ -131,11 +132,10 @@ const handleAddCommentOnPost = async (req, res) => {
                     createdBy: userid,
                 }
             }
-        }, { new: true }). select('comments reads')
+        }, { new: true }).select('comments reads')
 
-        // console.log(updatedPost.comments.length)
-        // const comments = await updatedPost.comments.findById('65bb49e8b40fc8f519d0e5dc');
-        const newComment = updatedPost.comments[updatedPost.comments.length - 1];
+
+        const newComment = updatedPost.comments[updatedPost.comments.length - 1]; // get the last created post
 
         return res.status(200).json({
             msg: "comment added succefully",
@@ -149,9 +149,69 @@ const handleAddCommentOnPost = async (req, res) => {
     }
 }
 
+
+const handleGetAllCommentsOnThePost = async (req, res) => {
+
+    const postid = req.params.id;
+    const userid = req.body.user._id;
+
+    try {
+        // now check if post exist or not
+        // const post = await Post.findById(postid).select('comments');
+
+        // now check if post exist or not
+        const post1 = await Post.findById(postid).select('author reads');
+        console.log(post1);
+        const post = await Post.aggregate([
+            { $match: { _id: postid } },
+            { $unwind: "$comments" },
+            {
+                $lookup: {
+                    from: "users", // replace with your User collection name
+                    localField: "comments.createdBy", // replace with the field name in comments that stores user id
+                    foreignField: "_id", // field name in the users collection that corresponds to the user id
+                    as: "user_info" // output array where the joined document(s) will be placed
+                }
+            },
+            {
+                $project: {
+                    "comments.content": 1,
+                    "comments._id": 1,
+                    "comments.likes": 1,
+                    "user_info.userId": 1,
+                    "user_info.name": 1,
+                    "user_info._id": 1
+                }
+            }
+        ]);
+
+        console.log('post: ', post)
+        if (!post) {
+            return res.status(404).json({
+                msg: "post not found"
+            })
+        }
+
+        const comments = post.comments;
+
+        return res.status(200).json({
+            post: post,
+            comments: comments,
+            msg: "comments successfully sent"
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            msg: "internal server error"
+        })
+    }
+}
+
 module.exports = {
     handleCreatePost,
     handleGetSpecificPost,
     handleLikePost,
-    handleAddCommentOnPost
+    handleAddCommentOnPost,
+    handleGetAllCommentsOnThePost
 };

@@ -4,7 +4,8 @@ const {
     handleCreatePost,
     handleGetSpecificPost,
     handleLikePost,
-    handleAddCommentOnPost
+    handleAddCommentOnPost,
+    handleGetAllCommentsOnThePost
 } = require('../controllers/post.controller.js');
 
 const router = express.Router();
@@ -16,5 +17,7 @@ router.get('/:id', handleGetSpecificPost);
 router.post('/:id/like', handleLikePost);
 
 router.post('/:id/addcomment', handleAddCommentOnPost);
+
+router.get('/:id/comments', handleGetAllCommentsOnThePost);
 
 module.exports = router;
