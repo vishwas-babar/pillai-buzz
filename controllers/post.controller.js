@@ -1,6 +1,7 @@
 const Post = require('../models/Post.model.js');
 const User = require('../models/user.model.js');
 const mongoose = require('mongoose');
+const { ObjectId } = require('mongodb');
 
 async function handleCreatePost(req, res) {
 
@@ -162,40 +163,53 @@ const handleGetAllCommentsOnThePost = async (req, res) => {
         // now check if post exist or not
         const post1 = await Post.findById(postid).select('author reads');
         console.log(post1);
-        const post = await Post.aggregate([
-            { $match: { _id: postid } },
-            { $unwind: "$comments" },
+        const comments = await Post.aggregate([
             {
-                $lookup: {
-                    from: "users", // replace with your User collection name
-                    localField: "comments.createdBy", // replace with the field name in comments that stores user id
-                    foreignField: "_id", // field name in the users collection that corresponds to the user id
-                    as: "user_info" // output array where the joined document(s) will be placed
+                $match: {
+                    _id: new ObjectId(postid)
                 }
             },
             {
-                $project: {
-                    "comments.content": 1,
-                    "comments._id": 1,
-                    "comments.likes": 1,
-                    "user_info.userId": 1,
-                    "user_info.name": 1,
-                    "user_info._id": 1
-                }
-            }
-        ]);
+                $unwind: "$comments",
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "comments.createdBy",
+                    foreignField: "_id",
+                    as: "comment_author_info",
+                },
+            },
+            {
+                $unwind: {
+                    path: "$comment_author_info",
+                },
+            },
+            {
+                $addFields: {
+                    likeCount: {
+                        $size: "$likes",
+                    },
+                    "comments.authorName": "$comment_author_info.name", // Add author name to each comment
+                    "comments.authorUserId": "$comment_author_info.userId",   // Add author id to each comment
+                },
+            },
 
-        console.log('post: ', post)
-        if (!post) {
+            {
+                $project: {
+                    comments: 1, // Include the comments array in the final projection
+                },
+            },
+        ]
+        );
+
+        if (!comments) {
             return res.status(404).json({
                 msg: "post not found"
             })
         }
 
-        const comments = post.comments;
-
         return res.status(200).json({
-            post: post,
             comments: comments,
             msg: "comments successfully sent"
         })

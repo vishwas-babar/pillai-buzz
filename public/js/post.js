@@ -212,12 +212,69 @@ comment_btn.addEventListener('click', () => {
     axios.get(`/api/post/${postId}/comments`)
     .then((res) => {
         console.log('success');
-        console.log(res.data);
+        const comments = res.data.comments;
+        console.log(comments[0].comments);
+
+        comments.forEach(comment => {
+            addCommentDataInCommentSection(comment.comments);
+        });
     })
     .catch((error) => {
         console.log(error);
     })
 })
+
+
+// function for addding comments in page 
+function addCommentDataInCommentSection(comment){
+
+    let userName = comment.authorName;
+    let userId = comment.authorUserId;
+    let content = comment.content;
+    let comment_section = document.querySelector('#comment-section');
+
+    let postedComment = `
+    <div id="comment" class="flex flex-col">
+
+                <div class="flex gap-2">
+
+                    <img class="size-10 rounded-full" src="/images/user.png" alt="">
+
+                    <!-- user info of commented user -->
+                    <div class="rounded-md rounded-tl-none bg-slate-200 px-2 py-3 w-full flex flex-col gap-3">
+                        <div class="flex items-center justify-start">
+                            <div class="flex flex-col ml-2">
+                                <h2 id="commented-user-name" class="leading-3 text-[16px] font-[500]">
+                                    ${userName}
+                                </h2>
+                                <span id="commented-user-id" class="leading-3 mt-1 text-[12px]">
+                                    ${'@' + userId}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="text-[15px]" id="comment-content">
+                            ${content}
+                        </div>
+                    </div>
+                </div>
+
+
+                <a id="comment-like-btn" class="ml-[55px] w-fit flex items-center gap-3 cursor-pointer">
+                    <span class="text-[14px]">Like</span>
+                    <div class="size-1 rounded-full bg-black"></div>
+                    <span class="text-[12px]">0</span>
+                </a>
+            </div>
+    `;
+
+    let div = document.createElement('div');
+    div.innerHTML = postedComment;
+
+    comment_section.appendChild(div);
+
+}
+
 
 // send post request to post comment
 const add_comment_btn = document.querySelector('#add-comment-btn');
@@ -242,7 +299,7 @@ add_comment_btn.addEventListener('click', () => {
         .catch((error) => {
             console.log(error)
         })
-})
+});
 
 
 const addRecentComment = (data) => {
