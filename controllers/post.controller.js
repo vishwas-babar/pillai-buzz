@@ -230,7 +230,7 @@ const handleBookmarkPost = async (req, res) => {
     const user_id = req.body.user._id;
     const post_id = req.params.id;
 
-    if(!mongoose.Types.ObjectId.isValid(user_id) || !mongoose.Types.ObjectId.isValid(post_id)) {
+    if (!mongoose.Types.ObjectId.isValid(user_id) || !mongoose.Types.ObjectId.isValid(post_id)) {
         return res.status(400).json({
             msg: "invalid user id or post id"
         })
@@ -244,8 +244,8 @@ const handleBookmarkPost = async (req, res) => {
                 bookmarks: post_id
             }
         }, { new: true })
-        
-        if(!user) {
+
+        if (!user) {
             return res.status(500).json({
                 msg: "iternal server error"
             })
@@ -253,7 +253,7 @@ const handleBookmarkPost = async (req, res) => {
 
         return res.status(200).json({
             msg: "bookmarked successfully",
-            
+
         })
     } catch (error) {
         return res.status(500).json({
@@ -269,7 +269,7 @@ const handleLikeTheComment = async (req, res) => {
     const comment_id = req.params.commentId;
     const user_id = req.body.user._id;
 
-    if(!mongoose.Types.ObjectId.isValid(post_id) || !mongoose.Types.ObjectId.isValid(comment_id) || !mongoose.Types.ObjectId.isValid(user_id)) {
+    if (!mongoose.Types.ObjectId.isValid(post_id) || !mongoose.Types.ObjectId.isValid(comment_id) || !mongoose.Types.ObjectId.isValid(user_id)) {
         return res.status(400).json({
             msg: "invalid user id or post id or comment id"
         })
@@ -279,7 +279,7 @@ const handleLikeTheComment = async (req, res) => {
         const post = await Post.findOneAndUpdate(
             { _id: post_id, "comments._id": comment_id },
             { $push: { "comments.$.likes": user_id } }, // add to set only add the different values  if the given value is already exist in array then it avoids to add it in database
-            { new: true }
+            { new: true } // returns updated document
         );
 
         const comments = post.comments;
@@ -287,14 +287,14 @@ const handleLikeTheComment = async (req, res) => {
         for (let i = 0; i < comments.length; i++) {
             const element = comments[i];
 
-            if(element._id  == comment_id ){ // using it for the searching target comment
+            if (element._id == comment_id) { // using it for the searching target comment
                 targetComment = element;
             }
         }
-        
-        if(!targetComment) {
+
+        if (!targetComment) {
             return res.status(500).json({
-                msg: "failed to find target comment", 
+                msg: "failed to find target comment",
             })
         }
 
@@ -313,6 +313,70 @@ const handleLikeTheComment = async (req, res) => {
     }
 }
 
+
+const handleLoadPostForHomePage = async (req, res) => {
+
+    console.log(req.query);
+    const page = parseInt(req.query.page);
+    const postsPerPage = parseInt(req.query.postsPerPage);
+
+    const skip = postsPerPage * page;
+    console.log(skip);
+
+    const posts = await Post.aggregate([
+        {
+            $sort: {
+                createdAt: -1,
+            },
+        },
+        {
+            $skip: skip,
+        },
+        {
+            $limit: postsPerPage,
+        },
+        {
+            $lookup: {
+                from: "users",
+                localField: "author",
+                foreignField: "_id",
+                as: "authorDetails",
+            },
+        },
+        { $unwind: "$authorDetails" },
+        {
+            $addFields: {
+                likesCount: {
+                    $size: "$likes",
+                },
+                commentsCount: {
+                    $size: "$comments"
+                }
+            },
+        },
+        {
+            $project: {
+                "authorDetails.name": 1,
+                "authorDetails.userId": 1,
+                "authorDetails._id": 1,
+                title: 1,
+                reads: 1,
+                createdAt: 1,
+                likesCount: 1,
+                commentsCount: 1,
+                _id: 1,
+            },
+        },
+    ]);
+
+    // console.log(posts)
+
+    res.json({
+        msg: "backend connected",
+        posts: posts
+    })
+}
+
 module.exports = {
     handleCreatePost,
     handleGetSpecificPost,
@@ -320,5 +384,6 @@ module.exports = {
     handleAddCommentOnPost,
     handleGetAllCommentsOnThePost,
     handleBookmarkPost,
-    handleLikeTheComment
+    handleLikeTheComment,
+    handleLoadPostForHomePage
 };

@@ -164,7 +164,7 @@ like_btn.addEventListener('click', () => {
             count.textContent = data.likesCount;
 
             const like_btn_ic = document.querySelector('#like-btn i');
-            like_btn_ic.style.color = 'blue';
+            like_btn_ic.style.color = '#2563EB';
         })
         .catch((error) => {
             console.log(error)
@@ -401,7 +401,7 @@ bookmark_btn.addEventListener('click', () => {
             console.log(res);
             const bookmark_ic = document.querySelector('#bookmark-btn i');
 
-            bookmark_ic.style.color = 'blue';
+            bookmark_ic.style.color = '#2563EB';
         })
         .catch((error) => {
             console.log(error);
