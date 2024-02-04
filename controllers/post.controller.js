@@ -197,11 +197,13 @@ const handleGetAllCommentsOnThePost = async (req, res) => {
 
             {
                 $project: {
+                    likesCount: 1,
                     comments: 1, // Include the comments array in the final projection
                 },
             },
-        ]
-        );
+        ]);
+
+        console.log(comments)
 
         if (!comments) {
             return res.status(404).json({
@@ -222,10 +224,101 @@ const handleGetAllCommentsOnThePost = async (req, res) => {
     }
 }
 
+
+const handleBookmarkPost = async (req, res) => {
+
+    const user_id = req.body.user._id;
+    const post_id = req.params.id;
+
+    if(!mongoose.Types.ObjectId.isValid(user_id) || !mongoose.Types.ObjectId.isValid(post_id)) {
+        return res.status(400).json({
+            msg: "invalid user id or post id"
+        })
+    }
+
+    // 
+
+    try {
+        const user = await User.findByIdAndUpdate(user_id, {
+            $push: {
+                bookmarks: post_id
+            }
+        }, { new: true })
+        
+        if(!user) {
+            return res.status(500).json({
+                msg: "iternal server error"
+            })
+        }
+
+        return res.status(200).json({
+            msg: "bookmarked successfully",
+            
+        })
+    } catch (error) {
+        return res.status(500).json({
+            msg: "internal server error",
+            error: error,
+        })
+    }
+}
+
+
+const handleLikeTheComment = async (req, res) => {
+    const post_id = req.params.postId;
+    const comment_id = req.params.commentId;
+    const user_id = req.body.user._id;
+
+    if(!mongoose.Types.ObjectId.isValid(post_id) || !mongoose.Types.ObjectId.isValid(comment_id) || !mongoose.Types.ObjectId.isValid(user_id)) {
+        return res.status(400).json({
+            msg: "invalid user id or post id or comment id"
+        })
+    }
+
+    try {
+        const post = await Post.findOneAndUpdate(
+            { _id: post_id, "comments._id": comment_id },
+            { $push: { "comments.$.likes": user_id } }, // add to set only add the different values  if the given value is already exist in array then it avoids to add it in database
+            { new: true }
+        );
+
+        const comments = post.comments;
+        let targetComment;
+        for (let i = 0; i < comments.length; i++) {
+            const element = comments[i];
+
+            if(element._id  == comment_id ){ // using it for the searching target comment
+                targetComment = element;
+            }
+        }
+        
+        if(!targetComment) {
+            return res.status(500).json({
+                msg: "failed to find target comment", 
+            })
+        }
+
+        const commentLikes = targetComment.likes.length;
+
+        return res.status(200).json({
+            msg: "like added succesfully",
+            commentLikesCount: commentLikes,
+        });
+    } catch (error) {
+        console.log(error)
+        return res.status(200).json({
+            msg: "failed to like the comment",
+            error: error
+        })
+    }
+}
+
 module.exports = {
     handleCreatePost,
     handleGetSpecificPost,
     handleLikePost,
     handleAddCommentOnPost,
-    handleGetAllCommentsOnThePost
+    handleGetAllCommentsOnThePost,
+    handleBookmarkPost,
+    handleLikeTheComment
 };

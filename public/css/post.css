@@ -97,3 +97,7 @@ body {
     scrollbar-width: none;
     /* Firefox */
 }
+
+#comment-like-btn:active .scale-on-click {
+    transform: scale(1.2);
+}

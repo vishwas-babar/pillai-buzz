@@ -162,6 +162,9 @@ like_btn.addEventListener('click', () => {
             const data = res.data;
             const count = document.querySelector('#like-btn span');
             count.textContent = data.likesCount;
+
+            const like_btn_ic = document.querySelector('#like-btn i');
+            like_btn_ic.style.color = 'blue';
         })
         .catch((error) => {
             console.log(error)
@@ -210,63 +213,69 @@ comment_btn.addEventListener('click', () => {
     document.body.style.overflow = 'hidden';
 
     axios.get(`/api/post/${postId}/comments`)
-    .then((res) => {
-        console.log('success');
-        const comments = res.data.comments;
-        console.log(comments[0].comments);
+        .then((res) => {
+            console.log('success');
+            const comments = res.data.comments;
+            // console.log(comments[0].comments);
 
-        comments.forEach(comment => {
-            addCommentDataInCommentSection(comment.comments);
-        });
-    })
-    .catch((error) => {
-        console.log(error);
-    })
+            comments.forEach(comment => {
+                addCommentDataInCommentSection(comment.comments);
+            });
+
+            addEventListenerToLikeBtns(); // after creating comment div add eventlisteners to their all likes btns
+        })
+        .catch((error) => {
+            console.log(error);
+        })
 })
 
 
 // function for addding comments in page 
-function addCommentDataInCommentSection(comment){
+function addCommentDataInCommentSection(comment) {
 
     let userName = comment.authorName;
     let userId = comment.authorUserId;
     let content = comment.content;
+    let commentId = comment._id;
+    let commentLikes = comment.likes.length;
+    console.log('comments likes: ', commentLikes)
     let comment_section = document.querySelector('#comment-section');
 
-    let postedComment = `
-    <div id="comment" class="flex flex-col">
+    let postedComment = `<div id="comment" class="flex flex-col" data-comment-id="${commentId}">
 
-                <div class="flex gap-2">
+    <div class="flex gap-2">
 
-                    <img class="size-10 rounded-full" src="/images/user.png" alt="">
+        <img class="size-10 rounded-full" src="/images/user.png" alt="">
 
-                    <!-- user info of commented user -->
-                    <div class="rounded-md rounded-tl-none bg-slate-200 px-2 py-3 w-full flex flex-col gap-3">
-                        <div class="flex items-center justify-start">
-                            <div class="flex flex-col ml-2">
-                                <h2 id="commented-user-name" class="leading-3 text-[16px] font-[500]">
-                                    ${userName}
-                                </h2>
-                                <span id="commented-user-id" class="leading-3 mt-1 text-[12px]">
-                                    ${'@' + userId}
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="text-[15px]" id="comment-content">
-                            ${content}
-                        </div>
-                    </div>
+        <!-- user info of commented user -->
+        <div class="rounded-md rounded-tl-none bg-slate-200 px-2 py-3 w-full flex flex-col gap-3">
+            <div class="flex items-center justify-start">
+                <div class="flex flex-col ml-2">
+                    <h2 id="commented-user-name" class="leading-3 text-[16px] font-[500]">
+                        ${userName}
+                    </h2>
+                    <span id="commented-user-id" class="leading-3 mt-1 text-[12px]">
+                        ${userId}
+                    </span>
                 </div>
-
-
-                <a id="comment-like-btn" class="ml-[55px] w-fit flex items-center gap-3 cursor-pointer">
-                    <span class="text-[14px]">Like</span>
-                    <div class="size-1 rounded-full bg-black"></div>
-                    <span class="text-[12px]">0</span>
-                </a>
             </div>
-    `;
+
+            <div class="text-[15px]" id="comment-content">
+                ${content}
+            </div>
+        </div>
+    </div>
+
+
+    <a id="comment-like-btn" class="ml-[55px] w-fit flex items-center gap-3 cursor-pointer">
+        <span class="text-[14px]">Like</span>
+        <div class="size-1 rounded-full bg-black"></div>
+        <div class="flex items-center justify-center gap-1">
+            <img  class="size-[18px] transition-all duration-300 ease-linear scale-on-click" src="/images/blue-like-ic.png" alt="">
+            <span id="likes-count" class="text-[12px]">${commentLikes}</span>
+        </div>
+    </a>
+</div>`;
 
     let div = document.createElement('div');
     div.innerHTML = postedComment;
@@ -307,45 +316,137 @@ const addRecentComment = (data) => {
     let userName = data.author.name;
     let userId = data.author.userId;
     let content = data.comment.content;
+    let commentId = data.comment._id;
     let comment_section = document.querySelector('#comment-section');
 
-    let postedComment = `
-    <div id="comment" class="flex flex-col">
+    let postedComment = `<div id="comment" class="flex flex-col" data-comment-id="${commentId}">
 
-                <div class="flex gap-2">
+    <div class="flex gap-2">
 
-                    <img class="size-10 rounded-full" src="/images/user.png" alt="">
+        <img class="size-10 rounded-full" src="/images/user.png" alt="">
 
-                    <!-- user info of commented user -->
-                    <div class="rounded-md rounded-tl-none bg-slate-200 px-2 py-3 w-full flex flex-col gap-3">
-                        <div class="flex items-center justify-start">
-                            <div class="flex flex-col ml-2">
-                                <h2 id="commented-user-name" class="leading-3 text-[16px] font-[500]">
-                                    ${userName}
-                                </h2>
-                                <span id="commented-user-id" class="leading-3 mt-1 text-[12px]">
-                                    ${'@' + userId}
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="text-[15px]" id="comment-content">
-                            ${content}
-                        </div>
-                    </div>
+        <!-- user info of commented user -->
+        <div class="rounded-md rounded-tl-none bg-slate-200 px-2 py-3 w-full flex flex-col gap-3">
+            <div class="flex items-center justify-start">
+                <div class="flex flex-col ml-2">
+                    <h2 id="commented-user-name" class="leading-3 text-[16px] font-[500]">
+                        ${userName}
+                    </h2>
+                    <span id="commented-user-id" class="leading-3 mt-1 text-[12px]">
+                        ${userId}
+                    </span>
                 </div>
-
-
-                <a id="comment-like-btn" class="ml-[55px] w-fit flex items-center gap-3 cursor-pointer">
-                    <span class="text-[14px]">Like</span>
-                    <div class="size-1 rounded-full bg-black"></div>
-                    <span class="text-[12px]">0</span>
-                </a>
             </div>
-    `;
+
+            <div class="text-[15px]" id="comment-content">
+                ${content}
+            </div>
+        </div>
+    </div>
+
+
+    <a id="comment-like-btn" class="ml-[55px] w-fit flex items-center gap-3 cursor-pointer">
+        <span class="text-[14px]">Like</span>
+        <div class="size-1 rounded-full bg-black"></div>
+        <div class="flex items-center justify-center gap-1">
+            <img  class="size-[18px] transition-all duration-300 ease-linear scale-on-click" src="/images/blue-like-ic.png" alt="">
+            <span id="likes-count" class="text-[12px]">0</span>
+        </div>
+    </a>
+</div>`;
 
     let div = document.createElement('div');
     div.innerHTML = postedComment;
 
     comment_section.prepend(div);
+
+
+    addEventListenerToLikeBtns();
 }
+
+// like the comments
+function addEventListenerToLikeBtns() {
+    const comment_like_btn = document.querySelectorAll('#comment-like-btn');
+    comment_like_btn.forEach(element => {
+
+        element.addEventListener('click', (event) => {
+            const element = event.currentTarget;
+
+            const commentDiv = element.closest('#comment');
+            const commentId = commentDiv.dataset.commentId;
+
+            console.log('liking the post......')
+            axios.post(`/api/post/${postId}/likethecomment/${commentId}`)
+                .then((res) => {
+                    console.log(res.data);
+                    const likes_count = element.querySelector('#likes-count');
+                    likes_count.textContent = res.data.commentLikesCount;
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        })
+    });
+}
+
+
+// bookmark the post
+const bookmark_btn = document.querySelector('#bookmark-btn');
+bookmark_btn.addEventListener('click', () => {
+
+    console.log("bookmark event called")
+    // send the post request
+    axios.post(`/api/post/${postId}/bookmark`)
+        .then((res) => {
+            console.log(res);
+            const bookmark_ic = document.querySelector('#bookmark-btn i');
+
+            bookmark_ic.style.color = 'blue';
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+});
+
+
+// share the post
+const share_btn = document.querySelector('#share-btn');
+share_btn.addEventListener('click', () => {
+
+    const postLink = window.location.href;
+    console.log(postLink)
+
+    // Get the current page URL
+    const currentUrl = window.location.href;
+
+    // Create a temporary input element
+    const tempInput = document.createElement('input');
+    tempInput.value = currentUrl;
+    document.body.appendChild(tempInput);
+
+    // Select the URL text
+    tempInput.select();
+    tempInput.setSelectionRange(0, 99999); // For mobile devices
+
+    // Copy the URL to the clipboard
+    document.execCommand('copy');
+
+    // Remove the temporary input element
+    document.body.removeChild(tempInput);
+
+    // show toast
+    Toastify({
+        text: "url copied to clipboard",
+        duration: 3000,
+        gravity: "top", // `top` or `bottom`
+        position: "left", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+            background: "black",
+        },
+        onClick: function () { } // Callback after click
+    }).showToast();
+
+});
+
+
