@@ -1,21 +1,37 @@
 console.log('profile.js is connected');
+let user_id;
 
 // add content to the profile card on page load
-window.onload = function (){
+window.onload = function () {
     axios.get('/api/user/info')
-    .then((res) => {
-        const userInfo = res.data;
+        .then((res) => {
+            const userInfo = res.data;
+            console.log(userInfo);
 
-        const user_name =  document.querySelector('#user-name');
-        const user_id = document.querySelector('#user-id');
+            const user_name = document.querySelector('#user-name');
+            const user_id = document.querySelector('#user-id');
 
-        document.querySelector('#role'); // add the role here
-        user_name.textContent = userInfo.name;
-        user_id.textContent = userInfo.userId;
-    })
-    .catch((error) => {
-        alert('itnernal server error! please try again later');
-    })
+            document.querySelector('#role'); // add the role here
+            user_name.textContent = userInfo.name;
+            user_id.textContent = userInfo.userId;
+        })
+        .catch((error) => {
+            alert('itnernal server error! please try again later');
+        })
+
+
+
+    // get the all post of this user
+    axios.get(`/api/post/userposts/`)
+        .then((res) => {
+            console.log(res.data);
+
+        })
+        .catch((error) => {
+            console.log("error occured when fetching the user posts");
+            console.log(error);
+        })
+
 }
 
 

@@ -8,7 +8,8 @@ const {
     handleGetAllCommentsOnThePost,
     handleBookmarkPost,
     handleLikeTheComment,
-    handleLoadPostForHomePage
+    handleLoadPostForHomePage,
+    handleGetUserPosts
 } = require('../controllers/post.controller.js');
 
 const router = express.Router();
@@ -29,5 +30,6 @@ router.post('/:id/bookmark', handleBookmarkPost);
 
 router.post('/:postId/likethecomment/:commentId', handleLikeTheComment);
 
+router.get('/userposts/:user_id', handleGetUserPosts);
 
 module.exports = router;

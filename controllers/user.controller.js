@@ -107,6 +107,7 @@ const handleGetUserInfo = async (req, res) => {
         return res.status(200).json({
             name: user.name,
             userId: user.userId,
+            _id: user._id,
         });
     } catch (error) {
         console.log(error);

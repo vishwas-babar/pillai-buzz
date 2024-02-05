@@ -377,6 +377,12 @@ const handleLoadPostForHomePage = async (req, res) => {
     })
 }
 
+
+const handleGetUserPosts = async (req, res) => {
+    
+    console.log(req.params);
+}
+
 module.exports = {
     handleCreatePost,
     handleGetSpecificPost,
@@ -385,5 +391,6 @@ module.exports = {
     handleGetAllCommentsOnThePost,
     handleBookmarkPost,
     handleLikeTheComment,
-    handleLoadPostForHomePage
+    handleLoadPostForHomePage,
+    handleGetUserPosts
 };
