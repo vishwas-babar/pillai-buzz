@@ -2,6 +2,7 @@ const Post = require('../models/Post.model.js');
 const User = require('../models/user.model.js');
 const mongoose = require('mongoose');
 const { ObjectId } = require('mongodb');
+const { json } = require('body-parser');
 
 async function handleCreatePost(req, res) {
 
@@ -379,8 +380,81 @@ const handleLoadPostForHomePage = async (req, res) => {
 
 
 const handleGetUserPosts = async (req, res) => {
-    
-    console.log(req.params);
+
+    const user_id = req.params.user_id;
+
+    if (!user_id) {
+        return res.status(400).json({
+            msg: "_id is required"
+        });
+    }
+
+
+    try {
+
+        // mongodb aggregation pipeline
+        const posts = await Post.aggregate([
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "author",
+                    foreignField: "_id",
+                    as: "authorDetails",
+                },
+            },
+            { $unwind: "$authorDetails" },
+            {
+                $match: {
+                    "authorDetails._id": new ObjectId(user_id)
+                },
+            },
+
+            {
+                $addFields: {
+                    likesCount: {
+                        $size: "$likes",
+                    },
+                    commentsCount: {
+                        $size: "$comments",
+                    },
+                },
+            },
+
+            {
+                $project: {
+                    _id: 1,
+                    title: 1,
+                    createdAt: 1,
+                    likesCount: 1,
+                    commentsCount: 1,
+                    reads: 1,
+                    "authorDetails.userId": 1,
+                    "authorDetails.name": 1,
+                    "authorDetails._id": 1,
+                }
+            }
+        ])
+
+        if(posts.length == 0){ // == is loose equality operator and === strict equality operator 
+            return res.status(200).json({
+                msg: "this user has no posts yet",
+                posts: posts,
+            })
+        }
+
+        res.status(200).json({
+            msg: "request successful",
+            posts: posts,
+        })
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json({
+            msg: "invalid given id or internal server error",
+            error: error
+        })
+    }
+
 }
 
 module.exports = {

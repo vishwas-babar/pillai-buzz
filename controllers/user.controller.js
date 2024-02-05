@@ -108,6 +108,7 @@ const handleGetUserInfo = async (req, res) => {
             name: user.name,
             userId: user.userId,
             _id: user._id,
+            postCount: user.posts.length,
         });
     } catch (error) {
         console.log(error);

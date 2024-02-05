@@ -11,4 +11,6 @@
 body {
     background-color: #f7fafc;
     font-family: 'Bitter', serif;
+    width: 100%;
+    height: 100svh;
 }
