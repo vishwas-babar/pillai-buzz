@@ -1,9 +1,5 @@
-console.log('profile.js is connected');
-
-const path = window.location.pathname;
-const parts = path.split('/');
-console.log(parts)
-const user_id = parts[2];
+console.log('myprofile.js is connected');
+let user_id;
 let postCount;
 
 // add content to the profile card on page load
@@ -13,35 +9,28 @@ window.onload = async function () {
 
     showPostLoadingSkeleton(); // show loading skeleton until we got the posts data from backend
     
+    
      await requestUserPosts(); // get all posts of user
     
     
 }
 
-
 async function requestUserInfo() {
 
-    await axios.get(`/api/user/profile/${user_id}`)
+    await axios.get('/api/user/info')
         .then((res) => {
             const userInfo = res.data;
-            console.log('here is the returned data');
-            console.log(res.data);
-
-
+            user_id = userInfo._id;
             postCount = userInfo.postCount;
 
             console.log(res.data);
 
             const user_name = document.querySelector('#user-name');
             const userId = document.querySelector('#user-id');
-            const followers = document.querySelector('#followers-id')
-            const following = document.querySelector('#following-id')
 
             document.querySelector('#role'); // add the role here
             user_name.textContent = userInfo.name;
             userId.textContent = userInfo.userId;
-            followers.textContent = userInfo.followersCount;
-            following.textContent = userInfo.followingCount;
         })
         .catch((error) => {
             console.log(error)
@@ -198,7 +187,6 @@ function removePostLoadingSkeleton() {
     }, 500);
 }
 
-
 function setEventListenersToPosts() {
     const post_field = document.querySelectorAll('#post-field');
 
@@ -221,7 +209,6 @@ function setEventListenersToPosts() {
         })
     });
 }
-
 
 
 // show side nav bar

@@ -97,7 +97,7 @@ function handlesignoutUser(req, res) {
     });
 }
 
-const handleGetUserInfo = async (req, res) => {
+const handleGetMyInfo = async (req, res) => {
     const userinfo = req.body.user;
 
 
@@ -118,9 +118,34 @@ const handleGetUserInfo = async (req, res) => {
     }
 }
 
+const handleGetUserInfo = async (req, res) => {
+    
+    const user_id = req.params._id;
+
+
+    try {
+        const user = await User.findById(user_id);
+
+        return res.status(200).json({
+            name: user.name,
+            userId: user.userId,
+            _id: user._id,
+            postCount: user.posts.length,
+            followingCount: user.following.length,
+            followersCount: user.followers.length,
+        });
+    } catch (error) {
+        console.log(error);
+       return res.status(500).json({
+            msg:'internal server error'
+        })
+    }
+}
+
 module.exports = {
     handleCreateNewUser,
     handleGetUser,
     handlesignoutUser,
-    handleGetUserInfo,
+    handleGetMyInfo,
+    handleGetUserInfo
 }

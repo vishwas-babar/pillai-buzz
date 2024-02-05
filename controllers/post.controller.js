@@ -443,7 +443,7 @@ const handleGetUserPosts = async (req, res) => {
         }
 
         res.status(200).json({
-            msg: "request successful",
+            msg: "user posts sent successfully",
             posts: posts,
         })
         

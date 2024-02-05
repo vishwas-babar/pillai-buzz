@@ -8,8 +8,8 @@ router.get('/',isUserAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, '../views/index.html'));
 });
 
-router.get('/profile', isUserAuthenticated, (req, res) => {
-    res.sendFile(path.join(__dirname, '../views/profile.html'));
+router.get('/myprofile', isUserAuthenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, '../views/myprofile.html'));
 });
 
 router.get('/login', (req, res) => {
@@ -22,6 +22,10 @@ router.get('/editor', isUserAuthenticated, (req, res) => {
 
 router.get('/post/:id', isUserAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, '../views/post.html'));
+})
+
+router.get('/profile/:_id', isUserAuthenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, '../views/profile.html'));
 })
 
 // router.get('/post/:id', isUserAuthenticated, handleGetSpecificPost);

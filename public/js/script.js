@@ -194,7 +194,8 @@ function addPostToPage(post) {
 
 
     const postDiv = `
-    <div id="post" class="h-fit flex flex-col w-[90%] min-w-[90%] items-center rounded-md pt-4 px-4 shadow-custom-shadow-1">
+    <div id="post"
+    class="h-fit flex flex-col w-full min-w-[90%] items-center rounded-md pt-0">
     <div id="author-info" class="flex justify-start bg-white self-start" data-user_id="${author_id}">
         <div class="size-14 ring-blue-600">
             <img src="/images/user.png" alt="">
@@ -205,20 +206,22 @@ function addPostToPage(post) {
         </div>
     </div>
 
-    <hr >
+    <hr>
 
     <div id="post-field" data-post_id="${post_id}" class="w-full">
-        <div class="ml-3 w-full">
-            <h1 role="heading" class="md:text-[22px] text-[20px] my-2 font-[500] leading-tight text-neutral-800">
+        <div class="ml-0 w-full">
+            <h1 role="heading"
+                class="md:text-[22px] text-[20px] my-2 font-[500] leading-tight text-neutral-800">
                 ${title}
             </h1>
         </div>
         <div
-            class="rounded-md w-full h-48 sm:h-52 md:h-68 lg:h-80 overflow-hidden flex items-center justify-center shadow-custom-shadow-1">
-            <img class="w-auto h-full" src="/images/news.jpeg" alt="">
+            class="rounded-md w-full h-48 sm:h-52 md:h-60 lg:h-60 overflow-hidden flex items-center justify-center">
+
+            <img class="w-full h-full object-cover" src="/images/news.jpeg" alt="">
         </div>
         <div class="mt-1 flex justify-between w-full relative">
-            <div class=" flex justify-start w-full">
+            <div class=" flex justify-start w-full items-center">
                 <a class="comments-btn ml-0">
                     <i class='bx bx-message-rounded'></i>
                     <span>${commentsCount}</span>
@@ -239,7 +242,7 @@ function addPostToPage(post) {
 
     const div = document.createElement('div');
     div.innerHTML = postDiv;
-    div.classList.add("w-full", "flex", "justify-center");
+    div.classList.add("w-full", "flex", "justify-center", "border-b", "border-zinc-300");
 
     post_container.appendChild(div);
 }
@@ -284,7 +287,7 @@ function showPostLoadingSkeleton() {
 </div>
     `;
 
-    for (let i = 0; i < postsPerPage; i++) { 
+    for (let i = 0; i < postsPerPage; i++) {
 
         const skeletonDiv = document.createElement('div');
         skeletonDiv.innerHTML = skeleton;
@@ -298,10 +301,10 @@ function showPostLoadingSkeleton() {
 function removePostLoadingSkeleton() {
     const post_skeleton = document.querySelectorAll('#post-skeleton');
 
-    post_skeleton.forEach(element => { 
+    post_skeleton.forEach(element => {
         element.classList.add('opacity-0');
     }); // for adding some animations used the setTimeout when animation is completed then element will be removed
-    
+
     setTimeout(() => {
         post_skeleton.forEach(element => {
             element.remove();
