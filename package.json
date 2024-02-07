@@ -4,7 +4,7 @@
   "description": "news feed web app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\"",
     "start": "node index.js",
     "dev": "nodemon index.js",
     "tail": " npx tailwindcss -i ./public/css/input.css -o ./public/css/output.css --watch"

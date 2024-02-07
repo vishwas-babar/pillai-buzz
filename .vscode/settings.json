@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/8c27dd95-6e9b-4652-85ae-5bfde8fd9dff/resourceGroups/pillai-buzz-resource/providers/Microsoft.Web/sites/pillai-buzz",
+    "appService.deploySubpath": "."
+}

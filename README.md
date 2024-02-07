@@ -4,7 +4,7 @@
 
 This project is a full-stack application built with HTML, CSS (Tailwind), JavaScript for the frontend, and Node.js, Express, and MongoDB for the backend.
 
-## Local Development
+## Local Development 
 
 ### Prerequisites
 
