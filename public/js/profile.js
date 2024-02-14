@@ -32,12 +32,14 @@ async function requestUserInfo() {
 
             console.log(res.data);
 
+            const profilePhoto = document.querySelector('#profile-photo');
             const user_name = document.querySelector('#user-name');
             const userId = document.querySelector('#user-id');
-            const followers = document.querySelector('#followers-id')
-            const following = document.querySelector('#following-id')
+            const followers = document.querySelector('#followers-id');
+            const following = document.querySelector('#following-id');
 
             document.querySelector('#role'); // add the role here
+            profilePhoto.src = userInfo.profilePhoto;
             user_name.textContent = userInfo.name;
             userId.textContent = userInfo.userId;
             followers.textContent = userInfo.followersCount;
@@ -86,7 +88,7 @@ function userHasNOPosts() {
 function addPostToPage(post) {
 
     const { title, reads, likesCount, commentsCount, _id: post_id } = post;
-    const { name: authorName, userId: authorUserId, _id: author_id } = post.authorDetails;
+    const { name: authorName, userId: authorUserId, profilePhoto, _id: author_id } = post.authorDetails;
 
     const post_container = document.querySelector('#post-container');
 
@@ -94,8 +96,8 @@ function addPostToPage(post) {
     <div id="post"
     class="h-fit flex flex-col w-full min-w-[90%] items-center rounded-md pt-0">
     <div id="author-info" class="flex justify-start bg-white self-start" data-user_id="${author_id}">
-        <div class="size-14 ring-blue-600">
-            <img src="/images/user.png" alt="">
+        <div class="size-14 ring-blue-600 overflow-hidden">
+            <img src="${profilePhoto}" class=" rounded-full" alt="">
         </div>
         <div class="ml-2 mt-2">
             <h2 class="md:text-[20px] text-[18px] font-serif leading-4 ">${authorName}</h2>

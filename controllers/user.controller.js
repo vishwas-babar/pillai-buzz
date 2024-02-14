@@ -110,6 +110,7 @@ const handleGetMyInfo = async (req, res) => {
         return res.status(200).json({
             name: user.name,
             userId: user.userId,
+            profilePhoto: user.profilePhoto,
             _id: user._id,
             postCount: user.posts.length,
         });
@@ -133,6 +134,7 @@ const handleGetUserInfo = async (req, res) => {
             name: user.name,
             userId: user.userId,
             _id: user._id,
+            profilePhoto: user.profilePhoto,
             postCount: user.posts.length,
             followingCount: user.following.length,
             followersCount: user.followers.length,

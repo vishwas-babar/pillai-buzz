@@ -130,7 +130,7 @@ function showUploadProfilePhotomodal(user_id) {
 
         const formData = new FormData();
         formData.append('profilePhoto', profilePhoto);
-        formData.append('user_id', '65ccf4f2e069925befeae912');
+        formData.append('user_id', '65ccfb2f229f82f95d98a72e');
 
         axios.post('/api/user/addprofilephoto', formData, {
             headers: {

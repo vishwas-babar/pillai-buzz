@@ -36,11 +36,13 @@ const addPostDataToPage = (data) => {
     console.log(formatedDate);
     console.log(typeof formatedDate);
 
+    const authorProfilePhoto = document.querySelector('#author-profile-photo');
     const author_name = document.querySelector('#author');
     const post_date = document.querySelector('#post-date');
     const heading = document.querySelector('#heading');
     const description = document.querySelector('#description');
 
+    authorProfilePhoto.src = author.profilePhoto;
     author_name.textContent = author.name;
     post_date.textContent = formatedDate;
     heading.textContent = post.title;
@@ -98,9 +100,13 @@ window.onload = async function () {
             console.log(user);
 
             // change the content modal
+            const profilePhotoNav = document.querySelector('#profile-photo-nav');
+            const profilePhotoModal = document.querySelector('#profile-photo-modal')
             const user_name = document.querySelector('#user-name');
             const user_id = document.querySelector('#user-id');
 
+            profilePhotoNav.src = user.profilePhoto;
+            profilePhotoModal.src = user.profilePhoto;
             user_name.textContent = user.name;
             user_id.textContent = '@' + user.userId;
         })
@@ -233,6 +239,7 @@ comment_btn.addEventListener('click', () => {
 // function for addding comments in page 
 function addCommentDataInCommentSection(comment) {
 
+    let profilePhoto = comment.authorProfilePhoto;
     let userName = comment.authorName;
     let userId = comment.authorUserId;
     let content = comment.content;
@@ -245,7 +252,7 @@ function addCommentDataInCommentSection(comment) {
 
     <div class="flex gap-2">
 
-        <img class="size-10 rounded-full" src="/images/user.png" alt="">
+        <img class="size-10 rounded-full" src="${profilePhoto}" alt="">
 
         <!-- user info of commented user -->
         <div class="rounded-md rounded-tl-none bg-slate-200 px-2 py-3 w-full flex flex-col gap-3">
@@ -313,6 +320,7 @@ add_comment_btn.addEventListener('click', () => {
 
 const addRecentComment = (data) => {
     console.log(data);
+    let profilePhoto = data.author.profilePhoto;
     let userName = data.author.name;
     let userId = data.author.userId;
     let content = data.comment.content;
@@ -323,7 +331,7 @@ const addRecentComment = (data) => {
 
     <div class="flex gap-2">
 
-        <img class="size-10 rounded-full" src="/images/user.png" alt="">
+        <img class="size-10 rounded-full" src="${profilePhoto}" alt="">
 
         <!-- user info of commented user -->
         <div class="rounded-md rounded-tl-none bg-slate-200 px-2 py-3 w-full flex flex-col gap-3">

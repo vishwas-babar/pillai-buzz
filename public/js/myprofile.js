@@ -27,8 +27,10 @@ async function requestUserInfo() {
 
             const user_name = document.querySelector('#user-name');
             const userId = document.querySelector('#user-id');
+            const profilePhoto = document.querySelector('#profile-photo');
 
             document.querySelector('#role'); // add the role here
+            profilePhoto.src = userInfo.profilePhoto;
             user_name.textContent = userInfo.name;
             userId.textContent = userInfo.userId;
         })

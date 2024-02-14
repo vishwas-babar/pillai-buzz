@@ -59,8 +59,7 @@ const handleGetSpecificPost = async (req, res) => {
 
     try {
         const post = await Post.findById(id);
-        const author = await User.findById(post.author).select('createdAt name userId _id');
-        console.log(post.likes.length)
+        const author = await User.findById(post.author).select('createdAt name userId _id profilePhoto');
 
         res.status(200).json({
             likesCount: post.likes.length,
@@ -118,7 +117,7 @@ const handleAddCommentOnPost = async (req, res) => {
     let user_indb;
     try {
         post_indb = await Post.findById(postid).select('author title reads createdAt');
-        user_indb = await User.findById(userid).select('userId name');
+        user_indb = await User.findById(userid).select('userId name profilePhoto');
     } catch (error) {
         return res.status(500).json({
             msg: "internal server error"
@@ -193,6 +192,7 @@ const handleGetAllCommentsOnThePost = async (req, res) => {
                     },
                     "comments.authorName": "$comment_author_info.name", // Add author name to each comment
                     "comments.authorUserId": "$comment_author_info.userId",   // Add author id to each comment
+                    "comments.authorProfilePhoto": "$comment_author_info.profilePhoto",   // Add author id to each comment
                 },
             },
 
@@ -360,6 +360,7 @@ const handleLoadPostForHomePage = async (req, res) => {
                 "authorDetails.name": 1,
                 "authorDetails.userId": 1,
                 "authorDetails._id": 1,
+                "authorDetails.profilePhoto": 1,
                 title: 1,
                 reads: 1,
                 createdAt: 1,
@@ -431,6 +432,7 @@ const handleGetUserPosts = async (req, res) => {
                     "authorDetails.userId": 1,
                     "authorDetails.name": 1,
                     "authorDetails._id": 1,
+                    "authorDetails.profilePhoto":1,
                 }
             }
         ])
