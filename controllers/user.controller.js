@@ -1,5 +1,6 @@
 const User = require('../models/user.model.js');
 const { setUserJwtToken } = require('../utils/auth.js');
+const uploadToCloudinary = require('../utils/cloudinary.js');
 
 async function handleGetUser(req, res) {
     const { email, password } = req.body;
@@ -69,15 +70,17 @@ async function handleCreateNewUser(req, res) {
     }
 
     try {
-        await User.create({
+        const user = await User.create({
             name: name,
             userId: userId,
             email: email,
             password: password,
+            profilePhoto: 'https://res.cloudinary.com/dllphjlv3/image/upload/f_auto,q_auto/ut3hb62wndfelslnpd7m'
         });
 
         return res.status(200).json({
             message: 'User created successfully',
+            _id: user._id,
         });
     } catch (error) {
         return res.status(500).json({
@@ -142,10 +145,62 @@ const handleGetUserInfo = async (req, res) => {
     }
 }
 
+const handleUploadProfilePhoto = async (req, res) => {
+
+    console.log('inside the controller')
+
+    const user_id = req.body.user_id;
+
+    console.log('files: ', req.files);
+
+    console.log('files: ', req.files);
+
+    // Check if profilePhoto is defined before trying to access its elements
+    let profilePhotoLocalPath;
+    if (req.files && req.files.profilePhoto && req.files.profilePhoto.length > 0) {
+        profilePhotoLocalPath = req.files.profilePhoto[0].path;
+    } else {
+        // Handle the case when profilePhoto is not defined or no file was attached
+        return res.status(400).json({
+            msg: "profile picture is required"
+        });
+    }
+
+
+    // upload img to cloudinary
+    const profilePhoto = await uploadToCloudinary(profilePhotoLocalPath);
+    console.log(profilePhoto);
+
+    if(!profilePhoto) {
+        return res.status(500).json({
+            msg: "failed to upload img to cloudinary"
+        })
+    }
+
+    try {
+        const user = await User.findByIdAndUpdate(user_id, {
+            profilePhoto: profilePhoto.secure_url
+        }, { new: true } )
+
+        res.status(200).json({
+            msg: 'profile photo uploaded succesfully',
+            profilePhoto: user.profilePhoto,
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            msg: 'some internal error',
+            error: error
+        })
+    }
+
+}
+
 module.exports = {
     handleCreateNewUser,
     handleGetUser,
     handlesignoutUser,
     handleGetMyInfo,
-    handleGetUserInfo
+    handleGetUserInfo,
+    handleUploadProfilePhoto,
 }

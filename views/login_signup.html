@@ -7,9 +7,15 @@
     <title>Login now!</title>
 
 
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="/css/tailwind.output.css">
+    <link rel="stylesheet" href="../public/css/output.css">
+    <link rel="stylesheet" href="/public/css/output.css">
     <link rel="stylesheet" href="../public/css/login_signup.css">
     <link rel="stylesheet" href="/css/login_signup.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
@@ -53,85 +59,135 @@
 
                         <div class="field field_v2">
                             <label for="password" class="ha-screen-reader">Password</label>
-                            <input id="password" name="password" type="password" class="field__input" placeholder="e.g. 123456">
+                            <input id="password" name="password" type="password" class="field__input"
+                                placeholder="e.g. 123456">
                             <span class="field__label-wrap" aria-hidden="true">
                                 <span class="field__label">Password</span>
                             </span>
                         </div>
 
-                       
+
                         <div class="submit-btn-container">
                             <a class="forgot-pwd">Forgot Password?</a>
                             <button class="login-btn" type="submit">Login</button>
-                            <p class="register-statement">Don’t have an account? <a class="register-btn">Register</a></p>
+                            <p class="register-statement">Don’t have an account? <a class="register-btn">Register</a>
+                            </p>
                         </div>
 
                     </form>
                 </div>
 
-                <div class="signup-form-container">
+                <div class="signup-form-container h-full overflow-hidden">
+                    <div id="signup-form-part" class="h-full w-full overflow-hidden transition-all duration-500 ease-in-out">
+                        <div class="login-heading-container">
+                            <h2>Create Account On</h2>
+                            <h1>Pillai Buzz</h1>
+                        </div>
 
-                    <div class="login-heading-container">
-                        <h2>Create Account On</h2>
-                        <h1>Pillai Buzz</h1>
+                        <div class="other-login-options-container">
+                            <button>
+                                <!-- <img src="../public/images/google-logo.png" alt=""> -->
+                                <img src="/images/google-logo.png" alt="">
+                                <span>Continue With Google</span>
+                            </button>
+                        </div>
+
+                        <div class="or-container">
+                            <div class="left-line"></div>
+                            <span>OR</span>
+                            <div class="right-line"></div>
+                        </div>
+
+
+                        <form class="page signup-form relative w-full overflow-hidde">
+
+                            <div class="absolute transition-all duration-300 ease-in-out ">
+
+                                <div class="field field_v1 w-full">
+                                    <label for="name" class="ha-screen-reader">userid</label>
+                                    <input id="name" name="name" class="field__input" placeholder="">
+                                    <span class="field__label-wrap" aria-hidden="true">
+                                        <span class="field__label">Name</span>
+                                    </span>
+                                </div>
+                                <div class="field field_v1 w-full">
+                                    <label for="userid" class="ha-screen-reader">userid</label>
+                                    <input id="userid" name="userid" class="field__input" placeholder="e.g. xyz_345">
+                                    <span class="field__label-wrap" aria-hidden="true">
+                                        <span class="field__label">User id</span>
+                                    </span>
+                                </div>
+                                <div class="field field_v2 w-full">
+                                    <label for="password" class="ha-screen-reader">Password</label>
+                                    <input id="s-password" name="password" type="password" class="field__input"
+                                        placeholder="e.g. 123456">
+                                    <span class="field__label-wrap" aria-hidden="true">
+                                        <span class="field__label">Password</span>
+                                    </span>
+                                </div>
+                                <div class="field field_v3 w-full">
+                                    <label for="email" class="ha-screen-reader">E-mail</label>
+                                    <input id="s-email" name="email" class="field__input"
+                                        placeholder="e.g. melnik909@ya.ru">
+                                    <span class="field__label-wrap" aria-hidden="true">
+                                        <span class="field__label">E-mail</span>
+                                    </span>
+                                </div>
+
+                                <div class="submit-btn-container mt-4">
+                                    <button id="signup-next-btn" type="submit" class="login-btn signup-btn group">
+                                        <p>Next</p>
+                                        <i
+                                            class='bx bx-right-arrow-alt ml-1 transition-all duration-200 ease-in-out group-hover:ml-3 group-hover:scale-125'></i>
+                                    </button>
+                                    <p class="register-statement">Already have account? <a
+                                            class="register-btn switch-login-btn">Login</a></p>
+                                </div>
+                            </div>
+
+
+                        </form>
+
                     </div>
 
-                    <div class="other-login-options-container">
-                        <button>
-                            <!-- <img src="../public/images/google-logo.png" alt=""> -->
-                            <img src="/images/google-logo.png" alt="">
-                            <span>Continue With Google</span>
-                        </button>
-                    </div>
+                    <form id="upload-profile-part" enctype="multipart/form-data"  class="w-full h-full opacity-0 hidden transition-all duration-500 ease-in-out flex-col relative">
+                        
+                        <h2 class="text-center mt-10 font-bold text-2xl text-blue-500 bg-gray-200 p-3 rounded-lg shadow-lg">Add profile picture</h2>
 
-                    <div class="or-container">
-                        <div class="left-line"></div>
-                        <span>OR</span>
-                        <div class="right-line"></div>
-                    </div>
-
-                    
-                    <form class="page signup-form">
-                        <div class="field field_v1">
-                            <label for="name" class="ha-screen-reader">userid</label>
-                            <input id="name" name="name" class="field__input" placeholder="">
-                            <span class="field__label-wrap" aria-hidden="true">
-                                <span class="field__label">Name</span>
-                            </span>
-                        </div>
-                        <div class="field field_v1">
-                            <label for="userid" class="ha-screen-reader">userid</label>
-                            <input id="userid" name="userid" class="field__input" placeholder="e.g. xyz_345">
-                            <span class="field__label-wrap" aria-hidden="true">
-                                <span class="field__label">User id</span>
-                            </span>
-                        </div>
-                        <div class="field field_v2">
-                            <label for="password" class="ha-screen-reader">Password</label>
-                            <input id="s-password" name="password" type="password" class="field__input" placeholder="e.g. 123456">
-                            <span class="field__label-wrap" aria-hidden="true">
-                                <span class="field__label">Password</span>
-                            </span>
-                        </div>
-                        <div class="field field_v3">
-                            <label for="email" class="ha-screen-reader">E-mail</label>
-                            <input id="s-email" name="email" class="field__input" placeholder="e.g. melnik909@ya.ru">
-                            <span class="field__label-wrap" aria-hidden="true">
-                                <span class="field__label">E-mail</span>
-                            </span>
+                        <div class=" h-fit mt-5 w-full flex justify-center bg-transparent">
+                            <div id="profile-img-div" class="size-36 cursor-pointer rounded-full ring-2 ring-blue-600 flex justify-center items-center relative group">
+                                <!-- <img src="../public/images/user.png" class="size-full cursor-pointer object-contain absolute z-10" alt=""> -->
+                                <img id="profile-img-img" src="/images/user.png" class="size-full cursor-pointer object-contain absolute z-10" alt="">
+                                <i class='bx bx-camera text-[20px] shadow-md size-7 flex justify-center items-center rounded-full absolute z-20 bottom-8 right-0 bg-white transition-all duration-200 ease-in-out group-hover:scale-125'></i>
+                                <input id="profilePhoto-input" name="profilePhoto" type="file" class="h-1 w-1 absolute z-[-200] rounded-full">
+                            </div>
                         </div>
 
-                        <div class="submit-btn-container">
-                            <button class="login-btn signup-btn" type="submit">Create</button>
-                            <p class="register-statement">Already have account? <a class="register-btn switch-login-btn">Login</a></p>
-                        </div>
 
+
+                        <div class="w-full flex gap-2 absolute bottom-16">
+                            <button id="skip-profile-btn" class="bg-custom-secondary profile-add-btn">Skip</button>
+                            <button id="add-profile-btn" type="submit" class="profile-add-btn !bg-custom-secondary appearance-none">Add</button>
+                        </div>
                     </form>
-                </div>
+                </div> 
             </div>
         </div>
+
+        <button class="test-btn">
+            test btn
+        </button>
     </main>
 
+
+    <!-- show the modal for uploading profile
+    <div class="h-72 w-96  hidden bg-white absolute z-10 left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%] shadow-md">
+        <div>
+            <h1>Upload Profile</h1>
+            <input type="file" name="profile" id="profile" class="profile">
+            <button class="upload-profile">Upload</button>
+        </div>
+    </div> -->
 
     <script src="https://unpkg.com/validator@latest/validator.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>

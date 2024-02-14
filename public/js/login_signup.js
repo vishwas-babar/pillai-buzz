@@ -1,5 +1,6 @@
 
 
+
 const register_btn = document.querySelector('.register-btn');
 const switch_login_btn = document.querySelector('.switch-login-btn');
 const innerFormContainer = document.querySelector('.inner-form-container');
@@ -27,7 +28,7 @@ signup_form.addEventListener('submit', (event) => {
     }
 
     if (!name || !userId || !password || !email) {
-        alert('all fields required');
+        showToast('all fields are required!');
         return;
     }
 
@@ -43,20 +44,22 @@ signup_form.addEventListener('submit', (event) => {
         email: email,
     })
         .then((res) => {
-            alert('user created successfully');
+
+            showUploadProfilePhotomodal(res.data._id);
+
             innerFormContainer.style.transform = 'rotateY(180deg)';
             signup_form.reset();
         })
         .catch((err) => {
             console.log(err.response.data)
             if (err.response.data.field == 'userId') {
-                alert('this userid is already used by someone');
+                showToast('this userid is already used by someone');
             }
             else if (err.response.data.field == 'email') {
-                alert('provided email already used for different account');
+                showToast('provided email already used for different account')
             }
             else {
-                alert('An error occurred. Please try again.');
+                showToast('An error occured. Please try again');
             }
         })
         .finally(() => {
@@ -65,6 +68,101 @@ signup_form.addEventListener('submit', (event) => {
         });
 });
 
+
+function showToast(message) {
+    // Create a div
+    const toast = document.createElement('div');
+
+    // Add text to the div
+    toast.textContent = message;
+
+    // Style the div
+    toast.style.position = 'fixed';
+    toast.style.bottom = '20px';
+    toast.style.left = '50%';
+    toast.style.transform = 'translateX(-50%)';
+    toast.style.background = 'black';
+    toast.style.color = 'white';
+    toast.style.padding = '10px';
+    toast.style.borderRadius = '5px';
+    toast.style.margin = '0 auto';
+    toast.style.zIndex = '1000';
+
+    // Add the div to the body
+    document.body.appendChild(toast);
+
+    // Remove the div after 3 seconds
+    setTimeout(() => {
+        document.body.removeChild(toast);
+    }, 3000);
+}
+
+function showUploadProfilePhotomodal(user_id) {
+    let currentLoggedInUser_id = user_id;
+
+    const uploadProfilePart = document.querySelector('#upload-profile-part');
+    const signupFormPart = document.querySelector('#signup-form-part');
+
+    // show upload profile part 
+    signupFormPart.style.opacity = '0';
+    setTimeout(() => {
+        signupFormPart.classList.add('hidden');
+
+        uploadProfilePart.classList.remove('hidden');
+        uploadProfilePart.style.opacity = '1';
+    }, 1000);
+
+
+    // add event listeners for skip and add btn
+    const skipProfileBtn = document.querySelector('#skip-profile-btn');
+    const addProfileBtn = document.querySelector('#add-profile-btn');
+
+    skipProfileBtn.addEventListener('click', () => {
+        window.location.href = '/login';
+    });
+
+
+    uploadProfilePart.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const fileInput = document.querySelector('input[type="file"');
+        const profilePhoto = fileInput.files[0];
+
+        const formData = new FormData();
+        formData.append('profilePhoto', profilePhoto);
+        formData.append('user_id', '65ccf4f2e069925befeae912');
+
+        axios.post('/api/user/addprofilephoto', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+        })
+            .then((res) => {
+                console.log(res);
+
+                const profileImgElement = document.querySelector('#profile-img-img');
+                profileImgElement.src = res.data.profilePhoto;
+            })
+            .catch((error) => {
+                console.log('error: ', error);
+            })
+    })
+
+}
+
+
+// click on photo input when clicked on profile img
+const profileImgDiv = document.querySelector('#profile-img-div');
+profileImgDiv.addEventListener('click', () => {
+    const profilePhotoInput = document.querySelector('#profilePhoto-input');
+    profilePhotoInput.click();
+})
+
+
+const test_btn = document.querySelector('.test-btn');
+test_btn.addEventListener('click', () => {
+    showUploadProfilePhotomodal();
+})
 
 // send request to server for login
 const login_form = document.querySelector('.login-form');
@@ -78,13 +176,13 @@ login_form.addEventListener('submit', (event) => {
 
     // check email validation
     if (!email || !password) {
-        alert('all fields required');
+        showToast('all fields required');
         return;
     }
 
     // check email validation
     if (!validator.isEmail(email)) {
-        alert('invalid email');
+        showToast('invalid email')
         return;
     }
 
@@ -103,8 +201,8 @@ login_form.addEventListener('submit', (event) => {
             window.location.href = '/';
         })
         .catch((err) => {
-            if(err.response.status == 401) {
-                alert('invalid email or password');
+            if (err.response.status == 401) {
+                showToast('invalid email or password');
             }
         })
         .finally(() => {

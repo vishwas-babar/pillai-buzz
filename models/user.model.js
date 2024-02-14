@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema(
             type: String,
             trim: true,
         },
+        profilePhoto: {
+            type: String,
+            trim: true,
+        },
         bio: {
             type: String,
             trim: true,
