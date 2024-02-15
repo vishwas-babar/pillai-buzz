@@ -203,8 +203,8 @@ function addPostToPage(post) {
     <div id="post"
     class="h-fit flex flex-col w-full min-w-[90%] items-center rounded-md pt-0">
     <div id="author-info" class="flex justify-start bg-white self-start" data-user_id="${author_id}">
-        <div class="size-14 ring-blue-600 overflow-hidden">
-            <img src="${profilePhoto}" class=" rounded-full" alt="">
+        <div class="size-14 ring-blue-600 flex justify-center items-center overflow-hidden">
+            <img src="${profilePhoto}" class="h-full w-full rounded-full" alt="">
         </div>
         <div class="ml-2 mt-2">
             <h2 class="md:text-[20px] text-[18px] font-serif leading-4 ">${authorName}</h2>
@@ -268,7 +268,7 @@ show_more_btn.addEventListener('click', () => {
 function showPostLoadingSkeleton() {
     const post_container = document.querySelector('#post-container');
     const skeleton = `
-    <div role="status" class="w-[90%] p-4 border border-gray-200 rounded shadow animate-pulse md:p-6 dark:border-gray-700">
+    <div role="status" class="w-full p-4 border rounded shadow animate-pulse md:p-6 ">
     
     <div class="flex items-center mt-1 mb-4">
        <svg class="w-10 h-10 me-3 text-gray-200 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">

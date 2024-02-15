@@ -96,8 +96,8 @@ function addPostToPage(post) {
     <div id="post"
     class="h-fit flex flex-col w-full min-w-[90%] items-center rounded-md pt-0">
     <div id="author-info" class="flex justify-start bg-white self-start" data-user_id="${author_id}">
-        <div class="size-14 ring-blue-600 overflow-hidden">
-            <img src="${profilePhoto}" class=" rounded-full" alt="">
+        <div class="size-14 ring-blue-600 flex justify-center items-center overflow-hidden">
+            <img src="${profilePhoto}" class="w-full h-full rounded-full" alt="">
         </div>
         <div class="ml-2 mt-2">
             <h2 class="md:text-[20px] text-[18px] font-serif leading-4 ">${authorName}</h2>

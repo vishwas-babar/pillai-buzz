@@ -37,7 +37,7 @@
 
         <div
             class="side-nav-btns flex flex-col *:w-full *:h-11 *:flex *:items-center *:px-[10px] *:py-[20px] *:transition-all *:cursor-pointer duration-300 ease-in-out">
-            <a class="bg-custom-primary hover:shadow-custom-shadow-1 text-white">My Feed</a>
+            <a href="/" class="hover:shadow-custom-shadow-1 active:scale-[1.01]">My Feed</a>
             <a class="hover:shadow-custom-shadow-1 active:scale-[1.01]">More</a>
         </div>
     </nav>
@@ -57,18 +57,19 @@
             class="h-10 w-10  ml-3 p-2 border rounded-full flex md:hidden items-center justify-center cursor-pointer">
             <i class='bx bx-menu h-10 w-10 text-[28px] flex items-center justify-center'></i>
         </a>
-        <div class="w-fit h-full ml-5 items-center md:flex hidden">
+        <div onclick="window.location.href='/'" class="w-fit h-full ml-5 items-center md:flex hidden cursor-pointer">
             <!-- <img class="h-[60px] w-[60px] rounded-full bg-contain" src="../public/images/Pillaipo.png" alt=""> -->
             <img class="h-[60px] w-[60px] rounded-full bg-contain" src="/images/Pillaipo.png" alt="">
             <h2 id="pillaibuzz-logo" class="">Pillai Buzz</h2>
         </div>
 
         <div class="gap-[10px] items-center w-fit h-full hidden md:flex">
-            <a
+            <a  href="/"
                 class="rounded-[20px] hover:bg-custom-primary hover:text-white hover:shadow-md px-[20px] py-[10px] transition-all duration-[0.3s] ease-in-out">
                 My Feed
             </a>
             <a
+                href="/bookmarks"
                 class="rounded-[20px] hover:bg-custom-primary hover:text-white hover:shadow-md px-[20px] py-[10px] transition-all duration-[0.3s] ease-in-out">
                 Bookmarks
             </a>
@@ -118,7 +119,7 @@
                 <div class=" w-fit">
                     <h2 id="user-name" class="text-[22px] sm:mt-0 font-serif leading-4 mb-0 text-nowrap"></h2>
                     <span id="user-id" class="text-[14px] mt-0 text-nowrap"></span>
-                    <p id="role" class="text-[18px] leading-7">fullstack developer</p>
+                    <p id="role" class="text-[18px] leading-7">2nd year student</p>
 
                     <div class="flex gap-5 mt-2 sm:mt-11">
                         <p class="">
@@ -205,7 +206,7 @@
     <div id="bottom-nav"
         class="fixed h-16 w-full bg-custom-gray bottom-0 flex items-center justify-around sm:hidden
                  *:size-10 *:rounded-md *:flex *:items-center *:justify-center *:transition-all *:duration-300 ease-in-out">
-        <a id="home-feed" class="active:bg-custom-primary active:text-white">
+        <a id="home-feed" href="/" class="active:bg-custom-primary active:text-white">
             <i class='bx bx-home text-[23px]'></i>
         </a>
         <a id="bookmark" class="active:bg-custom-primary active:text-white">
