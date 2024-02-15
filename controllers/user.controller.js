@@ -78,11 +78,25 @@ async function handleCreateNewUser(req, res) {
             profilePhoto: 'https://res.cloudinary.com/dllphjlv3/image/upload/f_auto,q_auto/ut3hb62wndfelslnpd7m'
         });
 
+
+        const uid = setUserJwtToken({
+            name: user.name,
+            userId: user.userId,
+            bio: user.bio,
+            userType: user.userType,
+            _id: user._id
+        });
+
+        res.cookie('uid', uid, {
+            
+        });
+
         return res.status(200).json({
             message: 'User created successfully',
             _id: user._id,
         });
     } catch (error) {
+        console.log(error);
         return res.status(500).json({
             message: 'Internal server error',
         });

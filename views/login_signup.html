@@ -11,7 +11,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="/css/tailwind.output.css">
     <link rel="stylesheet" href="../public/css/output.css">
-    <link rel="stylesheet" href="/public/css/output.css">
+    <link rel="stylesheet" href="/css/output.css">
     <link rel="stylesheet" href="../public/css/login_signup.css">
     <link rel="stylesheet" href="/css/login_signup.css">
 
@@ -111,8 +111,8 @@
                                     </span>
                                 </div>
                                 <div class="field field_v1 w-full">
-                                    <label for="userid" class="ha-screen-reader">userid</label>
-                                    <input id="userid" name="userid" class="field__input" placeholder="e.g. xyz_345">
+                                    <label for="userId" class="ha-screen-reader">userid</label>
+                                    <input id="userid" name="userId" class="field__input" placeholder="e.g. xyz_345">
                                     <span class="field__label-wrap" aria-hidden="true">
                                         <span class="field__label">User id</span>
                                     </span>
@@ -163,18 +163,23 @@
                             </div>
                         </div>
 
-
+                        <div id="profile-loading-loader" class="flex gap-2 absolute left-1/2 translate-x-[-50%] mt-4 transition-all duration-300 ease-linear opacity-0">
+                            <div class="w-5 h-5 rounded-full animate-pulse bg-blue-600"></div>
+                            <div class="w-5 h-5 rounded-full animate-pulse bg-blue-600"></div>
+                            <div class="w-5 h-5 rounded-full animate-pulse bg-blue-600"></div>
+                        </div>
 
                         <div class="w-full flex gap-2 absolute bottom-16">
                             <button id="skip-profile-btn" class="bg-custom-secondary profile-add-btn">Skip</button>
-                            <button id="add-profile-btn" type="submit" class="profile-add-btn !bg-custom-secondary appearance-none">Add</button>
+                            <button id="add-profile-btn" type="submit" class="profile-add-btn !bg-custom-secondary ">Add</button>
                         </div>
                     </form>
                 </div> 
             </div>
         </div>
 
-        <button class="test-btn">
+        <!-- this btn is for showing the upload profile photo -->
+        <button id="test-btn" class="test-btn hidden">
             test btn
         </button>
     </main>

@@ -22,7 +22,7 @@ signup_form.addEventListener('submit', (event) => {
 
     let { name, userId, password, email } = {
         name: event.target.name.value.trim(),
-        userId: event.target.userid.value.trim(),
+        userId: event.target.userId.value.trim(),
         password: event.target.password.value.trim(),
         email: event.target.email.value.trim()
     }
@@ -47,8 +47,11 @@ signup_form.addEventListener('submit', (event) => {
 
             showUploadProfilePhotomodal(res.data._id);
 
-            innerFormContainer.style.transform = 'rotateY(180deg)';
             signup_form.reset();
+
+            // show the profile upload section
+            const testBtn = document.querySelector('#test-btn');
+            testBtn.click();
         })
         .catch((err) => {
             console.log(err.response.data)
@@ -97,8 +100,37 @@ function showToast(message) {
     }, 3000);
 }
 
+function showToastBlue(message) {
+    // Create a div
+    const toast = document.createElement('div');
+
+    // Add text to the div
+    toast.textContent = message;
+
+    // Style the div
+    toast.style.position = 'fixed';
+    toast.style.bottom = '20px';
+    toast.style.left = '50%';
+    toast.style.transform = 'translateX(-50%)';
+    toast.style.background = '#2563EB';
+    toast.style.color = 'white';
+    toast.style.padding = '10px';
+    toast.style.borderRadius = '5px';
+    toast.style.margin = '0 auto';
+    toast.style.zIndex = '1000';
+
+    // Add the div to the body
+    document.body.appendChild(toast);
+
+    // Remove the div after 3 seconds
+    setTimeout(() => {
+        document.body.removeChild(toast);
+    }, 3000);
+}
+
 function showUploadProfilePhotomodal(user_id) {
     let currentLoggedInUser_id = user_id;
+    console.log(currentLoggedInUser_id)
 
     const uploadProfilePart = document.querySelector('#upload-profile-part');
     const signupFormPart = document.querySelector('#signup-form-part');
@@ -118,10 +150,11 @@ function showUploadProfilePhotomodal(user_id) {
     const addProfileBtn = document.querySelector('#add-profile-btn');
 
     skipProfileBtn.addEventListener('click', () => {
-        window.location.href = '/login';
+        window.location.href = '/';
     });
 
 
+    // submit the profile photo
     uploadProfilePart.addEventListener('submit', (event) => {
         event.preventDefault();
 
@@ -130,8 +163,13 @@ function showUploadProfilePhotomodal(user_id) {
 
         const formData = new FormData();
         formData.append('profilePhoto', profilePhoto);
-        formData.append('user_id', '65ccfb2f229f82f95d98a72e');
+        formData.append('user_id', currentLoggedInUser_id);
 
+        // show loading until profile not upload
+        const profileLoadingLoader =  document.querySelector('#profile-loading-loader');
+        const addProfileBtn = document.querySelector('#add-profile-btn');
+        addProfileBtn.disabled = true;
+        profileLoadingLoader.style.opacity = '1';
         axios.post('/api/user/addprofilephoto', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -140,10 +178,21 @@ function showUploadProfilePhotomodal(user_id) {
             .then((res) => {
                 console.log(res);
 
+                showToastBlue('profile photo added');
                 const profileImgElement = document.querySelector('#profile-img-img');
                 profileImgElement.src = res.data.profilePhoto;
+
+                profileLoadingLoader.style.opacity = '0';
+                addProfileBtn.disabled = false;
+                // redirect suer to home page if profile is set succesfully
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000);
             })
             .catch((error) => {
+                profileLoadingLoader.style.opacity = '0';
+                addProfileBtn.disabled = false;
+                showToast('failed to upload profile photo');
                 console.log('error: ', error);
             })
     })
