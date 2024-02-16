@@ -1052,6 +1052,11 @@ video {
   height: 100%;
 }
 
+.size-\[0px\] {
+  width: 0px;
+  height: 0px;
+}
+
 .h-1 {
   height: 0.25rem;
 }
@@ -1574,6 +1579,11 @@ video {
      object-fit: cover;
 }
 
+.object-center {
+  -o-object-position: center;
+     object-position: center;
+}
+
 .p-1 {
   padding: 0.25rem;
 }
@@ -1875,6 +1885,18 @@ video {
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 
+.ring {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
+.ring-1 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
 .ring-blue-600 {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(37 99 235 / var(--tw-ring-opacity));
@@ -2166,6 +2188,26 @@ video {
   .md\:size-\[200px\] {
     width: 200px;
     height: 200px;
+  }
+
+  .md\:size-\[10px\] {
+    width: 10px;
+    height: 10px;
+  }
+
+  .md\:size-\[1500px\] {
+    width: 1500px;
+    height: 1500px;
+  }
+
+  .md\:size-\[150px\] {
+    width: 150px;
+    height: 150px;
+  }
+
+  .md\:\!size-\[150px\] {
+    width: 150px !important;
+    height: 150px !important;
   }
 
   .md\:h-60 {
