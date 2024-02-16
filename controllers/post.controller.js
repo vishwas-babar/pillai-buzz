@@ -3,7 +3,12 @@ const User = require('../models/user.model.js');
 const mongoose = require('mongoose');
 const { ObjectId } = require('mongodb');
 const { json } = require('body-parser');
+const ApiError = require('../utils/ApiError.js');
+const ApiResponse = require('../utils/ApiResponse.js');
+const asynchandler = require('../utils/asynchandler.js');
+const uploadToCloudinary = require('../utils/cloudinary.js');
 
+// not used error and response class
 async function handleCreatePost(req, res) {
 
     // check if user is awailable in body or not
@@ -48,6 +53,7 @@ async function handleCreatePost(req, res) {
     }
 }
 
+// not used error and response class
 const handleGetSpecificPost = async (req, res) => {
     const { id } = req.params;
 
@@ -75,6 +81,7 @@ const handleGetSpecificPost = async (req, res) => {
 
 }
 
+// not used error and response class
 const handleLikePost = async (req, res) => {
     const postId = req.params.id;
     const user = req.body.user;
@@ -105,6 +112,7 @@ const handleLikePost = async (req, res) => {
     }
 }
 
+// not used error and response class
 const handleAddCommentOnPost = async (req, res) => {
     const postid = req.params.id;
     const userid = req.body.user._id;
@@ -150,7 +158,7 @@ const handleAddCommentOnPost = async (req, res) => {
     }
 }
 
-
+// not used error and response class
 const handleGetAllCommentsOnThePost = async (req, res) => {
 
     const postid = req.params.id;
@@ -225,7 +233,7 @@ const handleGetAllCommentsOnThePost = async (req, res) => {
     }
 }
 
-
+// not used error and response class
 const handleBookmarkPost = async (req, res) => {
 
     const user_id = req.body.user._id;
@@ -264,7 +272,7 @@ const handleBookmarkPost = async (req, res) => {
     }
 }
 
-
+// not used error and response class
 const handleLikeTheComment = async (req, res) => {
     const post_id = req.params.postId;
     const comment_id = req.params.commentId;
@@ -314,7 +322,7 @@ const handleLikeTheComment = async (req, res) => {
     }
 }
 
-
+// not used error and response class
 const handleLoadPostForHomePage = async (req, res) => {
 
     console.log(req.query);
@@ -379,7 +387,7 @@ const handleLoadPostForHomePage = async (req, res) => {
     })
 }
 
-
+// not used error and response class
 const handleGetUserPosts = async (req, res) => {
 
     const user_id = req.params.user_id;
@@ -459,6 +467,12 @@ const handleGetUserPosts = async (req, res) => {
 
 }
 
+const uploadImageFromPostEditor = asynchandler( async (req, res) => {
+    // write your logic here
+    
+
+});
+
 module.exports = {
     handleCreatePost,
     handleGetSpecificPost,
@@ -468,5 +482,6 @@ module.exports = {
     handleBookmarkPost,
     handleLikeTheComment,
     handleLoadPostForHomePage,
-    handleGetUserPosts
+    handleGetUserPosts,
+    uploadImageFromPostEditor
 };

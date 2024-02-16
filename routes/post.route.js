@@ -1,5 +1,6 @@
 const express = require('express');
 
+const upload = require('../middlewares/multer.js');
 const {
     handleCreatePost,
     handleGetSpecificPost,
@@ -9,7 +10,8 @@ const {
     handleBookmarkPost,
     handleLikeTheComment,
     handleLoadPostForHomePage,
-    handleGetUserPosts
+    handleGetUserPosts,
+    uploadImageFromPostEditor,
 } = require('../controllers/post.controller.js');
 
 const router = express.Router();
@@ -17,6 +19,8 @@ const router = express.Router();
 router.get('/load', handleLoadPostForHomePage);
 
 router.post('/create', handleCreatePost);
+
+router.post('/create/uploadimage', upload.single('upload'), uploadImageFromPostEditor ); // using async handler
 
 router.get('/:id', handleGetSpecificPost);
 

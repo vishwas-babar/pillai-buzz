@@ -1,6 +1,7 @@
 const User = require('../models/user.model.js');
 const { setUserJwtToken } = require('../utils/auth.js');
 const uploadToCloudinary = require('../utils/cloudinary.js');
+const removeTheFileFromServer = require('../utils/filehandle.js');
 
 async function handleGetUser(req, res) {
     const { email, password } = req.body;
@@ -163,18 +164,23 @@ const handleGetUserInfo = async (req, res) => {
 
 const handleUploadProfilePhoto = async (req, res) => {
 
-    console.log('inside the controller')
+    console.log('inside the uploadprofilephoto controller')
 
     const user_id = req.body.user_id;
-
-    console.log('files: ', req.files);
-
-    console.log('files: ', req.files);
 
     // Check if profilePhoto is defined before trying to access its elements
     let profilePhotoLocalPath;
     if (req.files && req.files.profilePhoto && req.files.profilePhoto.length > 0) {
         profilePhotoLocalPath = req.files.profilePhoto[0].path;
+
+        // if given file is not image then reject request
+        if (!req.files.profilePhoto[0].mimetype.startsWith('image/')) { 
+            removeTheFileFromServer(profilePhotoLocalPath);
+            return res.status(400).json({
+                msg: "Please upload image and not the other files"
+            })
+        }
+
     } else {
         // Handle the case when profilePhoto is not defined or no file was attached
         return res.status(400).json({

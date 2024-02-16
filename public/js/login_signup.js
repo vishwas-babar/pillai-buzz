@@ -45,6 +45,8 @@ signup_form.addEventListener('submit', (event) => {
     })
         .then((res) => {
 
+            console.log("response: ", res.data)
+            console.log("user_id: ", res.data._id)
             showUploadProfilePhotomodal(res.data._id);
 
             signup_form.reset();
@@ -128,9 +130,11 @@ function showToastBlue(message) {
     }, 3000);
 }
 
+let currentLoggedInUser_id;
 function showUploadProfilePhotomodal(user_id) {
-    let currentLoggedInUser_id = user_id;
-    console.log(currentLoggedInUser_id)
+    currentLoggedInUser_id = user_id;
+    console.log("shwouploadprofilephotomodal is called with id: ", currentLoggedInUser_id)
+    console.trace()
 
     const uploadProfilePart = document.querySelector('#upload-profile-part');
     const signupFormPart = document.querySelector('#signup-form-part');
@@ -143,62 +147,60 @@ function showUploadProfilePhotomodal(user_id) {
         uploadProfilePart.classList.remove('hidden');
         uploadProfilePart.style.opacity = '1';
     }, 1000);
-
-
-    // add event listeners for skip and add btn
-    const skipProfileBtn = document.querySelector('#skip-profile-btn');
-    const addProfileBtn = document.querySelector('#add-profile-btn');
-
-    skipProfileBtn.addEventListener('click', () => {
-        window.location.href = '/';
-    });
-
-
-    // submit the profile photo
-    uploadProfilePart.addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        const fileInput = document.querySelector('input[type="file"');
-        const profilePhoto = fileInput.files[0];
-
-        const formData = new FormData();
-        formData.append('profilePhoto', profilePhoto);
-        formData.append('user_id', currentLoggedInUser_id);
-
-        // show loading until profile not upload
-        const profileLoadingLoader =  document.querySelector('#profile-loading-loader');
-        const addProfileBtn = document.querySelector('#add-profile-btn');
-        addProfileBtn.disabled = true;
-        profileLoadingLoader.style.opacity = '1';
-        axios.post('/api/user/addprofilephoto', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            },
-        })
-            .then((res) => {
-                console.log(res);
-
-                showToastBlue('profile photo added');
-                const profileImgElement = document.querySelector('#profile-img-img');
-                profileImgElement.src = res.data.profilePhoto;
-
-                profileLoadingLoader.style.opacity = '0';
-                addProfileBtn.disabled = false;
-                // redirect suer to home page if profile is set succesfully
-                setTimeout(() => {
-                    window.location.href = '/';
-                }, 1000);
-            })
-            .catch((error) => {
-                profileLoadingLoader.style.opacity = '0';
-                addProfileBtn.disabled = false;
-                showToast('failed to upload profile photo');
-                console.log('error: ', error);
-            })
-    })
-
+    
 }
 
+// add event listeners for skip and add btn
+const skipProfileBtn = document.querySelector('#skip-profile-btn');
+skipProfileBtn.addEventListener('click', () => {
+    window.location.href = '/';
+});
+
+// submit the profile photo
+const uploadProfilePart = document.querySelector('#upload-profile-part');
+uploadProfilePart.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    console.log('uploading profile photo to database...for the id: ', currentLoggedInUser_id);
+
+    const fileInput = document.querySelector('input[type="file"');
+    const profilePhoto = fileInput.files[0];
+
+    const formData = new FormData();
+    formData.append('profilePhoto', profilePhoto);
+    formData.append('user_id', currentLoggedInUser_id);
+
+    // show loading until profile not upload
+    const profileLoadingLoader =  document.querySelector('#profile-loading-loader');
+    const addProfileBtn = document.querySelector('#add-profile-btn');
+    addProfileBtn.disabled = true;
+    profileLoadingLoader.style.opacity = '1';
+    axios.post('/api/user/addprofilephoto', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        },
+    })
+        .then((res) => {
+            console.log(res);
+
+            showToastBlue('profile photo added');
+            const profileImgElement = document.querySelector('#profile-img-img');
+            profileImgElement.src = res.data.profilePhoto;
+
+            profileLoadingLoader.style.opacity = '0';
+            addProfileBtn.disabled = false;
+            // redirect user to home page if profile is set succesfully
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1000);
+        })
+        .catch((error) => {
+            profileLoadingLoader.style.opacity = '0';
+            addProfileBtn.disabled = false;
+            showToast('failed to upload profile photo');
+            console.log('error: ', error);
+        })
+})
 
 // click on photo input when clicked on profile img
 const profileImgDiv = document.querySelector('#profile-img-div');
@@ -208,10 +210,11 @@ profileImgDiv.addEventListener('click', () => {
 })
 
 
-const test_btn = document.querySelector('.test-btn');
-test_btn.addEventListener('click', () => {
-    showUploadProfilePhotomodal();
-})
+// const test_btn = document.querySelector('.test-btn');
+// test_btn.addEventListener('click', () => {
+//     showUploadProfilePhotomodal();
+// })
+
 
 // send request to server for login
 const login_form = document.querySelector('.login-form');
