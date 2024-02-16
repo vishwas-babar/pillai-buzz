@@ -10,6 +10,7 @@ const uploadToCloudinary = require('../utils/cloudinary.js');
 
 // not used error and response class
 async function handleCreatePost(req, res) {
+    console.log("req.user: ", req.user);
 
     // check if user is awailable in body or not
     const user = req.body.user;
@@ -469,7 +470,24 @@ const handleGetUserPosts = async (req, res) => {
 
 const uploadImageFromPostEditor = asynchandler( async (req, res) => {
     // write your logic here
+    console.log('got the request at upload image from post editor controller');
+
+    console.log('uploaded file: ', req.file); // when we use upload.single('name') from multer then it store this single file req.file
     
+    const uploadLocalPath = req.file?.path;
+    if(!uploadLocalPath) {
+        throw new ApiError(400, "does not get any local path or image is not provided");
+    }
+
+    const upload = await uploadToCloudinary(uploadLocalPath);
+    if(!upload){
+        throw new ApiError(500, "failed to add image on cloudinary");
+    }
+
+    return res.status(200).json({
+        uploaded: true,
+        url: upload.secure_url
+    })
 
 });
 

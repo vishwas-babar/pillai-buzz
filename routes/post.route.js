@@ -18,7 +18,7 @@ const router = express.Router();
 
 router.get('/load', handleLoadPostForHomePage);
 
-router.post('/create', handleCreatePost);
+router.post('/create', upload.single('coverImage'), handleCreatePost);
 
 router.post('/create/uploadimage', upload.single('upload'), uploadImageFromPostEditor ); // using async handler
 

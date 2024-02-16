@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create post</title>
 
-    <link rel="stylesheet" href="/css/tailwind.output.css">
+    <link rel="stylesheet" href="/css/output.css">
     <link rel="stylesheet" href="/css/editor.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../public/css/editor.css">
@@ -21,7 +21,7 @@
                 <!-- <img src="../public/images/Pillaipo.png" alt=""> -->
                 <img src="/images/Pillaipo.png" alt="">
                 <p>Pillai Buzz</p>
-                
+
                 <a class="side-nav-close-btn">
                     <i class='bx bx-x'></i>
                 </a>
@@ -62,6 +62,17 @@
         <div id="editor"></div>
     </div>
 
+    <!-- overlay for showing the add cover image modal -->
+    <div id="cover-image-overlay" class="overlay hidden fixed top-0 left-0 w-full h-full bg-black opacity-0 z-50 transition-all duration-300 ease-in-out"></div>
+   
+    <div id="cover-image-modal" class="h-fit w-fit border p-4 shadow-md rounded-md scale-[0.10] hidden">
+        <div id="cover-image-div" class="flex aspect-video h-56 overflow-hidden items-center justify-center rounded-md border border-black bg-gray-200 cursor-pointer relative">
+            <i id="cover-image-ic" class="bx bx-image text-[90px] text-gray-400 absolute"></i>
+            <img id="cover-image" src="" class="object-cover" alt="">
+        </div>
+        <input id="cover-image-input" accept="images/*" name="coverPhoto" type="file" class="hidden" />
+        <button id="add-btn" class="w-full p-4 bg-custom-primary hover:bg-custom-primary-hover transition-all duration-150 ease-linear rounded-md mt-3 mb-1 text-white active:scale-[0.98]">Add</button>
+    </div>
 
     <script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
