@@ -4,7 +4,7 @@ let editor;
 
 ClassicEditor.create(container, {
     ckfinder: {
-        uploadUrl: '/path/to/your/upload/script'
+        uploadUrl: '/api/post/create/uploadimage'
     },
     removePlugins: ['CKFinder', 'Logo'],
     placeholder: 'Add discription here...'
@@ -48,7 +48,7 @@ publishBtn.addEventListener('click', () => {
     publishBtn.disabled = true;
     publishBtn.textContent = 'Sending...';
 
-    axios.post('/api/post', {
+    axios.post('/api/post/create', {
         title: title,
         discription: discription,
     })

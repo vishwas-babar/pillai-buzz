@@ -9,8 +9,8 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="/css/output.css">
     <link rel="stylesheet" href="../public/css/output.css">
-    <link rel="stylesheet" href="../public//css/profile.css">
-    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" href="../public//css/myprofile.css">
+    <link rel="stylesheet" href="/css/myprofile.css">
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -68,8 +68,7 @@
                 class="rounded-[20px] hover:bg-custom-primary hover:text-white hover:shadow-md px-[20px] py-[10px] transition-all duration-[0.3s] ease-in-out">
                 My Feed
             </a>
-            <a
-                href="/bookmarks"
+            <a  href="/bookmarks"
                 class="rounded-[20px] hover:bg-custom-primary hover:text-white hover:shadow-md px-[20px] py-[10px] transition-all duration-[0.3s] ease-in-out">
                 Bookmarks
             </a>
@@ -109,11 +108,9 @@
         <!-- profile container -->
         <div class="flex sm:flex-row flex-col min-h-52 w-full my-2 sm:my-9 items-center border-b ">
 
-            <div class="size-[150px] ml-7 flex items-center ">
-                <div class="md:size-[150px] size-[150px] flex items-center rounded-full overflow-hidden">
-                    <!-- <img src="../public/images/user.png" alt=""> -->
-                    <img id="profile-photo" src="/images/user.png" class="rounded-full object-cover object-center ring-1 ring-blue-600" alt="">
-                </div>
+            <div class="md:size-[200px] size-[150px] flex items-center rounded-full overflow-hidden ml-7">
+                <!-- <img src="../public/images/user.png" alt=""> -->
+                <img id="profile-photo" src="/images/user.png" class="rounded-full" alt="">
             </div>
 
 
@@ -121,26 +118,20 @@
                 <div class=" w-fit">
                     <h2 id="user-name" class="text-[22px] sm:mt-0 font-serif leading-4 mb-0 text-nowrap"></h2>
                     <span id="user-id" class="text-[14px] mt-0 text-nowrap"></span>
-                    <p id="role" class="text-[18px] leading-7">2nd year student</p>
+                    <p id="role" class="text-[18px] leading-7">Student at phcet</p>
 
                     <div class="flex gap-5 mt-2 sm:mt-11">
-                        <p class="">
-                            <span id="followers-id">79</span>
-                            Followers
-                        </p>
-                        <p>
-                            <span id="following-id">56</span>
-                            Following
-                        </p>
+                        <p class="">0 Followers</p>
+                        <p>0 Following</p>
                     </div>
                 </div>
 
                 <div>
                     <div>
-                        <!-- bell icon btn -->
-                        <a class="btn-primary flex flex-nowrap"> 
-                            <i class='bx bx-bell text-[20px]'></i>
-                        </a>
+                        <button class="btn-primary flex flex-nowrap">
+                            <i class='bx bx-edit-alt text-[17px]'></i>
+                            <span class="sm:inline-block hidden">Edit</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -208,7 +199,7 @@
     <div id="bottom-nav"
         class="fixed h-16 w-full bg-custom-gray bottom-0 flex items-center justify-around sm:hidden
                  *:size-10 *:rounded-md *:flex *:items-center *:justify-center *:transition-all *:duration-300 ease-in-out">
-        <a id="home-feed" href="/" class="active:bg-custom-primary active:text-white">
+        <a href="/" id="home-feed" class="active:bg-custom-primary active:text-white">
             <i class='bx bx-home text-[23px]'></i>
         </a>
         <a id="bookmark" class="active:bg-custom-primary active:text-white">
@@ -224,8 +215,8 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
-    <script src="../public/js/profile.js"></script>
-    <script src="/js/profile.js"></script>
+    <script src="../public//js/myprofile.js"></script>
+    <script src="js/myprofile.js"></script>
 </body>
 
 </html>

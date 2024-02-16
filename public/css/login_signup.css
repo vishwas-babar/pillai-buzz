@@ -225,7 +225,7 @@ main .side-img-container img {
     margin-bottom: 10px;
 }
 
-form .login-btn{
+form .login-btn, .profile-add-btn{
     width: 100%;
     height: 40px;
     border-radius: 5px;
@@ -245,12 +245,12 @@ form .login-btn{
     transition: all 0.2s ease-in-out;
 }
 
-form .login-btn:hover{
+form .login-btn:hover, .profile-add-btn:hover{
     background-color: #4D44C8;
     box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.4);
 }
 
-form .login-btn:active{
+form .login-btn:active, .profile-add-btn:active{
     background-color: #4D44C8;
     box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.4);
     border: 2px solid #4D44C8;

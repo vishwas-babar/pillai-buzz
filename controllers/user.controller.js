@@ -1,5 +1,7 @@
 const User = require('../models/user.model.js');
 const { setUserJwtToken } = require('../utils/auth.js');
+const uploadToCloudinary = require('../utils/cloudinary.js');
+const removeTheFileFromServer = require('../utils/filehandle.js');
 
 async function handleGetUser(req, res) {
     const { email, password } = req.body;
@@ -69,17 +71,33 @@ async function handleCreateNewUser(req, res) {
     }
 
     try {
-        await User.create({
+        const user = await User.create({
             name: name,
             userId: userId,
             email: email,
             password: password,
+            profilePhoto: 'https://res.cloudinary.com/dllphjlv3/image/upload/f_auto,q_auto/ut3hb62wndfelslnpd7m'
+        });
+
+
+        const uid = setUserJwtToken({
+            name: user.name,
+            userId: user.userId,
+            bio: user.bio,
+            userType: user.userType,
+            _id: user._id
+        });
+
+        res.cookie('uid', uid, {
+            
         });
 
         return res.status(200).json({
             message: 'User created successfully',
+            _id: user._id,
         });
     } catch (error) {
+        console.log(error);
         return res.status(500).json({
             message: 'Internal server error',
         });
@@ -97,17 +115,19 @@ function handlesignoutUser(req, res) {
     });
 }
 
-const handleGetUserInfo = async (req, res) => {
+const handleGetMyInfo = async (req, res) => {
     const userinfo = req.body.user;
-    console.log(userinfo);
+
 
     try {
         const user = await User.findById(userinfo._id);
-        console.log(user);
 
         return res.status(200).json({
             name: user.name,
             userId: user.userId,
+            profilePhoto: user.profilePhoto,
+            _id: user._id,
+            postCount: user.posts.length,
         });
     } catch (error) {
         console.log(error);
@@ -117,9 +137,92 @@ const handleGetUserInfo = async (req, res) => {
     }
 }
 
+const handleGetUserInfo = async (req, res) => {
+    
+    const user_id = req.params._id;
+
+
+    try {
+        const user = await User.findById(user_id);
+
+        return res.status(200).json({
+            name: user.name,
+            userId: user.userId,
+            _id: user._id,
+            profilePhoto: user.profilePhoto,
+            postCount: user.posts.length,
+            followingCount: user.following.length,
+            followersCount: user.followers.length,
+        });
+    } catch (error) {
+        console.log(error);
+       return res.status(500).json({
+            msg:'internal server error'
+        })
+    }
+}
+
+const handleUploadProfilePhoto = async (req, res) => {
+
+    console.log('inside the uploadprofilephoto controller')
+
+    const user_id = req.body.user_id;
+
+    // Check if profilePhoto is defined before trying to access its elements
+    let profilePhotoLocalPath;
+    if (req.files && req.files.profilePhoto && req.files.profilePhoto.length > 0) {
+        profilePhotoLocalPath = req.files.profilePhoto[0].path;
+
+        // if given file is not image then reject request
+        if (!req.files.profilePhoto[0].mimetype.startsWith('image/')) { 
+            removeTheFileFromServer(profilePhotoLocalPath);
+            return res.status(400).json({
+                msg: "Please upload image and not the other files"
+            })
+        }
+
+    } else {
+        // Handle the case when profilePhoto is not defined or no file was attached
+        return res.status(400).json({
+            msg: "profile picture is required"
+        });
+    }
+
+
+    // upload img to cloudinary
+    const profilePhoto = await uploadToCloudinary(profilePhotoLocalPath);
+    console.log(profilePhoto);
+
+    if(!profilePhoto) {
+        return res.status(500).json({
+            msg: "failed to upload img to cloudinary"
+        })
+    }
+
+    try {
+        const user = await User.findByIdAndUpdate(user_id, {
+            profilePhoto: profilePhoto.secure_url
+        }, { new: true } )
+
+        res.status(200).json({
+            msg: 'profile photo uploaded succesfully',
+            profilePhoto: user.profilePhoto,
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            msg: 'some internal error',
+            error: error
+        })
+    }
+
+}
+
 module.exports = {
     handleCreateNewUser,
     handleGetUser,
     handlesignoutUser,
+    handleGetMyInfo,
     handleGetUserInfo,
+    handleUploadProfilePhoto,
 }
