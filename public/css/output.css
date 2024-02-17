@@ -2212,6 +2212,12 @@ video {
   .smm\:w-\[70\%\] {
     width: 70%;
   }
+
+  @media (min-width: 640px) {
+    .smm\:sm\:w-\[70\%\] {
+      width: 70%;
+    }
+  }
 }
 
 @media (min-width: 640px) {
@@ -2284,6 +2290,10 @@ video {
     margin-top: 2.5rem;
   }
 
+  .md\:inline-block {
+    display: inline-block;
+  }
+
   .md\:flex {
     display: flex;
   }
@@ -2320,6 +2330,10 @@ video {
 
   .md\:w-\[70\%\] {
     width: 70%;
+  }
+
+  .md\:flex-row {
+    flex-direction: row;
   }
 
   .md\:p-6 {

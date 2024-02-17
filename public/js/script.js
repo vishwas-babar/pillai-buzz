@@ -5,6 +5,7 @@ console.log('script file is connected successfuly')
 const showSideNavBtn = document.querySelector('#show-side-nav-btn');
 const sideNavCloseBtn = document.querySelector('.side-nav-close-btn');
 
+
 showSideNavBtn.addEventListener('click', () => {
     const sideNav = document.querySelector('.side-nav');
     sideNav.style.marginLeft = '0%';
@@ -169,6 +170,9 @@ function sendRequestToBackend() {
         })
 }
 
+
+showPostLoadingSkeleton();
+
 function setEventListenersToPosts(posts) {
 
     posts.forEach(post => {
@@ -222,7 +226,7 @@ function addPostToPage(post) {
             </h1>
         </div>
         <div
-            class="border border-black rounded-md w-full h-48 sm:h-52 md:h-60 lg:h-60 overflow-hidden flex items-center justify-center">
+            class="border border-black aspect-video rounded-md w-full overflow-hidden flex items-center justify-center">
 
             <img class="w-full h-full object-cover" src="${coverImage}" alt="">
         </div>

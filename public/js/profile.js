@@ -115,7 +115,7 @@ function addPostToPage(post) {
             </h1>
         </div>
         <div
-            class="rounded-md border border-black w-full h-48 sm:h-52 md:h-60 lg:h-60 overflow-hidden flex items-center justify-center">
+            class="rounded-md border border-black aspect-video w-full overflow-hidden flex items-center justify-center">
 
             <img class="w-full h-full object-cover" src="${coverImage}" alt="">
         </div>
