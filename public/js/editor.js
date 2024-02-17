@@ -71,11 +71,14 @@ coverImageInput.addEventListener('change', (event) => {
 
 
 function showCoverImageModal(title, description) {
- 
+    console.log('showCoverImageMOdal is executing...')
     // 
     const coverImageModal = document.querySelector('#cover-image-modal');
     coverImageModal.style.display = 'block';
-    coverImageModal.style.transform = 'scale(1)';
+
+    const coverImageOverlay = document.querySelector('#cover-image-overlay');
+    coverImageOverlay.classList.remove('hidden');
+    coverImageOverlay.style.opacity = '0.5';
 
 
     // add the event listener for add btn 

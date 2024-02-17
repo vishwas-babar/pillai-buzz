@@ -116,7 +116,7 @@ function handlesignoutUser(req, res) {
 }
 
 const handleGetMyInfo = async (req, res) => {
-    const userinfo = req.body.user;
+    const userinfo = req.user;
 
 
     try {

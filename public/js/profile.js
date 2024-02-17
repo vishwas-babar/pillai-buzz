@@ -87,7 +87,7 @@ function userHasNOPosts() {
 
 function addPostToPage(post) {
 
-    const { title, reads, likesCount, commentsCount, _id: post_id } = post;
+    const { title, coverImage, reads, likesCount, commentsCount, _id: post_id } = post;
     const { name: authorName, userId: authorUserId, profilePhoto, _id: author_id } = post.authorDetails;
 
     const post_container = document.querySelector('#post-container');
@@ -115,9 +115,9 @@ function addPostToPage(post) {
             </h1>
         </div>
         <div
-            class="rounded-md w-full h-48 sm:h-52 md:h-60 lg:h-60 overflow-hidden flex items-center justify-center">
+            class="rounded-md border border-black w-full h-48 sm:h-52 md:h-60 lg:h-60 overflow-hidden flex items-center justify-center">
 
-            <img class="w-full h-full object-cover" src="/images/news.jpeg" alt="">
+            <img class="w-full h-full object-cover" src="${coverImage}" alt="">
         </div>
         <div class="mt-1 flex justify-between w-full relative">
             <div class=" flex justify-start w-full items-center">
