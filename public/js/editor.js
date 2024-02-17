@@ -44,24 +44,70 @@ publishBtn.addEventListener('click', () => {
         return;
     }
 
-    // add the loading on btn
-    publishBtn.disabled = true;
-    publishBtn.textContent = 'Sending...';
+    showCoverImageModal(title, discription);
 
-    axios.post('/api/post/create', {
-        title: title,
-        discription: discription,
-    })
-        .then((res) => {
-            alert('post created successfully');
-            window.location.href = '/';
-        })
-        .catch((err) => {
-            console.log(err.response.data)
-            alert('An error occurred. Please try again.');
-        })
-        .finally(() => {
-            publishBtn.disabled = false;
-            publishBtn.textContent = 'Publish';
-        })
 });
+
+
+const coverImageInput = document.querySelector('#cover-image-input');
+const coverImageDiv = document.querySelector('#cover-image-div');
+const coverImage = document.querySelector('#cover-image');
+const coverImageIc = document.querySelector('#cover-image-ic');
+
+coverImageDiv.addEventListener('click', () => coverImageInput.click())
+
+coverImageInput.addEventListener('change', (event) => {
+
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            coverImage.src = reader.result;
+            coverImageIc.style.display = 'none';
+        }
+        reader.readAsDataURL(file);
+    }
+})
+
+
+function showCoverImageModal(title, description) {
+    console.log('showCoverImageMOdal is executing...')
+    // 
+    const coverImageModal = document.querySelector('#cover-image-modal');
+    coverImageModal.style.display = 'block';
+
+    const coverImageOverlay = document.querySelector('#cover-image-overlay');
+    coverImageOverlay.classList.remove('hidden');
+    coverImageOverlay.style.opacity = '0.5';
+
+
+    // add the event listener for add btn 
+    const addBtn = document.querySelector("#add-btn");
+    addBtn.addEventListener('click', () => {
+        let coverImage = coverImageInput.files[0];
+
+        const formData = new FormData();
+        formData.append('coverImage', coverImage);
+        formData.append('title', title);
+        formData.append('description', description);
+
+        axios.post('/api/post/create', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+        })
+            .then((res) => {
+                alert('post created successfully');
+                window.location.href = '/';
+            })
+            .catch((err) => {
+                console.log(err.response.data)
+                alert('An error occurred. Please try again.');
+            })
+            .finally(() => {
+                addBtn.disabled = false;
+                addBtn.textContent = 'Add';
+            })
+
+    })
+}

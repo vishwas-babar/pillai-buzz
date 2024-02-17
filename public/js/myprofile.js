@@ -57,7 +57,6 @@ async function requestUserPosts(){
                 addPostToPage(post);
             });
 
-
             // set the click event listeners to all posts
             setEventListenersToPosts();
         })
@@ -76,8 +75,8 @@ function userHasNOPosts() {
 
 function addPostToPage(post) {
 
-    const { title, reads, likesCount, commentsCount, _id: post_id } = post;
-    const { name: authorName, userId: authorUserId, _id: author_id } = post.authorDetails;
+    const { title, coverImage, reads, likesCount, commentsCount, _id: post_id } = post;
+    const { name: authorName, profilePhoto, userId: authorUserId, _id: author_id } = post.authorDetails;
 
     const post_container = document.querySelector('#post-container');
 
@@ -85,8 +84,8 @@ function addPostToPage(post) {
     <div id="post"
     class="h-fit flex flex-col w-full min-w-[90%] items-center rounded-md pt-0">
     <div id="author-info" class="flex justify-start bg-white self-start" data-user_id="${author_id}">
-        <div class="size-14 ring-blue-600">
-            <img src="/images/user.png" alt="">
+        <div class="size-14 ring-blue-600 aspect-square rounded-full overflow-hidden flex items-center justify-center">
+            <img src="${profilePhoto}" alt="">
         </div>
         <div class="ml-2 mt-2">
             <h2 class="md:text-[20px] text-[18px] font-serif leading-4 ">${authorName}</h2>
@@ -104,9 +103,9 @@ function addPostToPage(post) {
             </h1>
         </div>
         <div
-            class="rounded-md w-full h-48 sm:h-52 md:h-60 lg:h-60 overflow-hidden flex items-center justify-center">
+            class="rounded-md border border-black aspect-video w-full overflow-hidden flex items-center justify-center">
 
-            <img class="w-full h-full object-cover" src="/images/news.jpeg" alt="">
+            <img class="w-full h-full object-cover" src="${coverImage}" alt="">
         </div>
         <div class="mt-1 flex justify-between w-full relative">
             <div class=" flex justify-start w-full items-center">

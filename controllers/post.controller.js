@@ -7,24 +7,55 @@ const ApiError = require('../utils/ApiError.js');
 const ApiResponse = require('../utils/ApiResponse.js');
 const asynchandler = require('../utils/asynchandler.js');
 const uploadToCloudinary = require('../utils/cloudinary.js');
+const removeTheFileFromServer = require('../utils/filehandle.js');
 
 // not used error and response class
 async function handleCreatePost(req, res) {
+    console.log('inside the handlecreatenewpost controller')
+    console.log("req.user: ", req.user);
+    console.log("req.body: ", req.body)
 
     // check if user is awailable in body or not
-    const user = req.body.user;
+    const user = req.user;
     if (!user) {
         return res.status(401).json({
             message: 'Unauthorized',
         });
     }
 
+
     // get title and description from body
-    const { title, discription } = req.body;
-    if (!title || !discription) {
+    const { title, description } = req.body;
+    if (!title || !description) {
         return res.status(400).json({
             message: 'Invalid request',
         });
+    }
+
+
+    // upload to clodinary
+    const coverImageLocalPath = req.file?.path;
+
+    // check if proper image is provided or its other type of files
+    // if given file is not image then reject request
+    if (!req.file.mimetype.startsWith('image/')) { 
+        removeTheFileFromServer(coverImageLocalPath);
+        return res.status(400).json({
+            msg: "Please upload image and not the other files"
+        })
+    }
+
+    if (!coverImageLocalPath) {
+        return res.status(400).json({
+            msg: "cover photo is required"
+        })
+    }
+
+    const coverImage = await uploadToCloudinary(coverImageLocalPath);
+    if(!coverImage) {
+        return res.status(500).json({
+            msg: "failed to upload cover image to cloudinary"
+        })
     }
 
 
@@ -34,7 +65,8 @@ async function handleCreatePost(req, res) {
         const newPost = await Post.create({
             author: userindb._id,
             title: title,
-            discription: discription,
+            discription: description,
+            coverImage: coverImage.secure_url
         });
 
         // store the created post in author mypost list
@@ -84,7 +116,7 @@ const handleGetSpecificPost = async (req, res) => {
 // not used error and response class
 const handleLikePost = async (req, res) => {
     const postId = req.params.id;
-    const user = req.body.user;
+    const user = req.user;
 
     try {
 
@@ -115,7 +147,7 @@ const handleLikePost = async (req, res) => {
 // not used error and response class
 const handleAddCommentOnPost = async (req, res) => {
     const postid = req.params.id;
-    const userid = req.body.user._id;
+    const userid = req.user._id;
     const content = req.body.content;
 
     console.log(req.body);
@@ -162,7 +194,7 @@ const handleAddCommentOnPost = async (req, res) => {
 const handleGetAllCommentsOnThePost = async (req, res) => {
 
     const postid = req.params.id;
-    const userid = req.body.user._id;
+    const userid = req.user._id;
 
     try {
         // now check if post exist or not
@@ -236,7 +268,7 @@ const handleGetAllCommentsOnThePost = async (req, res) => {
 // not used error and response class
 const handleBookmarkPost = async (req, res) => {
 
-    const user_id = req.body.user._id;
+    const user_id = req.user._id;
     const post_id = req.params.id;
 
     if (!mongoose.Types.ObjectId.isValid(user_id) || !mongoose.Types.ObjectId.isValid(post_id)) {
@@ -276,7 +308,7 @@ const handleBookmarkPost = async (req, res) => {
 const handleLikeTheComment = async (req, res) => {
     const post_id = req.params.postId;
     const comment_id = req.params.commentId;
-    const user_id = req.body.user._id;
+    const user_id = req.user._id;
 
     if (!mongoose.Types.ObjectId.isValid(post_id) || !mongoose.Types.ObjectId.isValid(comment_id) || !mongoose.Types.ObjectId.isValid(user_id)) {
         return res.status(400).json({
@@ -371,6 +403,7 @@ const handleLoadPostForHomePage = async (req, res) => {
                 "authorDetails.profilePhoto": 1,
                 title: 1,
                 reads: 1,
+                coverImage: 1,
                 createdAt: 1,
                 likesCount: 1,
                 commentsCount: 1,
@@ -433,6 +466,7 @@ const handleGetUserPosts = async (req, res) => {
                 $project: {
                     _id: 1,
                     title: 1,
+                    coverImage: 1,
                     createdAt: 1,
                     likesCount: 1,
                     commentsCount: 1,
@@ -469,7 +503,24 @@ const handleGetUserPosts = async (req, res) => {
 
 const uploadImageFromPostEditor = asynchandler( async (req, res) => {
     // write your logic here
+    console.log('got the request at upload image from post editor controller');
+
+    console.log('uploaded file: ', req.file); // when we use upload.single('name') from multer then it store this single file req.file
     
+    const uploadLocalPath = req.file?.path;
+    if(!uploadLocalPath) {
+        throw new ApiError(400, "does not get any local path or image is not provided");
+    }
+
+    const upload = await uploadToCloudinary(uploadLocalPath);
+    if(!upload){
+        throw new ApiError(500, "failed to add image on cloudinary");
+    }
+
+    return res.status(200).json({
+        uploaded: true,
+        url: upload.secure_url
+    })
 
 });
 

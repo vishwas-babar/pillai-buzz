@@ -38,20 +38,35 @@ const addPostDataToPage = (data) => {
 
     const authorProfilePhoto = document.querySelector('#author-profile-photo');
     const author_name = document.querySelector('#author');
+    const postCoverImage = document.querySelector('#post-cover-image');
     const post_date = document.querySelector('#post-date');
     const heading = document.querySelector('#heading');
     const description = document.querySelector('#description');
+    const authorDiv = document.querySelector('#author-div');
 
     authorProfilePhoto.src = author.profilePhoto;
     author_name.textContent = author.name;
+    authorDiv.setAttribute('data-user_id', author._id);
     post_date.textContent = formatedDate;
     heading.textContent = post.title;
+    postCoverImage.src = post.coverImage;
     description.innerHTML = post.discription;
 
     const elements = document.querySelectorAll('#description a');
     elements.forEach(element => {
         element.classList.add('text-blue-600');
     });
+}
+
+const authorDiv = document.querySelector('#author-div');
+authorDiv.addEventListener('click', () => {
+    // add your login to redirect user to other user profile
+    const user_id = authorDiv.dataset.user_id;
+    redirectToSpecificUserPage(user_id);
+})
+
+function redirectToSpecificUserPage(user_id) {
+    window.location.href = `/profile/${user_id}`;
 }
 
 // show the profile modal
@@ -116,8 +131,6 @@ window.onload = async function () {
 
 
 }
-
-
 
 
 // show side nav bar

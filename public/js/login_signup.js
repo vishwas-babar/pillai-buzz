@@ -163,7 +163,7 @@ uploadProfilePart.addEventListener('submit', (event) => {
 
     console.log('uploading profile photo to database...for the id: ', currentLoggedInUser_id);
 
-    const fileInput = document.querySelector('input[type="file"');
+    const fileInput = document.querySelector('input[type="file"]');
     const profilePhoto = fileInput.files[0];
 
     const formData = new FormData();

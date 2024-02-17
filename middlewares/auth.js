@@ -14,7 +14,7 @@ const isUserAuthenticated = (req, res, next) => {
         return res.redirect('/login');
     }
 
-    req.body.user = user;
+    req.user = user;
     next();
 }
 
