@@ -43,22 +43,6 @@ profile_btn.addEventListener('click', () => {
     profile_modal.style.display = 'flex';
 
 
-    // // add user data to user modal
-    // axios.get('/api/user/info')
-    // .then((res) => {
-    //     const user = res.data;
-    //     console.log(user);
-
-    //     // change the content modal
-    //     const user_name = document.querySelector('#user-name');
-    //     const user_id = document.querySelector('#user-id');
-
-    //     user_name.textContent = user.name;
-    //     user_id.textContent = user.userId;
-    // })
-
-
-
     if (window.innerWidth <= 600) {
         overlay.style.display = 'block';
 

@@ -6,7 +6,7 @@ const { json } = require('body-parser');
 const ApiError = require('../utils/ApiError.js');
 const ApiResponse = require('../utils/ApiResponse.js');
 const asynchandler = require('../utils/asynchandler.js');
-const uploadToCloudinary = require('../utils/cloudinary.js');
+const { uploadToCloudinary } = require('../utils/cloudinary.js');
 const removeTheFileFromServer = require('../utils/filehandle.js');
 
 // not used error and response class
@@ -25,25 +25,25 @@ async function handleCreatePost(req, res) {
 
 
     // get title and description from body
-    const { title, description } = req.body;
-    if (!title || !description) {
+    const { title, content } = req.body;
+    if (!title || !content) {
         return res.status(400).json({
             message: 'Invalid request',
         });
     }
 
-
-    // upload to clodinary
-    const coverImageLocalPath = req.file?.path;
-
+    console.log(req.file)
     // check if proper image is provided or its other type of files
     // if given file is not image then reject request
-    if (!req.file.mimetype.startsWith('image/')) { 
+    if (!req.file?.mimetype.startsWith('image/')) {
         removeTheFileFromServer(coverImageLocalPath);
         return res.status(400).json({
             msg: "Please upload image and not the other files"
         })
     }
+
+    // upload to clodinary
+    const coverImageLocalPath = req.file?.path;
 
     if (!coverImageLocalPath) {
         return res.status(400).json({
@@ -52,7 +52,7 @@ async function handleCreatePost(req, res) {
     }
 
     const coverImage = await uploadToCloudinary(coverImageLocalPath);
-    if(!coverImage) {
+    if (!coverImage) {
         return res.status(500).json({
             msg: "failed to upload cover image to cloudinary"
         })
@@ -65,8 +65,9 @@ async function handleCreatePost(req, res) {
         const newPost = await Post.create({
             author: userindb._id,
             title: title,
-            discription: description,
-            coverImage: coverImage.secure_url
+            discription: content,
+            coverImage: coverImage.secure_url,
+            coverImagePublicId: coverImage.public_id,
         });
 
         // store the created post in author mypost list
@@ -76,6 +77,7 @@ async function handleCreatePost(req, res) {
 
         return res.status(200).json({
             message: 'Post created successfully',
+            postId: newPost._id,
         });
     } catch (error) {
         console.log(error);
@@ -88,7 +90,7 @@ async function handleCreatePost(req, res) {
 // not used error and response class
 const handleGetSpecificPost = async (req, res) => {
     const { id } = req.params;
-
+    console.log("sending the single post...")
     if (!id) {
         return res.status(400).json({
             message: 'Invalid request',
@@ -361,7 +363,14 @@ const handleLoadPostForHomePage = async (req, res) => {
     const page = parseInt(req.query.page);
     const postsPerPage = parseInt(req.query.postsPerPage);
 
-    const skip = postsPerPage * page;
+    // if required query is not provided then server will crash, and we handling this case 
+    if (!page || !postsPerPage) { // :todo  
+        return res.status(400).json({
+            msg: "required query not provided"
+        })
+    }
+
+    const skip = postsPerPage * (page - 1);
     console.log(skip);
 
     const posts = await Post.aggregate([
@@ -474,12 +483,12 @@ const handleGetUserPosts = async (req, res) => {
                     "authorDetails.userId": 1,
                     "authorDetails.name": 1,
                     "authorDetails._id": 1,
-                    "authorDetails.profilePhoto":1,
+                    "authorDetails.profilePhoto": 1,
                 }
             }
         ])
 
-        if(posts.length == 0){ // == is loose equality operator and === strict equality operator 
+        if (posts.length == 0) { // == is loose equality operator and === strict equality operator 
             return res.status(200).json({
                 msg: "this user has no posts yet",
                 posts: posts,
@@ -490,7 +499,7 @@ const handleGetUserPosts = async (req, res) => {
             msg: "user posts sent successfully",
             posts: posts,
         })
-        
+
     } catch (error) {
         console.log(error)
         return res.status(400).json({
@@ -501,19 +510,19 @@ const handleGetUserPosts = async (req, res) => {
 
 }
 
-const uploadImageFromPostEditor = asynchandler( async (req, res) => {
+const uploadImageFromPostEditor = asynchandler(async (req, res) => {
     // write your logic here
     console.log('got the request at upload image from post editor controller');
 
     console.log('uploaded file: ', req.file); // when we use upload.single('name') from multer then it store this single file req.file
-    
+
     const uploadLocalPath = req.file?.path;
-    if(!uploadLocalPath) {
+    if (!uploadLocalPath) {
         throw new ApiError(400, "does not get any local path or image is not provided");
     }
 
     const upload = await uploadToCloudinary(uploadLocalPath);
-    if(!upload){
+    if (!upload) {
         throw new ApiError(500, "failed to add image on cloudinary");
     }
 
@@ -523,6 +532,56 @@ const uploadImageFromPostEditor = asynchandler( async (req, res) => {
     })
 
 });
+
+const handleUpdateThePost = asynchandler(async (req, res) => {
+    const post_id = req.params.post_id;
+    const { _id } = req.user;
+    const { title, content, coverImage } = req.body;
+
+    if (!post_id) {
+        throw new ApiError(400, "post _id is not provided")
+    }
+
+    const post = await Post.findById(post_id).select("author");
+    console.log(post?.author)
+    console.log(_id)
+    if (!post.author.equals(_id)) {
+        throw new ApiError(401, "this user is not authorized to edit this post!")
+    }
+
+    if (req.file) {
+
+        const upload = await uploadToCloudinary(req.file?.path);
+        if (!upload) {
+            throw new ApiError(500, "failed to upload the image to cloudinary")
+        }
+
+        const updatedPost = await Post.findByIdAndUpdate(post_id, {
+            title,
+            discription: content,
+            coverImage: upload.secure_url,
+            coverImagePublicId: upload.public_id,
+        }, { new: true }).select("title _id")
+
+        res.status(200).json(new ApiResponse(200, "post updated", {
+            title: updatedPost?.title,
+            _id: updatedPost?._id,
+        }))
+    } else {
+        const updatedPost = await Post.findByIdAndUpdate(post_id, {
+            title,
+            discription: content,
+        }, { new: true }).select("title _id")
+
+        if (updatedPost) {
+            res.status(200).json(new ApiResponse(200, "updated the post", {
+                title: updatedPost?.title,
+                _id: updatedPost?._id,
+            }))
+        }
+    }
+
+})
 
 module.exports = {
     handleCreatePost,
@@ -534,5 +593,6 @@ module.exports = {
     handleLikeTheComment,
     handleLoadPostForHomePage,
     handleGetUserPosts,
-    uploadImageFromPostEditor
+    uploadImageFromPostEditor,
+    handleUpdateThePost,
 };

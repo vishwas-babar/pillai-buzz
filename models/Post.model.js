@@ -39,6 +39,9 @@ const postSchema = new mongoose.Schema(
             type:  String,
             required: true,
         },
+        coverImagePublicId: {
+            type: String,
+        },
         tags: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Tag',

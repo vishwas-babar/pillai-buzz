@@ -12,6 +12,7 @@ const {
     handleLoadPostForHomePage,
     handleGetUserPosts,
     uploadImageFromPostEditor,
+    handleUpdateThePost,
 } = require('../controllers/post.controller.js');
 
 const router = express.Router();
@@ -21,6 +22,8 @@ router.get('/load', handleLoadPostForHomePage);
 router.post('/create', upload.single('coverImage'), handleCreatePost);
 
 router.post('/create/uploadimage', upload.single('upload'), uploadImageFromPostEditor ); // using async handler
+
+router.post('/update/:post_id', upload.single('coverImage'), handleUpdateThePost );
 
 router.get('/:id', handleGetSpecificPost);
 

@@ -1,7 +1,10 @@
 const User = require('../models/user.model.js');
+const ApiError = require('../utils/ApiError.js');
+const ApiResponse = require('../utils/ApiResponse.js');
 const { setUserJwtToken } = require('../utils/auth.js');
-const uploadToCloudinary = require('../utils/cloudinary.js');
+const {uploadToCloudinary} = require('../utils/cloudinary.js');
 const removeTheFileFromServer = require('../utils/filehandle.js');
+const asynchandler = require('../utils/asynchandler.js')
 
 async function handleGetUser(req, res) {
     const { email, password } = req.body;
@@ -118,7 +121,6 @@ function handlesignoutUser(req, res) {
 const handleGetMyInfo = async (req, res) => {
     const userinfo = req.user;
 
-
     try {
         const user = await User.findById(userinfo._id);
 
@@ -140,7 +142,6 @@ const handleGetMyInfo = async (req, res) => {
 const handleGetUserInfo = async (req, res) => {
     
     const user_id = req.params._id;
-
 
     try {
         const user = await User.findById(user_id);
@@ -218,6 +219,50 @@ const handleUploadProfilePhoto = async (req, res) => {
 
 }
 
+const handleGetCurrentUser = async (req, res) => {
+
+    const _id = req.user?._id;
+    if (!_id) {
+        return new res.status(400).json(new ApiResponse(400, "_id is required to get the user"))
+    }
+    
+    try {
+        const user = await User.findById(_id).select("name _id email bookmarks profilePhoto userType userId");
+        if(user) {
+            const response = new ApiResponse(200, "everything is well", user)
+
+            return res.status(200).json(response)
+        }
+    } catch (error) {
+        return res.status(400).json(new ApiResponse(400, "internal server error"));
+    }
+
+}
+
+const handleGetUserData = asynchandler(async (req, res) => {
+    const user_id = req.params._id;
+    const loggedInUser_id = req.user?._id;
+    if (!user_id) {
+        throw new ApiError(400, "you not provided _id as query para");
+    }
+
+    console.log(user_id)
+
+    if (user_id === loggedInUser_id) {
+        console.log("the current user and the provided user is same")
+        const user = await User.findById(user_id).select("-password -bookmarks -notifications -updatedAt");
+        if (user) {
+            return res.status(200).json(new ApiResponse(200, "successful", user))
+        }
+    }else{
+        console.log("users are different")
+        const user = await User.findById(user_id).select("-password -email -notifications -bookmarks -updatedAt -intrests -subscribers -userType")
+        if (user) {
+            return res.status(200).json(new ApiResponse(200, "successful", user))
+        }
+    }
+})
+
 module.exports = {
     handleCreateNewUser,
     handleGetUser,
@@ -225,4 +270,6 @@ module.exports = {
     handleGetMyInfo,
     handleGetUserInfo,
     handleUploadProfilePhoto,
+    handleGetCurrentUser,
+    handleGetUserData,
 }
