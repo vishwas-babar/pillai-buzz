@@ -198,6 +198,8 @@ const handleGetAllCommentsOnThePost = async (req, res) => {
     const postid = req.params.id;
     const userid = req.user._id;
 
+    console.log("sending the comments....")
+
     try {
         // now check if post exist or not
         // const post = await Post.findById(postid).select('comments');
@@ -232,12 +234,12 @@ const handleGetAllCommentsOnThePost = async (req, res) => {
                     likeCount: {
                         $size: "$likes",
                     },
+                    "comments.author_id": "$comment_author_info._id", // Add author _id to each comment
                     "comments.authorName": "$comment_author_info.name", // Add author name to each comment
                     "comments.authorUserId": "$comment_author_info.userId",   // Add author id to each comment
                     "comments.authorProfilePhoto": "$comment_author_info.profilePhoto",   // Add author id to each comment
                 },
             },
-
             {
                 $project: {
                     likesCount: 1,
@@ -561,22 +563,24 @@ const handleUpdateThePost = asynchandler(async (req, res) => {
             discription: content,
             coverImage: upload.secure_url,
             coverImagePublicId: upload.public_id,
-        }, { new: true }).select("title _id")
+        }, { new: true }).select("title _id coverImage")
 
         res.status(200).json(new ApiResponse(200, "post updated", {
             title: updatedPost?.title,
             _id: updatedPost?._id,
+            coverImage: updatedPost?.coverImage,
         }))
     } else {
         const updatedPost = await Post.findByIdAndUpdate(post_id, {
             title,
             discription: content,
-        }, { new: true }).select("title _id")
+        }, { new: true }).select("title _id coverImage")
 
         if (updatedPost) {
             res.status(200).json(new ApiResponse(200, "updated the post", {
                 title: updatedPost?.title,
                 _id: updatedPost?._id,
+                coverImage: updatedPost?.coverImage,
             }))
         }
     }
