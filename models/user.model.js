@@ -1,5 +1,31 @@
 const mongoose = require('mongoose');
 
+
+const notificationsSchema = mongoose.Schema(
+    {
+        message: {
+            type: String,
+            required: true,
+            trim: true,
+        },
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            default: ""
+        },
+        postId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Post',
+            default: ""
+        },
+        readStatus: {
+            type: Boolean,
+            default: false,
+        }
+    },
+    { timestamps: true }
+)
+
 const userSchema = new mongoose.Schema(
     {
         userId: {
@@ -64,10 +90,7 @@ const userSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Post',
         }],
-        notifications: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Post'
-        }],
+        notifications: [notificationsSchema],
     },
     { timestamps: true}
 );

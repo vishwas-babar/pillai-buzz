@@ -281,9 +281,23 @@ const handleBookmarkPost = async (req, res) => {
         })
     }
 
-    // 
 
     try {
+
+        const userInDB = await User.findById(user_id).select("name userId profilePhoto bookmarks");
+
+        if (!userInDB) {
+            return res.status(404).json({
+                msg: "the current user is not exist in db"
+            })
+        }
+
+        if (userInDB.bookmarks.includes(post_id)) {
+            return res.status(409).json({
+                msg: "post is already bookmarked"
+            })
+        }
+
         const user = await User.findByIdAndUpdate(user_id, {
             $push: {
                 bookmarks: post_id
@@ -298,9 +312,9 @@ const handleBookmarkPost = async (req, res) => {
 
         return res.status(200).json({
             msg: "bookmarked successfully",
-
         })
     } catch (error) {
+        console.log(error)
         return res.status(500).json({
             msg: "internal server error",
             error: error,
@@ -461,7 +475,6 @@ const handleGetUserPosts = async (req, res) => {
                     "authorDetails._id": new ObjectId(user_id)
                 },
             },
-
             {
                 $addFields: {
                     likesCount: {
@@ -587,6 +600,68 @@ const handleUpdateThePost = asynchandler(async (req, res) => {
 
 })
 
+
+const handleGetBookmarks = asynchandler(async (req, res) => {
+    const user_id = req.user._id;
+
+    if (!user_id) {
+        throw new ApiError(401, "does  not get any users _id!")
+    }
+
+    try {
+        const bookmarkPosts = await User.aggregate([
+            {
+                $match: {
+                    _id: new ObjectId(user_id),
+                },
+            },
+            {
+                $unwind: '$bookmarks'
+            },
+            {
+                $lookup: {
+                    from: 'posts',
+                    localField: 'bookmarks',
+                    foreignField: '_id',
+                    as: 'bookmarkPost'
+                }
+            },
+            {
+                $unwind: '$bookmarkPost'
+            },
+            {
+                $addFields: {
+                    likesCount: {
+                        $size: '$bookmarkPost.likes'
+                    },
+                    commentsCount: {
+                        $size: '$bookmarkPost.comments'
+                    }
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    userId: 1,
+                    name: 1,
+                    profilePhoto: 1,
+                    bookmarkPost: 1,
+                    likesCount: 1,
+                    commentsCount: 1,
+                }
+            },
+        ]);
+
+        bookmarkPosts.reverse()
+        return res.status(200).json(new ApiResponse(200, "sent all bookmark post", {
+            bookmarkPosts
+        }))
+    } catch (error) {
+        throw new ApiError(500, "internal server errror, failed to send bookmark posts")
+    }
+
+})
+
 module.exports = {
     handleCreatePost,
     handleGetSpecificPost,
@@ -599,4 +674,5 @@ module.exports = {
     handleGetUserPosts,
     uploadImageFromPostEditor,
     handleUpdateThePost,
+    handleGetBookmarks,
 };

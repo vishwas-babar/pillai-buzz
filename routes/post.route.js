@@ -13,6 +13,7 @@ const {
     handleGetUserPosts,
     uploadImageFromPostEditor,
     handleUpdateThePost,
+    handleGetBookmarks,
 } = require('../controllers/post.controller.js');
 
 const router = express.Router();
@@ -25,6 +26,8 @@ router.post('/create/uploadimage', upload.single('upload'), uploadImageFromPostE
 
 router.post('/update/:post_id', upload.single('coverImage'), handleUpdateThePost );
 
+router.get('/get-bookmarks', handleGetBookmarks);
+
 router.get('/:id', handleGetSpecificPost);
 
 router.post('/:id/like', handleLikePost);
@@ -34,6 +37,7 @@ router.post('/:id/addcomment', handleAddCommentOnPost);
 router.get('/:id/comments', handleGetAllCommentsOnThePost);
 
 router.post('/:id/bookmark', handleBookmarkPost);
+
 
 router.post('/:postId/likethecomment/:commentId', handleLikeTheComment);
 
