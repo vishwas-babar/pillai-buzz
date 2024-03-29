@@ -2,9 +2,10 @@
 
 const asynchandler = (fn) => async (req, res, next) => {
     try {
-        fn(req, res, next);
+        await fn(req, res, next);
     } catch (error) {
-        res.status(error.status || 500).json({
+        console.log(error)
+        res.status(error.statusCode || 500).json({
             message: "something went wrong from async handler",
             error: error || "not got error"
         })

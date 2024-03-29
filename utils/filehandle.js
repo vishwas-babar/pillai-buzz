@@ -1,6 +1,5 @@
 const fs = require('fs');
 
-
 const removeTheFileFromServer = (localPath) => {
     try {
         fs.unlinkSync(localPath);

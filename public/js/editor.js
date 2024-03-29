@@ -70,13 +70,14 @@ coverImageInput.addEventListener('change', (event) => {
 })
 
 
+const coverImageOverlay = document.querySelector('#cover-image-overlay');
+const coverImageModal = document.querySelector('#cover-image-modal');
 function showCoverImageModal(title, description) {
     console.log('showCoverImageMOdal is executing...')
     // 
-    const coverImageModal = document.querySelector('#cover-image-modal');
     coverImageModal.style.display = 'block';
+    coverImageModal.style.opacity = '1';
 
-    const coverImageOverlay = document.querySelector('#cover-image-overlay');
     coverImageOverlay.classList.remove('hidden');
     coverImageOverlay.style.opacity = '0.5';
 
@@ -111,3 +112,9 @@ function showCoverImageModal(title, description) {
 
     })
 }
+
+coverImageOverlay.addEventListener('click', () => {
+
+    coverImageModal.style.opacity = '0';
+    coverImageOverlay.classList.add('hidden')
+})

@@ -1,5 +1,35 @@
 const mongoose = require('mongoose');
 
+
+const notificationsSchema = mongoose.Schema(
+    {
+        message: {
+            type: String,
+            required: true,
+            trim: true,
+        },
+        user_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            default: ""
+        },
+        post_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Post',
+            default: ""
+        },
+        notificationType: {
+            type: String,
+            enum: ["following", "createPost", "likePost", "likeComment"]
+        },
+        readStatus: {
+            type: Boolean,
+            default: false,
+        }
+    },
+    { timestamps: true }
+)
+
 const userSchema = new mongoose.Schema(
     {
         userId: {
@@ -64,10 +94,7 @@ const userSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Post',
         }],
-        notifications: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Post'
-        }],
+        notifications: [notificationsSchema],
     },
     { timestamps: true}
 );
