@@ -9,7 +9,8 @@ const {
     handleGetUserInfo,
     handleUploadProfilePhoto,
     handleGetCurrentUser,
-    handleGetUserData
+    handleGetUserData,
+    handleNotificationOnOffToggle,
 } = require('../controllers/user.controller.js');
 const isUserAuthenticated = require('../middlewares/auth.js');
 const upload = require('../middlewares/multer.js');
@@ -28,6 +29,8 @@ router.post('/addprofilephoto', upload.fields([
 router.post('/signout', handlesignoutUser);
 
 router.get('/info', isUserAuthenticated, handleGetMyInfo);
+
+router.post('/notification-toggle', isUserAuthenticated, handleNotificationOnOffToggle);
 
 router.get('/get-current-user', isUserAuthenticated, handleGetCurrentUser)
 

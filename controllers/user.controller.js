@@ -2,7 +2,7 @@ const User = require('../models/user.model.js');
 const ApiError = require('../utils/ApiError.js');
 const ApiResponse = require('../utils/ApiResponse.js');
 const { setUserJwtToken } = require('../utils/auth.js');
-const {uploadToCloudinary} = require('../utils/cloudinary.js');
+const { uploadToCloudinary } = require('../utils/cloudinary.js');
 const removeTheFileFromServer = require('../utils/filehandle.js');
 const asynchandler = require('../utils/asynchandler.js')
 
@@ -92,7 +92,7 @@ async function handleCreateNewUser(req, res) {
         });
 
         res.cookie('uid', uid, {
-            
+
         });
 
         return res.status(200).json({
@@ -133,14 +133,14 @@ const handleGetMyInfo = async (req, res) => {
         });
     } catch (error) {
         console.log(error);
-       return res.status(500).json({
-            msg:'internal server error'
+        return res.status(500).json({
+            msg: 'internal server error'
         })
     }
 }
 
 const handleGetUserInfo = async (req, res) => {
-    
+
     const user_id = req.params._id;
 
     try {
@@ -157,8 +157,8 @@ const handleGetUserInfo = async (req, res) => {
         });
     } catch (error) {
         console.log(error);
-       return res.status(500).json({
-            msg:'internal server error'
+        return res.status(500).json({
+            msg: 'internal server error'
         })
     }
 }
@@ -175,7 +175,7 @@ const handleUploadProfilePhoto = async (req, res) => {
         profilePhotoLocalPath = req.files.profilePhoto[0].path;
 
         // if given file is not image then reject request
-        if (!req.files.profilePhoto[0].mimetype.startsWith('image/')) { 
+        if (!req.files.profilePhoto[0].mimetype.startsWith('image/')) {
             removeTheFileFromServer(profilePhotoLocalPath);
             return res.status(400).json({
                 msg: "Please upload image and not the other files"
@@ -194,7 +194,7 @@ const handleUploadProfilePhoto = async (req, res) => {
     const profilePhoto = await uploadToCloudinary(profilePhotoLocalPath);
     console.log(profilePhoto);
 
-    if(!profilePhoto) {
+    if (!profilePhoto) {
         return res.status(500).json({
             msg: "failed to upload img to cloudinary"
         })
@@ -203,7 +203,7 @@ const handleUploadProfilePhoto = async (req, res) => {
     try {
         const user = await User.findByIdAndUpdate(user_id, {
             profilePhoto: profilePhoto.secure_url
-        }, { new: true } )
+        }, { new: true })
 
         res.status(200).json({
             msg: 'profile photo uploaded succesfully',
@@ -225,10 +225,10 @@ const handleGetCurrentUser = async (req, res) => {
     if (!_id) {
         return new res.status(400).json(new ApiResponse(400, "_id is required to get the user"))
     }
-    
+
     try {
         const user = await User.findById(_id).select("name _id email bookmarks profilePhoto userType userId");
-        if(user) {
+        if (user) {
             const response = new ApiResponse(200, "everything is well", user)
 
             return res.status(200).json(response)
@@ -254,11 +254,67 @@ const handleGetUserData = asynchandler(async (req, res) => {
         if (user) {
             return res.status(200).json(new ApiResponse(200, "successful", user))
         }
-    }else{
+    } else {
         console.log("users are different")
-        const user = await User.findById(user_id).select("-password -email -notifications -bookmarks -updatedAt -intrests -subscribers -userType")
+        const user = await User.findById(user_id).select("-password -email -notifications -bookmarks -updatedAt -intrests -userType")
         if (user) {
             return res.status(200).json(new ApiResponse(200, "successful", user))
+        }
+    }
+})
+
+const handleNotificationOnOffToggle = asynchandler(async (req, res) => {
+
+    // add current user _id to the target author subscriber array field
+    const author_id = req.body.author_id;
+    const subscriberUser_id = req.user._id;
+
+    if (!author_id || !subscriberUser_id) {
+        throw new ApiError(400, "you not provided the all required data for this request")
+    }
+
+    // first check the current user exist or not
+    const current_logged_in_user = await User.findById(subscriberUser_id).select("_id name userId")
+
+    if (!current_logged_in_user) {
+        throw new ApiError(404, "the current user not found!")
+    }
+
+    // check if the author user exist or not
+    const authorUser = await User.findById(author_id).select("_id subscribers");
+
+    if (!authorUser) {
+        throw new ApiError(404, "the author user you trying to turn on notification for not exist!")
+    }
+
+    // to toggle on of notification check if this user is already in the subscribers list or not
+    // if it is already in the array then remove it 
+    // if the current user is not in author user subscriber then add it
+
+    let isAlreadyInSubscribersList = false;
+    const authorSubscribers = authorUser.subscribers;
+    if (authorSubscribers.includes(subscriberUser_id)) {
+        isAlreadyInSubscribersList = true;
+    }
+
+
+    // perform a update operation on author user document to push the current user _id in their subscriber list
+    if (isAlreadyInSubscribersList) {
+        const updatedAuthorUser = await User.findByIdAndUpdate(author_id, {
+            $pull: { subscribers: subscriberUser_id }
+        }, { new: true }).select('_id name userId subscribers')
+
+
+        if (updatedAuthorUser) {
+            return res.status(200).json(new ApiResponse(200, `@${current_logged_in_user?.userId} removed from the the @${updatedAuthorUser.userId} subscribers list`))
+        }
+    } else { // add user in the author subscriber list
+        const updatedAuthorUser = await User.findByIdAndUpdate(author_id, {
+            $push: { subscribers: subscriberUser_id }
+        }, { new: true }).select('_id name userId subscribers')
+
+        if (updatedAuthorUser) {
+            return res.status(200).json(new ApiResponse(200, `@${current_logged_in_user?.userId} added to the @${updatedAuthorUser.userId} subscribers list`))
         }
     }
 })
@@ -272,4 +328,5 @@ module.exports = {
     handleUploadProfilePhoto,
     handleGetCurrentUser,
     handleGetUserData,
+    handleNotificationOnOffToggle,
 }

@@ -8,6 +8,9 @@ const ApiResponse = require('../utils/ApiResponse.js');
 const asynchandler = require('../utils/asynchandler.js');
 const { uploadToCloudinary } = require('../utils/cloudinary.js');
 const removeTheFileFromServer = require('../utils/filehandle.js');
+const notification = require('../utils/Notifications.js');
+
+
 
 // not used error and response class
 async function handleCreatePost(req, res) {
@@ -74,6 +77,10 @@ async function handleCreatePost(req, res) {
         await User.findByIdAndUpdate(user._id, {
             $push: { posts: newPost._id }
         });
+
+
+        // send the notification to all  subscribers 
+        notification.createdNewPostNotification
 
         return res.status(200).json({
             message: 'Post created successfully',

@@ -8,15 +8,19 @@ const notificationsSchema = mongoose.Schema(
             required: true,
             trim: true,
         },
-        userId: {
+        user_id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             default: ""
         },
-        postId: {
+        post_id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Post',
             default: ""
+        },
+        notificationType: {
+            type: String,
+            enum: ["following", "createPost", "likePost", "likeComment"]
         },
         readStatus: {
             type: Boolean,
