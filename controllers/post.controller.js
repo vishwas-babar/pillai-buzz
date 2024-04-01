@@ -15,8 +15,6 @@ const notification = require('../utils/Notifications.js');
 // not used error and response class
 async function handleCreatePost(req, res) {
     console.log('inside the handlecreatenewpost controller')
-    console.log("req.user: ", req.user);
-    console.log("req.body: ", req.body)
 
     // check if user is awailable in body or not
     const user = req.user;
@@ -35,7 +33,7 @@ async function handleCreatePost(req, res) {
         });
     }
 
-    console.log(req.file)
+  
     // check if proper image is provided or its other type of files
     // if given file is not image then reject request
     if (!req.file?.mimetype.startsWith('image/')) {
@@ -80,7 +78,11 @@ async function handleCreatePost(req, res) {
 
 
         // send the notification to all  subscribers 
-        notification.createdNewPostNotification
+        try {
+            notification.createdNewPostNotification(user._id, userindb.userId, newPost._id);
+        } catch (error) { // user notification failed to send then still send the response to user
+            console.log("error in notification creation: ", error)
+        }
 
         return res.status(200).json({
             message: 'Post created successfully',
@@ -141,6 +143,11 @@ const handleLikePost = async (req, res) => {
             $push: { likes: user._id }
         }, { new: true }).select('likes');
 
+        try {
+            notification.postLikeNotification(postId, post?.author, user?._id, user?.userId);
+        } catch (error) {
+            console.log('error in like notification: ', error)
+        }
 
         return res.status(200).json({
             likesCount: updatedPost.likes.length,
@@ -158,15 +165,15 @@ const handleAddCommentOnPost = async (req, res) => {
     const postid = req.params.id;
     const userid = req.user._id;
     const content = req.body.content;
+    const user = req.user;
 
-    console.log(req.body);
 
     // check if post and this user exist 
     let post_indb;
     let user_indb;
     try {
         post_indb = await Post.findById(postid).select('author title reads createdAt');
-        user_indb = await User.findById(userid).select('userId name profilePhoto');
+        user_indb = await User.findById(userid).select('userId _id name profilePhoto');
     } catch (error) {
         return res.status(500).json({
             msg: "internal server error"
@@ -186,6 +193,12 @@ const handleAddCommentOnPost = async (req, res) => {
 
 
         const newComment = updatedPost.comments[updatedPost.comments.length - 1]; // get the last created post
+
+        try {
+            notification.commentedOnPostNotification(user_indb?._id, user_indb?.userId, post_indb?.author, post_indb?._id)
+        } catch (error) {
+            console.log('error in sending notification for new created comment on the post')
+        }
 
         return res.status(200).json({
             msg: "comment added succefully",
@@ -213,7 +226,6 @@ const handleGetAllCommentsOnThePost = async (req, res) => {
 
         // now check if post exist or not
         const post1 = await Post.findById(postid).select('author reads');
-        console.log(post1);
         const comments = await Post.aggregate([
             {
                 $match: {
@@ -254,8 +266,6 @@ const handleGetAllCommentsOnThePost = async (req, res) => {
                 },
             },
         ]);
-
-        console.log(comments)
 
         if (!comments) {
             return res.status(404).json({
@@ -334,6 +344,9 @@ const handleLikeTheComment = async (req, res) => {
     const post_id = req.params.postId;
     const comment_id = req.params.commentId;
     const user_id = req.user._id;
+    const userWhoLikingThePost = req.user;
+
+    console.log(userWhoLikingThePost)
 
     if (!mongoose.Types.ObjectId.isValid(post_id) || !mongoose.Types.ObjectId.isValid(comment_id) || !mongoose.Types.ObjectId.isValid(user_id)) {
         return res.status(400).json({
@@ -342,6 +355,7 @@ const handleLikeTheComment = async (req, res) => {
     }
 
     try {
+
         const post = await Post.findOneAndUpdate(
             { _id: post_id, "comments._id": comment_id },
             { $push: { "comments.$.likes": user_id } }, // add to set only add the different values  if the given value is already exist in array then it avoids to add it in database
@@ -366,6 +380,12 @@ const handleLikeTheComment = async (req, res) => {
 
         const commentLikes = targetComment.likes.length;
 
+        try {
+            notification.likeCommentNotification(targetComment?.createdBy, userWhoLikingThePost?._id, userWhoLikingThePost?.userId, post_id )
+
+        } catch (error) {
+            console.log('error to send notification for comment like: ', error)
+        }
         return res.status(200).json({
             msg: "like added succesfully",
             commentLikesCount: commentLikes,
@@ -382,7 +402,6 @@ const handleLikeTheComment = async (req, res) => {
 // not used error and response class
 const handleLoadPostForHomePage = async (req, res) => {
 
-    console.log(req.query);
     const page = parseInt(req.query.page);
     const postsPerPage = parseInt(req.query.postsPerPage);
 
@@ -394,7 +413,6 @@ const handleLoadPostForHomePage = async (req, res) => {
     }
 
     const skip = postsPerPage * (page - 1);
-    console.log(skip);
 
     const posts = await Post.aggregate([
         {
@@ -536,7 +554,7 @@ const uploadImageFromPostEditor = asynchandler(async (req, res) => {
     // write your logic here
     console.log('got the request at upload image from post editor controller');
 
-    console.log('uploaded file: ', req.file); // when we use upload.single('name') from multer then it store this single file req.file
+    // console.log('uploaded file: ', req.file); // when we use upload.single('name') from multer then it store this single file req.file
 
     const uploadLocalPath = req.file?.path;
     if (!uploadLocalPath) {
@@ -565,8 +583,7 @@ const handleUpdateThePost = asynchandler(async (req, res) => {
     }
 
     const post = await Post.findById(post_id).select("author");
-    console.log(post?.author)
-    console.log(_id)
+    
     if (!post.author.equals(_id)) {
         throw new ApiError(401, "this user is not authorized to edit this post!")
     }

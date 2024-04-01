@@ -192,7 +192,7 @@ const handleUploadProfilePhoto = async (req, res) => {
 
     // upload img to cloudinary
     const profilePhoto = await uploadToCloudinary(profilePhotoLocalPath);
-    console.log(profilePhoto);
+    // console.log(profilePhoto);
 
     if (!profilePhoto) {
         return res.status(500).json({
@@ -246,7 +246,7 @@ const handleGetUserData = asynchandler(async (req, res) => {
         throw new ApiError(400, "you not provided _id as query para");
     }
 
-    console.log(user_id)
+    // console.log(user_id)
 
     if (user_id === loggedInUser_id) {
         console.log("the current user and the provided user is same")

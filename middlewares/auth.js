@@ -12,7 +12,7 @@ const isUserAuthenticated = (req, res, next) => {
     }
 
     const user = getUserByToken(token);
-    console.log(user)
+    // console.log(user)
     if (!user) {
         res.clearCookie('uid');
         return res.redirect('/login');
