@@ -33,7 +33,7 @@ async function handleCreatePost(req, res) {
         });
     }
 
-  
+
     // check if proper image is provided or its other type of files
     // if given file is not image then reject request
     if (!req.file?.mimetype.startsWith('image/')) {
@@ -381,7 +381,7 @@ const handleLikeTheComment = async (req, res) => {
         const commentLikes = targetComment.likes.length;
 
         try {
-            notification.likeCommentNotification(targetComment?.createdBy, userWhoLikingThePost?._id, userWhoLikingThePost?.userId, post_id )
+            notification.likeCommentNotification(targetComment?.createdBy, userWhoLikingThePost?._id, userWhoLikingThePost?.userId, post_id)
 
         } catch (error) {
             console.log('error to send notification for comment like: ', error)
@@ -583,7 +583,7 @@ const handleUpdateThePost = asynchandler(async (req, res) => {
     }
 
     const post = await Post.findById(post_id).select("author");
-    
+
     if (!post.author.equals(_id)) {
         throw new ApiError(401, "this user is not authorized to edit this post!")
     }
@@ -686,6 +686,72 @@ const handleGetBookmarks = asynchandler(async (req, res) => {
 
 })
 
+const handleSearchPost = asynchandler(async (req, res) => {
+    const searchText = req.query;
+
+    if (!searchText.query) {
+        throw new ApiError(400, "provide some query!");
+    }
+
+    console.log(searchText)
+
+    const posts = await Post.aggregate([
+        {
+            $match: {
+              title: { $regex: searchText.query, $options: "i" },
+            },
+          },
+          {
+            $addFields: {
+              likesCount: {
+                $size: "$likes",
+              },
+              commentsCount: {
+                $size: "$comments",
+              },
+            },
+          },
+          {
+            $sort: {
+              likesCount: -1,
+            },
+          },
+          {
+            $lookup: {
+              from: "users",
+              localField: "author",
+              foreignField: "_id",
+              as: "authorDetails",
+            },
+          },
+          { $unwind: "$authorDetails" },
+          {
+            $project: {
+              _id: 1,
+              title: 1,
+              coverImage: 1,
+              createdAt: 1,
+              likesCount: 1,
+              commentsCount: 1,
+              reads: 1,
+              "authorDetails.userId": 1,
+              "authorDetails.name": 1,
+              "authorDetails._id": 1,
+              "authorDetails.profilePhoto": 1,
+            },
+          },
+    ])
+
+    if (!posts) {
+        throw new ApiError(500, "failed to search posts in db");
+    }
+
+    return res.status(200).json({
+        message: "got the request and all data is end back to client",
+        posts,
+    })
+})
+
 module.exports = {
     handleCreatePost,
     handleGetSpecificPost,
@@ -699,4 +765,5 @@ module.exports = {
     uploadImageFromPostEditor,
     handleUpdateThePost,
     handleGetBookmarks,
+    handleSearchPost,
 };

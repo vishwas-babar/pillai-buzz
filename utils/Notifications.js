@@ -35,7 +35,7 @@ class Notification {
                     notifications: {
                         message: "shared new post",
                         post_id: post_id,
-                        notificationType: 'cratePost',
+                        notificationType: 'createPost',
                         user_id: author_id,
                         userId: userIdOfPerformedActionUser,
                     }
