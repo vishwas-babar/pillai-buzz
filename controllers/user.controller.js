@@ -227,7 +227,7 @@ const handleGetCurrentUser = async (req, res) => {
     }
 
     try {
-        const user = await User.findById(_id).select("name _id email bookmarks profilePhoto userType userId");
+        const user = await User.findById(_id).select("name _id email bookmarks notifications profilePhoto userType userId");
         if (user) {
             const response = new ApiResponse(200, "everything is well", user)
 
@@ -250,7 +250,7 @@ const handleGetUserData = asynchandler(async (req, res) => {
 
     if (user_id === loggedInUser_id) {
         console.log("the current user and the provided user is same")
-        const user = await User.findById(user_id).select("-password -bookmarks -notifications -updatedAt");
+        const user = await User.findById(user_id).select("-password -bookmarks -updatedAt");
         if (user) {
             return res.status(200).json(new ApiResponse(200, "successful", user))
         }
@@ -317,6 +317,25 @@ const handleNotificationOnOffToggle = asynchandler(async (req, res) => {
             return res.status(200).json(new ApiResponse(200, `@${current_logged_in_user?.userId} added to the @${updatedAuthorUser.userId} subscribers list`))
         }
     }
+})
+
+const handleGetAllNotifications = asynchandler(async (req, res) => {
+    const user = req.user;
+
+    if (!user) {
+        throw new ApiError(404, "current user is not logged in")
+    }
+
+    const userInDb = await User.findById(user._id).select('notifications _id userId userName');
+
+    if (!userInDb) {
+        throw new ApiError(404, "current user not found in database");
+    }
+
+    return res.status(200).json({
+        massege: "notifications for current logged in user",
+        notifications: userInDb?.notifications
+    })
 })
 
 module.exports = {
