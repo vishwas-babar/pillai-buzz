@@ -53,33 +53,48 @@ async function handleGetUser(req, res) {
 }
 
 async function handleCreateNewUser(req, res) {
-    const { name, userId, email, password } = req.body;
 
+    console.log(req.body)
+    console.log(req.file)
+
+    
+    // return res.json({msg: "ok"})
+    const { name, userId, email, password } = req.body;
+    
     // check if user already exists
     const userExistWithSameUserId = await User.findOne({ userId: userId })
     if (userExistWithSameUserId) {
-        return res.status(400).json({
+        return res.status(409).json({
             message: 'User already exists',
             field: 'userId',
         });
     }
-
+    
     // check if email already exists
     const userExistWithSameEmail = await User.findOne({ email: email })
     if (userExistWithSameEmail) {
-        return res.status(400).json({
-            message: 'Email already exists',
+        return res.status(409).json({
+            message: 'Email already used',
             field: 'email',
         });
     }
-
+    
+    
     try {
+
+        const uploadedFile = await uploadToCloudinary(req.file.buffer);
+
+        if (!uploadedFile) {
+            return res.status(500).json({msg: "failed to upload profile photo to cloudinary"})
+        }
+
         const user = await User.create({
             name: name,
             userId: userId,
             email: email,
             password: password,
-            profilePhoto: 'https://res.cloudinary.com/dllphjlv3/image/upload/f_auto,q_auto/ut3hb62wndfelslnpd7m'
+            profilePhoto: uploadedFile?.secure_url,
+            profilePhotoPublic_id: uploadedFile?.public_id,
         });
 
 

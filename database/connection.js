@@ -10,6 +10,7 @@ function connectDB() {
         .catch((err) => {
             console.log('database connection failed');
             console.log(err);
+            process.exit(1)
         })
 }
 

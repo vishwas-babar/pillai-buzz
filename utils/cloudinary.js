@@ -9,22 +9,21 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-async function uploadToCloudinary(localPath) {
-
-    if (!localPath) return 'can not find the path'
+async function uploadToCloudinary(buffer) {
+    if (!buffer) return 'No file provided';
 
     try {
-        const response = await cloudinary.uploader.upload( localPath, {
-             resource_type: 'auto'
-         } );
+        const response = await new Promise((resolve, reject) => {
+            cloudinary.uploader.upload_stream({ resource_type: 'auto' }, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            }).end(buffer);
+        });
 
-         console.log('uploaded succesfully');
-
-         fs.unlinkSync(localPath);
-         console.log(response)
-         return response;
+        // console.log(response)
+        return response;
     } catch (error) {
-        fs.unlinkSync(localPath);
+        console.error(error);
         return null;
     }
 }

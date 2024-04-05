@@ -17,7 +17,7 @@ const upload = require('../middlewares/multer.js');
 
 router.post('/login', handleGetUser);
 
-router.post('/signup', handleCreateNewUser);
+router.post('/signup', upload.single('profilePhoto'), handleCreateNewUser);
 
 router.post('/addprofilephoto', upload.fields([
     {

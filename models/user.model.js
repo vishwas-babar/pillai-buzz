@@ -63,6 +63,11 @@ const userSchema = new mongoose.Schema(
         profilePhoto: {
             type: String,
             trim: true,
+            default: "https://res.cloudinary.com/dllphjlv3/image/upload/f_auto,q_auto/ut3hb62wndfelslnpd7m"
+        },
+        profilePhotoPublic_id: {
+            type: String,
+            trim: true,
         },
         bio: {
             type: String,
