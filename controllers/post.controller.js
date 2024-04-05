@@ -37,22 +37,21 @@ async function handleCreatePost(req, res) {
     // check if proper image is provided or its other type of files
     // if given file is not image then reject request
     if (!req.file?.mimetype.startsWith('image/')) {
-        removeTheFileFromServer(coverImageLocalPath);
         return res.status(400).json({
             msg: "Please upload image and not the other files"
         })
     }
 
     // upload to clodinary
-    const coverImageLocalPath = req.file?.path;
+    const coverImageBuffer = req.file?.buffer;
 
-    if (!coverImageLocalPath) {
+    if (!coverImageBuffer) {
         return res.status(400).json({
             msg: "cover photo is required"
         })
     }
 
-    const coverImage = await uploadToCloudinary(coverImageLocalPath);
+    const coverImage = await uploadToCloudinary(coverImageBuffer);
     if (!coverImage) {
         return res.status(500).json({
             msg: "failed to upload cover image to cloudinary"
