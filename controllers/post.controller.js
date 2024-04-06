@@ -106,9 +106,12 @@ const handleGetSpecificPost = async (req, res) => {
     }
 
     try {
-        const post = await Post.findById(id);
+        
+        const post = await Post.findByIdAndUpdate(id, {
+            $inc: { reads: 1 }
+        });
+        
         const author = await User.findById(post.author).select('createdAt name userId _id profilePhoto');
-
         res.status(200).json({
             likesCount: post.likes.length,
             author: author,
