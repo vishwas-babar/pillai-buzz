@@ -17,6 +17,11 @@ const notificationsSchema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
         },
+        userProfilePhoto: {
+            type: String,
+            trim: true,
+            required: true,
+        },
         post_id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Post',

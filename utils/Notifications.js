@@ -10,7 +10,7 @@ class Notification {
         
         console.log('sending notifications to all subscriberd users')
         
-        const author = await User.findById(author_id).select("subscribers name userId _id");
+        const author = await User.findById(author_id).select("subscribers profilePhoto name userId _id");
         
         if (!author) {
             throw new Error("the author account not found with the provided _id")
@@ -38,6 +38,7 @@ class Notification {
                         notificationType: 'createPost',
                         user_id: author_id,
                         userId: userIdOfPerformedActionUser,
+                        userProfilePhoto: author?.profilePhoto,
                     }
                 }
             }, { new: true }).select('_id userId name');
@@ -49,6 +50,7 @@ class Notification {
     postLikeNotification = async (post_id, authorOfPost_id, user_id, userIdOfPerformedActionUser) => {
         
         try {
+            const { profilePhoto } = await User.findById(user_id).select("userName profilePhoto")
             const newNotification = await User.findByIdAndUpdate(authorOfPost_id, {
                 $push: {
                     notifications: {
@@ -57,6 +59,7 @@ class Notification {
                         notificationType: 'likePost',
                         user_id,
                         userId: userIdOfPerformedActionUser,
+                        userProfilePhoto: profilePhoto,
                     }
                 }
             });
@@ -68,6 +71,7 @@ class Notification {
     likeCommentNotification = async (commentAuthor_id, user_id, userIdOfPerformedActionUser, post_id) => {
         
         try {
+            const { profilePhoto } = await User.findById(user_id).select("profilePhoto userName")
             const newNotification = await User.findByIdAndUpdate(commentAuthor_id, {
                 $push: {
                     notifications: {
@@ -76,6 +80,7 @@ class Notification {
                         notificationType: 'likeComment',
                         user_id,
                         userId: userIdOfPerformedActionUser,
+                        userProfilePhoto: profilePhoto,
                     }
                 }
             });
@@ -84,7 +89,7 @@ class Notification {
         }
     }
 
-    commentedOnPostNotification = async (commentAuthor_id, userIdOfPerformedActionUser, targetUserIdToSendNotification, post_id) => {
+    commentedOnPostNotification = async (commentAuthor_id, userIdOfPerformedActionUser, targetUserIdToSendNotification, post_id, profilePhoto) => {
         // user x commented on your post
         
         try {
@@ -96,6 +101,7 @@ class Notification {
                         notificationType: 'commentPost',
                         user_id: commentAuthor_id,
                         userId: userIdOfPerformedActionUser,
+                        userProfilePhoto: profilePhoto,
                     }
                 }
             });

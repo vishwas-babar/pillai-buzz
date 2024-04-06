@@ -4,7 +4,8 @@ const ApiResponse = require('../utils/ApiResponse.js');
 const { setUserJwtToken } = require('../utils/auth.js');
 const { uploadToCloudinary } = require('../utils/cloudinary.js');
 const removeTheFileFromServer = require('../utils/filehandle.js');
-const asynchandler = require('../utils/asynchandler.js')
+const asynchandler = require('../utils/asynchandler.js');
+const { ObjectId } = require('mongodb');
 
 async function handleGetUser(req, res) {
     const { email, password } = req.body;
@@ -57,10 +58,10 @@ async function handleCreateNewUser(req, res) {
     console.log(req.body)
     console.log(req.file)
 
-    
+
     // return res.json({msg: "ok"})
     const { name, userId, email, password } = req.body;
-    
+
     // check if user already exists
     const userExistWithSameUserId = await User.findOne({ userId: userId })
     if (userExistWithSameUserId) {
@@ -69,7 +70,7 @@ async function handleCreateNewUser(req, res) {
             field: 'userId',
         });
     }
-    
+
     // check if email already exists
     const userExistWithSameEmail = await User.findOne({ email: email })
     if (userExistWithSameEmail) {
@@ -78,14 +79,14 @@ async function handleCreateNewUser(req, res) {
             field: 'email',
         });
     }
-    
-    
+
+
     try {
 
         const uploadedFile = await uploadToCloudinary(req.file.buffer);
 
         if (!uploadedFile) {
-            return res.status(500).json({msg: "failed to upload profile photo to cloudinary"})
+            return res.status(500).json({ msg: "failed to upload profile photo to cloudinary" })
         }
 
         const user = await User.create({
@@ -353,6 +354,61 @@ const handleGetAllNotifications = asynchandler(async (req, res) => {
     })
 })
 
+const handleGetNotifications = asynchandler(async (req, res) => {
+    const { _id } = req.user;
+
+    if (!_id) {
+        throw new ApiError(401, "user not authenticated");
+    }
+
+    const data = await User.aggregate([
+        {
+            $match: {
+                _id: new ObjectId(_id)
+            }
+        },
+        {
+            $unwind: "$notifications"
+        },
+        {
+            $lookup: {
+                from: "users",
+                localField: "notifications.user_id",
+                foreignField: "_id",
+                as: "userDetails"
+            }
+        },
+        {
+            $unwind: "$userDetails"
+        },
+        {
+            $sort: {
+              "notifications.createdAt": -1
+            }
+          },
+        {
+            $project: {
+                "userDetails.userId": 1,
+                "userDetails.name": 1,
+                "userDetails._id": 1,
+                "userDetails.profilePhoto": 1,
+                userId: 1,
+                notifications: 1,
+
+            }
+        }
+    ]);
+
+    if (!data) {
+        throw new ApiError(500, "not geting any notifications from database")
+    }
+
+    return res.status(200).json({
+        msg: "successs",
+        notifications: data,
+    })
+})
+
 module.exports = {
     handleCreateNewUser,
     handleGetUser,
@@ -363,4 +419,5 @@ module.exports = {
     handleGetCurrentUser,
     handleGetUserData,
     handleNotificationOnOffToggle,
+    handleGetNotifications,
 }
