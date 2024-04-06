@@ -194,7 +194,7 @@ const handleAddCommentOnPost = async (req, res) => {
         const newComment = updatedPost.comments[updatedPost.comments.length - 1]; // get the last created post
 
         try {
-            notification.commentedOnPostNotification(user_indb?._id, user_indb?.userId, post_indb?.author, post_indb?._id)
+            notification.commentedOnPostNotification(user_indb?._id, user_indb?.userId, post_indb?.author, post_indb?._id, user_indb?.profilePhoto)
         } catch (error) {
             console.log('error in sending notification for new created comment on the post')
         }

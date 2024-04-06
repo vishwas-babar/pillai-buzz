@@ -11,6 +11,7 @@ const {
     handleGetCurrentUser,
     handleGetUserData,
     handleNotificationOnOffToggle,
+    handleGetNotifications,
 } = require('../controllers/user.controller.js');
 const isUserAuthenticated = require('../middlewares/auth.js');
 const upload = require('../middlewares/multer.js');
@@ -32,9 +33,11 @@ router.get('/info', isUserAuthenticated, handleGetMyInfo);
 
 router.post('/notification-toggle', isUserAuthenticated, handleNotificationOnOffToggle);
 
-router.get('/get-current-user', isUserAuthenticated, handleGetCurrentUser)
+router.get('/get-current-user', isUserAuthenticated, handleGetCurrentUser);
 
-router.get('/:_id/get-details', isUserAuthenticated, handleGetUserData)
+router.get('/get-notifications', isUserAuthenticated, handleGetNotifications);
+
+router.get('/:_id/get-details', isUserAuthenticated, handleGetUserData);
 
 router.get('/profile/:_id', handleGetUserInfo);
 
