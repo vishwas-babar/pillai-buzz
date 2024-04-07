@@ -58,7 +58,6 @@ const userSchema = new mongoose.Schema(
         },
         password: {
             type: String,
-            required: true,
             trim: true,
         },
         name: {
@@ -77,6 +76,14 @@ const userSchema = new mongoose.Schema(
         bio: {
             type: String,
             trim: true,
+        },
+        googleId: {
+            type: String,
+        },
+        provider: {
+            type: String,
+            enum:  ['local', 'google'],
+            default: 'local',
         },
         userType: {
             type: String,

@@ -6,9 +6,97 @@ const { uploadToCloudinary } = require('../utils/cloudinary.js');
 const removeTheFileFromServer = require('../utils/filehandle.js');
 const asynchandler = require('../utils/asynchandler.js');
 const { ObjectId } = require('mongodb');
+const { default: axios } = require('axios');
 
-async function handleGetUser(req, res) {
+
+const handleGetUser = asynchandler(async (req, res) => {
     const { email, password } = req.body;
+
+    if (req.body.access_token) {
+        console.log("google auth login")
+        const access_token = req.body.access_token;
+
+        const response = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+            headers: {
+                "Authorization": `Bearer ${access_token}`
+            }
+        })
+
+        if (!response.data) {
+            throw new ApiError(500, "failed to get the user data from google api")
+        }
+
+        const userData = response.data;
+
+        // check if the user is already exist then just login this user
+        const pastUser = await User.findOne({ googleId: userData.sub });
+
+        console.log("pastuser:", pastUser)
+
+        if (pastUser) {
+            console.log("this user is laready exist so login him")
+            const uid = setUserJwtToken({
+                name: pastUser.name,
+                userId: pastUser.userId,
+                bio: pastUser.bio,
+                userType: pastUser.userType,
+                _id: pastUser._id
+            });
+    
+            if (!uid) {
+                return res.status(500).json({
+                    message: 'failed to generate the jwt token',
+                });
+            }
+    
+            res.cookie('uid', uid, {
+                // specify the rules for cookie such as expiry date
+            });
+
+            return res.status(200).json({ msg: "user is already exist and loged in" })
+        }
+
+        const name = userData.name;
+        const userId = name.toLowerCase().split(' ').join('_');
+
+        const createdUser = await User.create({
+            name: userData.name,
+            userId: userId,
+            email: userData.email,
+            profilePhoto: userData.picture,
+            profilePhotoPublic_id: "",
+            provider: "google",
+            googleId: userData.sub,
+        })
+
+        if (!createdUser) {
+            throw new ApiError(500, 'failed to create the user with data provided by google')
+        }
+
+        const uid = setUserJwtToken({
+            name: createdUser.name,
+            userId: createdUser.userId,
+            bio: createdUser.bio,
+            userType: createdUser.userType,
+            _id: createdUser._id
+        });
+
+        if (!uid) {
+            return res.status(500).json({
+                message: 'failed to generate the jwt token',
+            });
+        }
+
+        res.cookie('uid', uid, {
+            // specify the rules for cookie such as expiry date
+        });
+
+        return res.status(201).json({
+            message: 'User account created Successfully as account with this email account not existed before',
+            // uid: uid,
+        });
+
+    }
 
     if (!email || !password) {
         return res.status(400).json({
@@ -38,6 +126,7 @@ async function handleGetUser(req, res) {
         userType: user.userType,
         _id: user._id
     });
+
     if (!uid) {
         return res.status(500).json({
             message: 'Internal server error',
@@ -45,13 +134,13 @@ async function handleGetUser(req, res) {
     }
 
     res.cookie('uid', uid, {
-
+        // specify the rules for cookie such as expiry date
     });
     return res.status(200).json({
         message: 'User logged in successfully',
         uid: uid,
     });
-}
+})
 
 async function handleCreateNewUser(req, res) {
 
@@ -239,7 +328,7 @@ const handleGetCurrentUser = async (req, res) => {
 
     const _id = req.user?._id;
     if (!_id) {
-        return new res.status(400).json(new ApiResponse(400, "_id is required to get the user"))
+        return res.status(400).json(new ApiResponse(400, "_id is required to get the user"))
     }
 
     try {
@@ -383,9 +472,9 @@ const handleGetNotifications = asynchandler(async (req, res) => {
         },
         {
             $sort: {
-              "notifications.createdAt": -1
+                "notifications.createdAt": -1
             }
-          },
+        },
         {
             $project: {
                 "userDetails.userId": 1,
