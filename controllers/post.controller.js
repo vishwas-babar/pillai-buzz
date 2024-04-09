@@ -749,7 +749,7 @@ const handleSearchPost = asynchandler(async (req, res) => {
     }
 
     return res.status(200).json({
-        message: "got the request and all data is end back to client",
+        message: "this is result of searched posts",
         posts,
     })
 })

@@ -7,6 +7,7 @@ const removeTheFileFromServer = require('../utils/filehandle.js');
 const asynchandler = require('../utils/asynchandler.js');
 const { ObjectId } = require('mongodb');
 const { default: axios } = require('axios');
+const { handleSearchPost } = require('./post.controller.js');
 
 
 const handleGetUser = asynchandler(async (req, res) => {
@@ -43,13 +44,13 @@ const handleGetUser = asynchandler(async (req, res) => {
                 userType: pastUser.userType,
                 _id: pastUser._id
             });
-    
+
             if (!uid) {
                 return res.status(500).json({
                     message: 'failed to generate the jwt token',
                 });
             }
-    
+
             res.cookie('uid', uid, {
                 // specify the rules for cookie such as expiry date
             });
@@ -502,6 +503,48 @@ const handleGetNotifications = asynchandler(async (req, res) => {
     })
 })
 
+const handleSearchUser = asynchandler(async (req, res) => {
+
+    console.log("searching for the users with given query: ", req.query)
+    const { query } = req.query;
+
+    if (!query) {
+        return res.status(400).json({msg: "query text is not provided to search the user"})
+    }
+
+    const users = await User.aggregate([
+        {
+            $match: {
+                $or: [
+                    { name: { $regex: query, $options: "i" } },
+                    { userId: { $regex: query, $options: "i" } }
+                ]
+            },
+        },
+        {
+            $sort: {
+                createdAt: -1
+            }
+        },
+        {
+            $project: {
+                _id: 1,
+                name: 1,
+                userId: 1,
+                profilePhoto: 1,
+                coverImage: 1,
+                createdAt: 1,
+            },
+        },
+    ]);
+
+    if (!users) {
+        throw new ApiError(500, "failed to search users")
+    }
+
+    return res.status(200).json({ users: users })
+})
+
 module.exports = {
     handleCreateNewUser,
     handleGetUser,
@@ -513,4 +556,5 @@ module.exports = {
     handleGetUserData,
     handleNotificationOnOffToggle,
     handleGetNotifications,
+    handleSearchUser,
 }
