@@ -13,6 +13,7 @@ const handleGetUser = asynchandler(async (req, res) => {
     const { email, password } = req.body;
 
     if (req.body.access_token) {
+        // google auth login
         console.log("google auth login")
         const access_token = req.body.access_token;
 
@@ -105,6 +106,9 @@ const handleGetUser = asynchandler(async (req, res) => {
     }
 
     // check if user exists in database
+
+    // const theGoogleUser = await User.
+
     let user;
     try {
         user = await User.findOne({ email: email, password: password });

@@ -106,11 +106,11 @@ const handleGetSpecificPost = async (req, res) => {
     }
 
     try {
-        
+
         const post = await Post.findByIdAndUpdate(id, {
             $inc: { reads: 1 }
         });
-        
+
         const author = await User.findById(post.author).select('createdAt name userId _id profilePhoto');
         res.status(200).json({
             likesCount: post.likes.length,
@@ -142,7 +142,7 @@ const handleLikePost = async (req, res) => {
 
 
         const updatedPost = await Post.findByIdAndUpdate(postId, {
-            $push: { likes: user._id }
+            $addToSet: { likes: user._id }
         }, { new: true }).select('likes');
 
         try {
@@ -700,48 +700,48 @@ const handleSearchPost = asynchandler(async (req, res) => {
     const posts = await Post.aggregate([
         {
             $match: {
-              title: { $regex: searchText.query, $options: "i" },
+                title: { $regex: searchText.query, $options: "i" },
             },
-          },
-          {
+        },
+        {
             $addFields: {
-              likesCount: {
-                $size: "$likes",
-              },
-              commentsCount: {
-                $size: "$comments",
-              },
+                likesCount: {
+                    $size: "$likes",
+                },
+                commentsCount: {
+                    $size: "$comments",
+                },
             },
-          },
-          {
+        },
+        {
             $sort: {
-              likesCount: -1,
+                likesCount: -1,
             },
-          },
-          {
+        },
+        {
             $lookup: {
-              from: "users",
-              localField: "author",
-              foreignField: "_id",
-              as: "authorDetails",
+                from: "users",
+                localField: "author",
+                foreignField: "_id",
+                as: "authorDetails",
             },
-          },
-          { $unwind: "$authorDetails" },
-          {
+        },
+        { $unwind: "$authorDetails" },
+        {
             $project: {
-              _id: 1,
-              title: 1,
-              coverImage: 1,
-              createdAt: 1,
-              likesCount: 1,
-              commentsCount: 1,
-              reads: 1,
-              "authorDetails.userId": 1,
-              "authorDetails.name": 1,
-              "authorDetails._id": 1,
-              "authorDetails.profilePhoto": 1,
+                _id: 1,
+                title: 1,
+                coverImage: 1,
+                createdAt: 1,
+                likesCount: 1,
+                commentsCount: 1,
+                reads: 1,
+                "authorDetails.userId": 1,
+                "authorDetails.name": 1,
+                "authorDetails._id": 1,
+                "authorDetails.profilePhoto": 1,
             },
-          },
+        },
     ])
 
     if (!posts) {
