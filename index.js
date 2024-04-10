@@ -33,7 +33,7 @@ app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 app.use('/', staticRouter);
 app.use('/api/user', userRouter);
-app.use('/api/post', isUserAuthenticated, postRouter);
+app.use('/api/post', postRouter);
 // app.use('/api/post', postRouter);
 app.use('/api/images', imageRouter);
 
