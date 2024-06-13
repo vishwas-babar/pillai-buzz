@@ -754,6 +754,7 @@ const handleSearchPost = asynchandler(async (req, res) => {
     })
 })
 
+
 module.exports = {
     handleCreatePost,
     handleGetSpecificPost,

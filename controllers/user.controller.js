@@ -149,11 +149,6 @@ const handleGetUser = asynchandler(async (req, res) => {
 
 async function handleCreateNewUser(req, res) {
 
-    console.log(req.body)
-    console.log(req.file)
-
-
-    // return res.json({msg: "ok"})
     const { name, userId, email, password } = req.body;
 
     // check if user already exists
@@ -173,6 +168,8 @@ async function handleCreateNewUser(req, res) {
             field: 'email',
         });
     }
+
+    console.log("file for signup: ",req.file)
 
 
     try {
@@ -509,7 +506,7 @@ const handleSearchUser = asynchandler(async (req, res) => {
     const { query } = req.query;
 
     if (!query) {
-        return res.status(400).json({msg: "query text is not provided to search the user"})
+        return res.status(400).json({ msg: "query text is not provided to search the user" })
     }
 
     const users = await User.aggregate([
@@ -545,6 +542,59 @@ const handleSearchUser = asynchandler(async (req, res) => {
     return res.status(200).json({ users: users })
 })
 
+
+const handleEditUserProfile = asynchandler(async (req, res) => {
+    const { name, userId, role } = req.body;
+    const profilePhoto = req.file;
+    const user = req.user;
+
+    console.log("user: ", user)
+    console.log(req.body)
+    console.log("file: ", req.file)
+
+    try {
+
+        // check if same userid exist in database or not
+        const userInDb = await User.findOne({ userId });
+
+        if (userInDb) {
+            console.log('userid conflicts send conflict response...')
+            if (userInDb._id != user._id)
+                return res.status(409).json({ msg: "userId already exist!" })
+        }
+
+        if (profilePhoto) {
+            // update user with its profile photo
+            
+            const uploadedImage = await uploadToCloudinary(profilePhoto.buffer)
+            console.log(uploadedImage)
+
+            const updatedUser = await User.findByIdAndUpdate(user._id, {
+                name,
+                userId,
+                role,
+                profilePhoto: uploadedImage.secure_url,
+                profilePhotoPublic_id: uploadedImage.public_id
+            }, { new: true })
+        } else {
+            // update without profile image
+            const updatedUser = await User.findByIdAndUpdate(user._id, {
+                name,
+                userId,
+                role,
+            }, { new: true })
+        }
+
+        res.status(201).json({
+            msg: "user profile updated successfully."
+        })
+    } catch (error) {
+        console.log(error)
+        throw new ApiError(500, "error when updating the user profile")
+    }
+
+})
+
 module.exports = {
     handleCreateNewUser,
     handleGetUser,
@@ -557,4 +607,5 @@ module.exports = {
     handleNotificationOnOffToggle,
     handleGetNotifications,
     handleSearchUser,
+    handleEditUserProfile,
 }

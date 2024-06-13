@@ -73,9 +73,11 @@ const userSchema = new mongoose.Schema(
             type: String,
             trim: true,
         },
-        bio: {
+        role: {
             type: String,
             trim: true,
+            required: true,
+            default: "-"
         },
         googleId: {
             type: String,
